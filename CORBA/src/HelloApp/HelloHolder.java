@@ -2,9 +2,9 @@ package HelloApp;
 
 /**
 * HelloApp/HelloHolder.java .
-* IDL-to-Java ƒRƒ“ƒpƒCƒ‰ (ƒ|[ƒ^ƒuƒ‹), ƒo[ƒWƒ‡ƒ“ "3.1" ‚Å¶¬
-* ¶¬Œ³: Hello.idl
-* 2010”N3Œ24“ú 1653•ª57•b JST
+* IDL-to-Java ã‚³ãƒ³ãƒ‘ã‚¤ãƒ© (ãƒãƒ¼ã‚¿ãƒ–ãƒ«), ãƒãƒ¼ã‚¸ãƒ§ãƒ³ "3.1" ã§ç”Ÿæˆ
+* ç”Ÿæˆå…ƒ: Hello.idl
+* 2010å¹´3æœˆ24æ—¥ 16æ™‚53åˆ†57ç§’ JST
 */
 
 public final class HelloHolder implements org.omg.CORBA.portable.Streamable

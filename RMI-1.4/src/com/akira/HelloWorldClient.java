@@ -11,11 +11,11 @@ public class HelloWorldClient {
 	public static void main(String[] args) {
 		HelloWorld obj = null;
 		try {
-			// ƒZƒLƒ…ƒŠƒeƒBƒ}ƒl[ƒWƒƒ[‚ğİ’è‚µ‚Ü‚·
+			// ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’è¨­å®šã—ã¾ã™
 			System.setSecurityManager(new RMISecurityManager());
-			// ƒŠƒ‚[ƒgƒIƒuƒWƒFƒNƒg‚ÌQÆ(ƒXƒ^ƒu)‚ğæ“¾‚µ‚Ü‚·
+			// ãƒªãƒ¢ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‚ç…§(ã‚¹ã‚¿ãƒ–)ã‚’å–å¾—ã—ã¾ã™
 			obj = (HelloWorld) Naming.lookup("//localhost/MyObject");
-			// ƒŠƒ‚[ƒgƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ‚Ä‚»‚Ì–ß‚è’l‚ğ‰æ–Ê‚É•\¦‚µ‚Ü‚·
+			// ãƒªãƒ¢ãƒ¼ãƒˆãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã—ã¦ãã®æˆ»ã‚Šå€¤ã‚’ç”»é¢ã«è¡¨ç¤ºã—ã¾ã™
 			System.out.println(obj.sayHelloWorld());
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -9,30 +9,30 @@ public class HelloWorldJndiCorbaClient {
 
 	public static void main(String args[]) {
 		try {
-			// ORB‚Ì¶¬‚Æ‰Šú‰»‚ğs‚¢‚Ü‚·
+			// ORBã®ç”Ÿæˆã¨åˆæœŸåŒ–ã‚’è¡Œã„ã¾ã™
 			ORB orb = ORB.init(args, null);
 
 			/*
-			 * ƒRƒƒ“ƒgƒAƒEƒg org.omg.CORBA.Object objRef =
+			 * ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ org.omg.CORBA.Object objRef =
 			 * orb.resolve_initial_references("NameService"); NamingContextExt
 			 * ncRef = NamingContextExtHelper.narrow(objRef);
 			 */
-			/*** ’Ç‰Á ***/
+			/*** è¿½åŠ  ***/
 			Hashtable env = new Hashtable();
 			env.put(javax.naming.Context.INITIAL_CONTEXT_FACTORY,
 					"com.sun.jndi.cosnaming.CNCtxFactory");
 			env.put("java.naming.corba.orb", orb);
-			// ƒl[ƒ~ƒ“ƒOƒRƒ“ƒeƒLƒXƒg‚Ì¶¬
+			// ãƒãƒ¼ãƒŸãƒ³ã‚°ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®ç”Ÿæˆ
 			javax.naming.Context ic = new javax.naming.InitialContext(env);
 
 			/*
-			 * ƒRƒƒ“ƒgƒAƒEƒg String name = "Hello"; helloImpl =
+			 * ã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆ String name = "Hello"; helloImpl =
 			 * HelloHelper.narrow(ncRef.resolve_str(name));
 			 * System.out.println(helloImpl.sayHello());
 			 */
-			/*** ’Ç‰Á ***/
+			/*** è¿½åŠ  ***/
 			String name = "Hello";
-			// ƒ‹ƒbƒNƒAƒbƒv
+			// ãƒ«ãƒƒã‚¯ã‚¢ãƒƒãƒ—
 			helloImpl = HelloHelper.narrow(((org.omg.CORBA.Object) ic
 					.lookup(name)));
 			System.out.println(helloImpl.sayHello());
