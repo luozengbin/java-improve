@@ -9,19 +9,19 @@ public class HelloWorldCorbaClient {
 
 	public static void main(String args[]) {
 		try {
-			// ORB‚Ì¶¬‚Æ‰Šú‰»‚ğs‚¢‚Ü‚·
+			// ORBã®ç”Ÿæˆã¨åˆæœŸåŒ–ã‚’è¡Œã„ã¾ã™
 			ORB orb = ORB.init(args, null);
 
-			// ƒl[ƒ€ƒT[ƒrƒX‚ğŒŸõ‚µ‚Äƒl[ƒ€ƒT[ƒrƒX‚ÌQÆ‚ğæ“¾‚µ‚Ü‚·
+			// ãƒãƒ¼ãƒ ã‚µãƒ¼ãƒ“ã‚¹ã‚’æ¤œç´¢ã—ã¦ãƒãƒ¼ãƒ ã‚µãƒ¼ãƒ“ã‚¹ã®å‚ç…§ã‚’å–å¾—ã—ã¾ã™
 			org.omg.CORBA.Object objRef = orb
 					.resolve_initial_references("NameService");
 			NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 
-			// ƒl[ƒ€ƒT[ƒrƒX‚©‚çHelloƒIƒuƒWƒFƒNƒg‚ÌQÆ‚ğæ“¾‚µ‚Ü‚·
+			// ãƒãƒ¼ãƒ ã‚µãƒ¼ãƒ“ã‚¹ã‹ã‚‰Helloã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‚ç…§ã‚’å–å¾—ã—ã¾ã™
 			String name = "Hello";
 			helloImpl = HelloHelper.narrow(ncRef.resolve_str(name));
 
-			// sayHello()ƒƒ\ƒbƒh‚ğÀs‚µ‚Ü‚·
+			// sayHello()ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®Ÿè¡Œã—ã¾ã™
 			System.out.println(helloImpl.sayHello());
 		} catch (Exception e) {
 			e.printStackTrace();

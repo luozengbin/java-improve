@@ -21,13 +21,13 @@ public class HelloWorldObj extends UnicastRemoteObject implements HelloWorld {
 
 	public static void main(String args[]) {
 		if (System.getSecurityManager() == null) {
-			// ƒZƒLƒ…ƒŠƒeƒBƒ}ƒl[ƒWƒƒ[‚ğİ’è‚µ‚Ü‚·
+			// ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’è¨­å®šã—ã¾ã™
 			System.setSecurityManager(new RMISecurityManager());
 		}
 		try {
-			// ƒT[ƒo[‘¤‚ÌƒŠƒ‚[ƒgƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚·
+			// ã‚µãƒ¼ãƒãƒ¼å´ã®ãƒªãƒ¢ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™
 			HelloWorldObj obj = new HelloWorldObj();
-			// ƒŠƒ‚[ƒgƒIƒuƒWƒFƒNƒg‚ÉV‚µ‚¢–¼‘O‚ğŠÖ˜A•t‚¯‚Ü‚·
+			// ãƒªãƒ¢ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«æ–°ã—ã„åå‰ã‚’é–¢é€£ä»˜ã‘ã¾ã™
 			Naming.rebind("MyObject", obj);
 		} catch (Exception e) {
 			e.printStackTrace();

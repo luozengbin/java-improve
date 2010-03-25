@@ -11,41 +11,41 @@ public class HelloWorldCorbaServer {
 
 	public static void main(String args[]) {
 		try {
-			// ORB‚Ì¶¬‚Æ‰Šú‰»‚ğs‚¢‚Ü‚·
+			// ORBã®ç”Ÿæˆã¨åˆæœŸåŒ–ã‚’è¡Œã„ã¾ã™
 			ORB orb = ORB.init(args, null);
 
-			// RootPOA‚ÌQÆ‚ğæ“¾‚µPOAManager‚ğg—p‰Â”\‚É‚µ‚Ü‚·
+			// RootPOAã®å‚ç…§ã‚’å–å¾—ã—POAManagerã‚’ä½¿ç”¨å¯èƒ½ã«ã—ã¾ã™
 			POA rootpoa = POAHelper.narrow(orb
 					.resolve_initial_references("RootPOA"));
 			rootpoa.the_POAManager().activate();
 
-			// ƒT[ƒoƒ“ƒg‚ğ¶¬‚µA‚»‚ê‚ÉORB‚ğ“o˜^‚µ‚Ü‚·
+			// ã‚µãƒ¼ãƒãƒ³ãƒˆã‚’ç”Ÿæˆã—ã€ãã‚Œã«ORBã‚’ç™»éŒ²ã—ã¾ã™
 			HelloImpl helloImpl = new HelloImpl();
 			helloImpl.setORB(orb);
 
-			// ƒT[ƒoƒ“ƒg‚©‚çHelloƒIƒuƒWƒFƒNƒg‚ÌQÆ‚ğæ“¾‚µ‚Ü‚·
+			// ã‚µãƒ¼ãƒãƒ³ãƒˆã‹ã‚‰Helloã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‚ç…§ã‚’å–å¾—ã—ã¾ã™
 			org.omg.CORBA.Object ref = rootpoa.servant_to_reference(helloImpl);
 			Hello href = HelloHelper.narrow(ref);
 
-			// ƒl[ƒ€ƒT[ƒrƒX‚ğŒŸõ‚µ‚Äƒl[ƒ€ƒT[ƒrƒX‚ÌQÆ‚ğæ“¾‚µ‚Ü‚·
+			// ãƒãƒ¼ãƒ ã‚µãƒ¼ãƒ“ã‚¹ã‚’æ¤œç´¢ã—ã¦ãƒãƒ¼ãƒ ã‚µãƒ¼ãƒ“ã‚¹ã®å‚ç…§ã‚’å–å¾—ã—ã¾ã™
 			org.omg.CORBA.Object objRef = orb
 					.resolve_initial_references("NameService");
 			NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 
-			// HelloƒIƒuƒWƒFƒNƒg‚ÌQÆ‚ğƒl[ƒ€ƒT[ƒrƒX‚É“o˜^‚µ‚Ü‚·
+			// Helloã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‚ç…§ã‚’ãƒãƒ¼ãƒ ã‚µãƒ¼ãƒ“ã‚¹ã«ç™»éŒ²ã—ã¾ã™
 			String name = "Hello";
 			NameComponent path[] = ncRef.to_name(name);
 			ncRef.rebind(path, href);
 
-			System.out.println("HelloWorldCorbaServer‚ª‹N“®‚µ‚Ü‚µ‚½");
+			System.out.println("HelloWorldCorbaServerãŒèµ·å‹•ã—ã¾ã—ãŸ");
 
-			// ƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç‚ÌŒÄ‚Ño‚µ‚ğ‘Ò‚¿‚Ü‚·
+			// ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‹ã‚‰ã®å‘¼ã³å‡ºã—ã‚’å¾…ã¡ã¾ã™
 			orb.run();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		System.out.println("HelloWorldCorbaServer‚ğ’â~‚µ‚Ü‚·");
+		System.out.println("HelloWorldCorbaServerã‚’åœæ­¢ã—ã¾ã™");
 	}
 
 }
