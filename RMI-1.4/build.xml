@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     2010/03/24 17:38:47                                                        
+
+     java_upup    
+     run rmi test pragram
+                   
+     10027244                                                                
+     ====================================================================== -->
+<project name="java_upup" default="default">
+
+	<description>
+            run rmi test pragram
+    </description>
+
+	<!-- ================================= 
+          target: default              
+         ================================= -->
+	<target name="default" depends="compile" description="run rmi test pragram">
+<!--		<java classname="com.akira.HelloWorldObj">
+			<jvmarg id="java.security.policy" value="file:///${base.dir}\options\java.policy" />
+			<jvmarg id="java.rmi.server.codebase" value="file:///${base.dir}\dst\" />
+			<classpath>
+				<pathelement path="${java.class.path}" />
+				<pathelement path="dst" />
+			</classpath>
+		</java>-->
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: depends                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="compile">
+		
+		<javac srcdir="src" destdir="dst" debug="on" encoding="MS932" />
+		<exec executable="rmic" dir="dst" >
+			<arg value="com.akira.HelloWorldObj" />
+		</exec>
+		
+		<!--
+		<javac srcdir="rmi_gen" destdir="dst" debug="on" />
+		-->
+		
+		<!--
+		<rmic base="dst" classpath="${java.class.path}">
+			<include name="dst/**/HelloWorldObj.class" />
+		</rmic>-->
+	</target>
+
+</project>
