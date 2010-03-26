@@ -9,42 +9,76 @@
      ====================================================================== -->
 <project name="java_upup" default="default">
 
-	<description>
-            run rmi test pragram
-    </description>
+	<description>run rmi test pragram</description>
+
+	<!-- 変数定義 -->
+	<property name="src" value="src" />
+	<property name="rmi_gen" value="rmi_gen" />
+	<property name="dst" value="dst" />
+	<property name="options" value="options" />
 
 	<!-- ================================= 
           target: default              
          ================================= -->
 	<target name="default" depends="compile" description="run rmi test pragram">
-<!--		<java classname="com.akira.HelloWorldObj">
-			<jvmarg id="java.security.policy" value="file:///${base.dir}\options\java.policy" />
-			<jvmarg id="java.rmi.server.codebase" value="file:///${base.dir}\dst\" />
+		
+		<!-- RMIレジストリにサービスオブジェクトを登録する  -->
+		<java classname="com.akira.HelloWorldObj">
+			<jvmarg id="java.security.policy" value="file:///${basedir}\${options}\java.policy" />
+			<jvmarg id="java.rmi.server.codebase" value="file:///${basedir}\${dst}" />
+			<classpath>
+				<pathelement path="${basedir}\${dst}" />
+				<pathelement path="${java.class.path}" />
+			</classpath>
+		</java>
+		<echo>rebind rmi service object to rmi registry</echo>
+		
+		<echo>running test client</echo>
+		<java classname="com.akira.HelloWorldClient">
+			<jvmarg id="java.security.policy" value="file:///${basedir}\${options}\java.policy" />
 			<classpath>
 				<pathelement path="${java.class.path}" />
-				<pathelement path="dst" />
+				<pathelement path="${dst}" />
 			</classpath>
-		</java>-->
+		</java>
+		
+	</target>
+	
+	<!-- ================================= 
+          target: rmiregistry              
+         ================================= -->
+    <target name="startRmiregistry">
+        
+		<!-- RMIレジストリの起動 -->
+		<exec executable="rmiregistry" newenvironment="yes" />
+		
+		<echo>rmi registry started</echo>
+    	
+    </target>
+
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: compile                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="compile" depends="clean">
+
+		<javac srcdir="${src}" destdir="${dst}" debug="on" encoding="UTF-8" />
+
+		<echo>run rmic command for create stub class</echo>
+		<exec executable="rmic" dir="${dst}">
+			<arg value="com.akira.HelloWorldObj" />
+		</exec>
+
 	</target>
 
 	<!-- - - - - - - - - - - - - - - - - - 
-          target: depends                      
+          target: clean                      
          - - - - - - - - - - - - - - - - - -->
-	<target name="compile">
-		
-		<javac srcdir="src" destdir="dst" debug="on" encoding="MS932" />
-		<exec executable="rmic" dir="dst" >
-			<arg value="com.akira.HelloWorldObj" />
-		</exec>
-		
-		<!--
-		<javac srcdir="rmi_gen" destdir="dst" debug="on" />
-		-->
-		
-		<!--
-		<rmic base="dst" classpath="${java.class.path}">
-			<include name="dst/**/HelloWorldObj.class" />
-		</rmic>-->
+	<target name="clean">
+		<delete dir="${dst}" />
+		<mkdir dir="${dst}" />
+		<delete dir="${rmi_gen}" />
+		<mkdir dir="${rmi_gen}" />
 	</target>
 
 </project>
