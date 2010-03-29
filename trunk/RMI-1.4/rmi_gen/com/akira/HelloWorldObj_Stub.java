@@ -5,7 +5,7 @@ package com.akira;
 
 public final class HelloWorldObj_Stub
     extends java.rmi.server.RemoteStub
-    implements com.akira.HelloWorld, java.rmi.Remote
+    implements com.akira.HelloWorld
 {
     private static final long serialVersionUID = 2;
     
