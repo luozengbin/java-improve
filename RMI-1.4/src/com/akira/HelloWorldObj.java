@@ -1,12 +1,12 @@
 package com.akira;
 
 
+import java.io.Serializable;
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
-public class HelloWorldObj extends UnicastRemoteObject implements HelloWorld {
+public class HelloWorldObj implements HelloWorld ,Serializable{
 
 	private static final long serialVersionUID = 6558747930954000825L;
 
