@@ -1,6 +1,7 @@
 package skillup.java.bean;
 
 import java.util.Arrays;
+import java.util.Date;
 
 public class Product {
 	
@@ -12,6 +13,26 @@ public class Product {
 	
 	private int[] serviceLife;
 	
+	private Date createDate;
+	
+	private Lens lens = new Lens();
+	
+	private Part extendSubPart = new Part(){
+		private String partName;
+		
+		public String getPartName() {
+			return partName;
+		}
+		
+		public void setPartName(String partName) {
+			this.partName = partName;
+		}
+		
+		@Override
+		public String toString(){
+			return "extendSubPart[partName = "+ partName + "]";
+		}
+	};
 	
 	public Product() {
 		super();
@@ -57,52 +78,41 @@ public class Product {
 		this.serviceLife = serviceLife;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((category == null) ? 0 : category.hashCode());
-		result = prime * result + (int) (id ^ (id >>> 32));
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + Arrays.hashCode(serviceLife);
-		return result;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Product))
-			return false;
-		Product other = (Product) obj;
-		if (category == null) {
-			if (other.category != null)
-				return false;
-		} else if (!category.equals(other.category))
-			return false;
-		if (id != other.id)
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (!Arrays.equals(serviceLife, other.serviceLife))
-			return false;
-		return true;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	public Lens getLens() {
+		return lens;
+	}
+
+	public void setLens(Lens lens) {
+		this.lens = lens;
+	}
+
+	public Part getExtendSubPart() {
+		return extendSubPart;
+	}
+
+	public void setExtendSubPart(Part extendSubPart) {
+		this.extendSubPart = extendSubPart;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Product [category=").append(category).append(", id=")
-				.append(id).append(", name=").append(name).append(
-						", serviceLife=").append(Arrays.toString(serviceLife))
+		builder.append("Product [category=").append(category).append(
+				", createDate=").append(createDate).append(", extendSubPart=")
+				.append(extendSubPart).append(", id=").append(id).append(
+						", lens=").append(lens).append(", name=").append(name)
+				.append(", serviceLife=").append(Arrays.toString(serviceLife))
 				.append("]");
 		return builder.toString();
 	}
+	
 	
 }
