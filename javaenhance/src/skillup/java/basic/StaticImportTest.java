@@ -9,7 +9,7 @@ import static java.lang.Math.*;
 import org.junit.Test;
 
 
-public class TestStaticImport {
+public class StaticImportTest {
 	
 	@Test
 	public void testAdd() {
