@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 
-public class TestSuperEnum {
+public class SuperEnumTest {
 	
 	@Test
 	public void testSuperEnum() throws Exception {

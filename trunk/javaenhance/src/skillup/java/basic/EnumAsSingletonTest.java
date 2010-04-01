@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 
-public class TestEnumAsSingleton {
+public class EnumAsSingletonTest {
 	
 	@Test
 	public void testSingleton() throws Exception {
@@ -25,7 +25,7 @@ public class TestEnumAsSingleton {
 		妻;
 		
 		アキラ(){
-			_妻 = new TestEnumAsSingleton().new Person(20, "米蘭", Sex.女性);
+			_妻 = new EnumAsSingletonTest().new Person(20, "米蘭", Sex.女性);
 		}
 		
 		private Person _妻;
