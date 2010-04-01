@@ -1,0 +1,1 @@
+java weblogic.appc -keepgenerated -verbose -output HelloWorldEJB.jar HelloWorld.jar
