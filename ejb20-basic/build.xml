@@ -1,118 +1,89 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="ejb20-basic-statelessSession" default="all" basedir=".">
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ejb20-basic-helloworld" default="all" basedir=".">
+	
+	<property environment="env" />
+	
+	<property file="build.properties" />
 
-  <!-- set global properties for this build -->
-  <property environment="env"/>
-  <property file="../../../../../examples.properties"/>
-  <property name="build.compiler" value="${compiler}"/>
-  <property name="source" value="${basedir}"/>
-	<property name="bean.ear" value="ejb20StatelessEar"/>
-  <property name="dist" value="${source}/${bean.ear}"/>
-  <property name="ejb.name" value="ejb20StatelessEjb"/>
-  <property name="package" value="examples/ejb/ejb20/basic/statelessSession"/>
-  <property name="ejb.client.jar" value="ejb20_basic_statelessSession_client.jar"/>
+	<property name="source" value="${basedir}/src" />
 
-  <target name="all" depends="build, deploy"/>
+	<property name="dist" value="${basedir}/dist" />
 
-  <target name="build" depends="clean,
-                                prepare.example,
-                                build.ear,
-                                compile.client"/>
+	<property name="work" value="${basedir}/work" />
 
-  <target name="clean">
-    <delete dir="${dist}" failonerror="false"/>
-    <delete dir="${examples.build.dir}/${bean.ear}" failonerror="false"/>
-    <delete dir="${client.classes.dir}/${package}" failonerror="false"/>
-    <delete dir="${client.classes.dir}/${ejb.client.jar}" failonerror="false"/>
-  </target>
+	<property name="app.config" value="${basedir}/app-config" />
+	
+	<property name="bean.jar" value="HelloWorld.jar" />
+	
+	<property name="bean.ear" value="HelloWorldEar" />
+	
+	<property name="ejb.name" value="HelloWorldEjb" />
+	
+	<property name="package" value="skillup.ejb.basic.helloworld" />
+	
+	<taskdef name="wlcompile" classname="weblogic.ant.taskdefs.build.WLCompileTask" classpath="${wls.home}/server/lib/weblogic.jar" />
+	<taskdef name="wlappc" classname="weblogic.ant.taskdefs.j2ee.Appc" classpath="${wls.home}/server/lib/weblogic.jar" />
+	
+	<target name="all" depends="clean,prepare,build.ear" />
 
-  <!-- prepare directories for split directory deployment -->
-  <target name="prepare.example"
-    description="Prepare the example for compilation and deployment.">
-    <mkdir dir="${dist}"/>
-    <mkdir dir="${dist}/META-INF"/>
-    <mkdir dir="${dist}/${ejb.name}"/>
-    <mkdir dir="${dist}/${ejb.name}/${package}"/>
-    <antcall target="copy.files"/>
-  </target>
+	<target name="clean">
+		<delete dir="${dist}" failonerror="false" />
+		<delete dir="${work}" failonerror="false" />
+	</target>
 
-  <!-- copy files for split directory deployment -->
-  <target name="copy.files"
-    description="Copy example files to distribution structure.">
-    <copy todir="${dist}/META-INF">
-      <fileset dir="${source}">
-        <include name="*application.xml"/>
-      </fileset>
-    </copy>
-    <copy todir="${dist}/${ejb.name}/${package}">
-      <fileset dir="${source}">
-        <include name="*.java"/>
-        <exclude name="Client.java"/>
-      </fileset>
-    </copy>
-    <!-- rename bean to .ejb so that wlcompile
-    can recognize its to be EJBGen'd -->
-    <copy file="${source}/TraderBean.java"
-      tofile="${dist}/${ejb.name}/${package}/TraderBean.ejb"/>
-  </target>
+	<!-- prepare directories for split directory deployment -->
+	<target name="prepare" description="Prepare the example for compilation and deployment.">
+		<mkdir dir="${work}" />
+		<mkdir dir="${work}/classes" />
+		<mkdir dir="${dist}" />
+		<mkdir dir="${dist}/META-INF" />
+		<antcall target="copy.files" />
+	</target>
 
-  <!-- compile EAR for split directory deployment -->
-  <target name="build.ear">
-    <wlcompile srcdir="${dist}" destdir="${examples.build.dir}/${bean.ear}"
-               includes="${ejb.name}">
-      <ejbgen source="${sourceVersion}"/>
-      <javac deprecation="${deprecation}" />
-      <javac debug="${debug}" debugLevel="${debugLevel}" />
-    </wlcompile>
-    <wlappc source="${examples.build.dir}/${bean.ear}"
-      debug="${debug}" deprecation="${deprecation}"/>
-  </target>
+	<!-- copy application metainfo defination files -->
+	<target name="copy.files" description="Copy application files to distribution structure.">
+		<copy todir="${dist}/META-INF">
+			<fileset dir="${app.config}">
+				<include name="*application.xml" />
+			</fileset>
+		</copy>
+		
+		<copy todir="${work}/classes">
+			<fileset dir="${source}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+			
+	</target>
 
-  <!-- deploy split directory application -->
-  <target name="deploy"
-    description="Deploy ear to WebLogic on ${wls.hostname}:${wls.port}.">
-    <wldeploy
-      user="${wls.username}"
-      password="${wls.password}"
-      adminurl="t3://${wls.hostname}:${wls.port}"
-      debug="true"
-      action="deploy"
-      source="${examples.build.dir}/${bean.ear}"
-      failonerror="${failondeploy}"/>
-  </target>
+	<!-- compile EAR for split directory deployment -->
+	<target name="build.ear">
+		
+		<javac srcdir="${source}" destdir="${work}/classes"  debug="true" source="1.6" 
+				target="1.6" encoding="UTF-8" optimize="false" failonerror="true">
+			<classpath>
+				<pathelement location="${wls.home}/server/lib/wlclient.jar" />
+			</classpath>
+		</javac>
+		
+		<jar destfile="${dist}/${bean.jar}">
+			<fileset dir="${work}/classes">
+				<include name="**/*" />
+			</fileset>
+		</jar>
+		
+		<wlappc source="${dist}/${bean.jar}" verbose="yes"  debug="yes"/>
+		
+	</target>
+	
+	<!-- deploy split directory application -->
+	<!--<target name="deploy" description="Deploy ear to WebLogic on ${wls.hostname}:${wls.port}.">
+		<wldeploy user="${wls.username}" password="${wls.password}" adminurl="t3://${wls.hostname}:${wls.port}" debug="true" action="deploy" source="${examples.build.dir}/${bean.ear}" failonerror="${failondeploy}" />
+	</target>-->
 
-    <!-- package the application a J2EE formatted exploded ear -->
-  <target name="package.exploded.ear">
-    <wlpackage srcdir="${dist}" destdir="${examples.build.dir}/${bean.ear}"
-      toDir="${dist}" />
-  </target>
-
-  <!-- compile example client -->
-  <target name="compile.client" description="Compile client.">
-  	<!--
-  	http://bugs.bea.com/WebClarify/CREdit?CR=CR199960
-    <move file="${user.dir}/${ejb.client.jar}"
-      tofile="${client.classes.dir}/${ejb.client.jar}"
-      failonerror="false"/>
-		-->
-    <copy file="${user.dir}/${ejb.client.jar}"
-      tofile="${client.classes.dir}/${ejb.client.jar}"/>
-    <delete file="${user.dir}/${ejb.client.jar}"/>
-	  <javac srcdir="${source}" destdir="${client.classes.dir}"
-	      deprecation="${deprecation}" debug="${debug}" debugLevel="${debugLevel}"
-	      classpath="${ex.classpath};${client.classes.dir}/${ejb.client.jar}"
-	      includes="Client.java"/>
-   </target>
-
-  <!-- Run the example -->
-  <target name="run">
-    <java classname="examples.ejb.ejb20.basic.statelessSession.Client"
-      fork="yes" failonerror="true">
-      <arg value="t3://${wls.hostname}:${wls.port}"/>
-      <classpath>
-        <pathelement path="${ex.classpath};${client.classes.dir}/${ejb.client.jar}"/>
-      </classpath>
-    </java>
-  </target>
+	<!-- package the application a J2EE formatted exploded ear -->
+	<!--<target name="package.exploded.ear">
+		<wlpackage srcdir="${dist}" destdir="${examples.build.dir}/${bean.ear}" toDir="${dist}" />
+	</target>-->
 
 </project>
