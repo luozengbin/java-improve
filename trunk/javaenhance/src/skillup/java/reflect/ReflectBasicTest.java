@@ -1,7 +1,9 @@
 package skillup.java.reflect;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -28,7 +30,8 @@ public class ReflectBasicTest {
 	public void testInvokeMain() throws Exception {
 		Method targetMainMethod = ReflectBasicTest.class.getMethod("main", String[].class);
 		
-		//targetMainMethod.invoke(null, new Object[]{new String[]{"Hello", " World"}});
+		//自動unboxingで下記こコードは「targetMainMethod.invoke(null, "Hello", " World");」の形で解析されます。 
+		//targetMainMethod.invoke(null, new String[]{"Hello", " World"});
 		
 		targetMainMethod.invoke(null, (Object)new String[]{"Hello", " World"});
 	}
