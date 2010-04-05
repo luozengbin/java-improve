@@ -11,5 +11,13 @@
 			<session-type>Stateless</session-type>
 			<transaction-type>Container</transaction-type>
 		</session>
+		<session>
+			<ejb-name>AccessLog</ejb-name>
+			<home>skillup.ejb.basic.statefull.AccessLogHome</home>
+			<remote>skillup.ejb.basic.statefull.AccessLog</remote>
+			<ejb-class>skillup.ejb.basic.statefull.AccessLogBean</ejb-class>
+			<session-type>Stateful</session-type>
+			<transaction-type>Container</transaction-type>
+		</session>
 	</enterprise-beans>
 </ejb-jar>

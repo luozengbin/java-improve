@@ -7,4 +7,8 @@
 		<ejb-name>HelloWorld</ejb-name>
 		<jndi-name>HelloWorld</jndi-name>
 	</weblogic-enterprise-bean>
+	<weblogic-enterprise-bean>
+		<ejb-name>AccessLog</ejb-name>
+		<jndi-name>AccessLog</jndi-name>
+	</weblogic-enterprise-bean>
 </weblogic-ejb-jar>
