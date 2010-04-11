@@ -5,10 +5,19 @@
 	xsi:schemaLocation="http://www.bea.com/ns/weblogic/90 http://www.bea.com/ns/weblogic/90/weblogic-ejb-jar.xsd">
 	<weblogic-enterprise-bean>
 		<ejb-name>HelloWorld</ejb-name>
-		<jndi-name>HelloWorld</jndi-name>
+		<jndi-name>HelloWorld</jndi-name>		
 	</weblogic-enterprise-bean>
 	<weblogic-enterprise-bean>
 		<ejb-name>AccessLog</ejb-name>
 		<jndi-name>AccessLog</jndi-name>
+		<!-- 
+		<stateful-session-descriptor>
+			<stateful-session-cache>
+				<idle-timeout-seconds>60</idle-timeout-seconds>
+				<max-beans-in-cache>10</max-beans-in-cache>
+				<cache-type>NRU</cache-type>
+			</stateful-session-cache>
+		</stateful-session-descriptor>
+		 -->
 	</weblogic-enterprise-bean>
 </weblogic-ejb-jar>

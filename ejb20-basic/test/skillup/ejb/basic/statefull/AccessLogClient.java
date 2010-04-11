@@ -1,6 +1,8 @@
 package skillup.ejb.basic.statefull;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.CreateException;
 import javax.ejb.RemoveException;
@@ -21,10 +23,6 @@ public class AccessLogClient {
 		AccessLogHome home = (AccessLogHome) PortableRemoteObject.narrow(ctx.lookup("AccessLog"), AccessLogHome.class);
 		ctx.close();
 		
-		log.debug("getEJBMetaData:" + home.getEJBMetaData());
-		
-		
-		
 		AccessLog accessLog_1 = home.createWithURL("http://www.google.com");
 		AccessLog accessLog_2 = home.createWithURL("http://www.google.com");
 		
@@ -40,5 +38,16 @@ public class AccessLogClient {
 		//beanのresource管理
 		
 		//bean-cache設定の効果
+		
+		List<AccessLog> accessLogList = new ArrayList<AccessLog>(); 
+		
+		for (int i = 0; i < 10; i++) {
+			accessLogList.add(home.createWithURL("http://www.google.com"));
+			
+		}
+		
+		for (AccessLog accessLog : accessLogList) {
+			log.debug(accessLog.getAccessHistory());
+		}
 	}
 }
