@@ -10,6 +10,11 @@
 			<ejb-class>skillup.ejb.basic.helloworld.HelloWorldBean</ejb-class>
 			<session-type>Stateless</session-type>
 			<transaction-type>Container</transaction-type>
+			<env-entry>
+				<env-entry-name>maxMessages</env-entry-name>
+				<env-entry-type>java.lang.Integer</env-entry-type>
+				<env-entry-value>15</env-entry-value>
+			</env-entry>
 		</session>
 		<session>
 			<ejb-name>AccessLog</ejb-name>
@@ -20,4 +25,5 @@
 			<transaction-type>Container</transaction-type>
 		</session>
 	</enterprise-beans>
+	
 </ejb-jar>

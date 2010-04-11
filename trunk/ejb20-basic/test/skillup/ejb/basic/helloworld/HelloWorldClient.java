@@ -86,18 +86,18 @@ public class HelloWorldClient {
 		
 		
 		EJBInvoker invoker_1 = new EJBInvoker();
-		EJBInvoker invoker_2 = new EJBInvoker();
-		EJBInvoker invoker_3 = new EJBInvoker();
+//		EJBInvoker invoker_2 = new EJBInvoker();
+//		EJBInvoker invoker_3 = new EJBInvoker();
 		invoker_1.start();
-		invoker_2.start();
-		invoker_3.start();
+//		invoker_2.start();
+//		invoker_3.start();
 		
 		Thread.sleep(2000);
 		
 		
 		//サーバー側３つインスタンスが生成されるけど、EJBの世界ではstatelessなEJBObjectが同じものと見直されています。
-		log.debug("isIdentical: " + invoker_1.getHelloWorld().isIdentical(invoker_2.getHelloWorld()));
-		log.debug("isIdentical: " + invoker_1.getHelloWorld().isIdentical(invoker_3.getHelloWorld()));
+//		log.debug("isIdentical: " + invoker_1.getHelloWorld().isIdentical(invoker_2.getHelloWorld()));
+//		log.debug("isIdentical: " + invoker_1.getHelloWorld().isIdentical(invoker_3.getHelloWorld()));
 		
 		//次bean-cacheの設定可能？
 	}

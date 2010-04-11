@@ -9,6 +9,9 @@ import java.rmi.RemoteException;
 import javax.ejb.EJBException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,10 +36,17 @@ public class HelloWorldBean implements SessionBean {
 	/**
 	 * 業務ロジックの実装
 	 * @return
+	 * @throws NamingException 
 	 */
-	public String sayHelloWorld() {
+	public String sayHelloWorld() throws NamingException {
 		
 		log.debug("sayHelloWorld invoke by client! hashCode = " + this.hashCode());
+		
+		InitialContext ic = new InitialContext();
+		
+		Context ct = (Context)ic.lookup("java:comp/env");
+		
+		log.debug("maxMessages = " + ct.lookup("maxMessages"));
 		
 		try {
 			log.debug("sleep 10 seconds!!!! ");
