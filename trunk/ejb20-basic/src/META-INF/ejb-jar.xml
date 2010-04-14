@@ -24,6 +24,24 @@
 			<session-type>Stateful</session-type>
 			<transaction-type>Container</transaction-type>
 		</session>
+		
+		<session>
+			<ejb-name>EmpAccessor</ejb-name>
+			<home>skillup.ejb.basic.scott.EmpAccessorHome</home>
+			<remote>skillup.ejb.basic.scott.EmpAccessor</remote>
+			<ejb-class>skillup.ejb.basic.scott.EmpAccessorBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+		</session>
 	</enterprise-beans>
 	
+	<assembly-descriptor>
+		<container-transaction>
+			<method>
+				<ejb-name>EmpAccessor</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+	</assembly-descriptor>
 </ejb-jar>
