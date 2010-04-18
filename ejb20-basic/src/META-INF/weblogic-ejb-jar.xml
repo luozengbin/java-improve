@@ -1,11 +1,18 @@
 <?xml version="1.0"?>
 
-<weblogic-ejb-jar xmlns="http://www.bea.com/ns/weblogic/90"
+<weblogic-ejb-jar xmlns="http://www.bea.com/ns/weblogic/10.0"
 	xmlns:j2ee="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.bea.com/ns/weblogic/90 http://www.bea.com/ns/weblogic/90/weblogic-ejb-jar.xsd">
+	xsi:schemaLocation="http://www.bea.com/ns/weblogic/10.0 http://www.bea.com/ns/weblogic/10.0/weblogic-ejb-jar.xsd">
+
+
 	<weblogic-enterprise-bean>
 		<ejb-name>HelloWorld</ejb-name>
 		<jndi-name>HelloWorld</jndi-name>
+		<local-jndi-name>HelloWorldLocal</local-jndi-name>
+	</weblogic-enterprise-bean>
+	<weblogic-enterprise-bean>
+		<ejb-name>HelloWorldInvoker</ejb-name>
+		<jndi-name>HelloWorldInvoker</jndi-name>
 	</weblogic-enterprise-bean>
 	<weblogic-enterprise-bean>
 		<ejb-name>AccessLog</ejb-name>
@@ -22,4 +29,28 @@
 		<ejb-name>EmpAccessor</ejb-name>
 		<jndi-name>EmpAccessor</jndi-name>
 	</weblogic-enterprise-bean>
+
+	<weblogic-enterprise-bean>
+		<ejb-name>EmployeeBean</ejb-name>
+		<jndi-name>EmployeeBean</jndi-name>
+	</weblogic-enterprise-bean>
+	<weblogic-enterprise-bean>
+		<ejb-name>EmployeeEitity</ejb-name>
+		<entity-descriptor>
+			<persistence>
+				<persistence-use>
+					<type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+					<type-version>6.0</type-version>
+					<type-storage>META-INF/weblogic-cmp-jar.xml</type-storage>
+				</persistence-use>
+			</persistence>
+		</entity-descriptor>
+		<local-jndi-name>EmployeeEitityLocal</local-jndi-name>
+	</weblogic-enterprise-bean>
+
+	<security-role-assignment>
+		<role-name>skillup</role-name>
+		<principal-name>weblogic</principal-name>
+	</security-role-assignment>
+
 </weblogic-ejb-jar>

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<weblogic-rdbms-jar xmlns="http://www.bea.com/ns/weblogic/90"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.bea.com/ns/weblogic/90 http://www.bea.com/ns/weblogic/910/weblogic-rdbms20-persistence.xsd">
+
+	<weblogic-rdbms-bean>
+		<ejb-name>EmployeeEitity</ejb-name>
+		<data-source-jndi-name>db/denver/scott</data-source-jndi-name>
+		<table-map>
+			<table-name>EMP</table-name>
+			<field-map>
+				<cmp-field>empNo</cmp-field>
+				<dbms-column>EMPNO</dbms-column>
+			</field-map>
+			<field-map>
+				<cmp-field>name</cmp-field>
+				<dbms-column>ENAME</dbms-column>
+			</field-map>
+			<field-map>
+				<cmp-field>job</cmp-field>
+				<dbms-column>JOB</dbms-column>
+			</field-map>
+			<field-map>
+				<cmp-field>mgr</cmp-field>
+				<dbms-column>MGR</dbms-column>
+			</field-map>
+			<field-map>
+				<cmp-field>hireDate</cmp-field>
+				<dbms-column>HIREDATE</dbms-column>
+			</field-map>
+			<field-map>
+				<cmp-field>sal</cmp-field>
+				<dbms-column>SAL</dbms-column>
+			</field-map>
+			<field-map>
+				<cmp-field>comm</cmp-field>
+				<dbms-column>COMM</dbms-column>
+			</field-map>
+			<field-map>
+				<cmp-field>deptNo</cmp-field>
+				<dbms-column>DEPTNO</dbms-column>
+			</field-map>
+		</table-map>
+	</weblogic-rdbms-bean>
+</weblogic-rdbms-jar>
