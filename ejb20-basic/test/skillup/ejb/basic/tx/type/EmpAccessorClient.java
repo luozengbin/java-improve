@@ -1,4 +1,4 @@
-package skillup.ejb.basic.scott;
+package skillup.ejb.basic.tx.type;
 
 import java.rmi.RemoteException;
 
@@ -13,6 +13,7 @@ import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
+import javax.transaction.UserTransaction;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,10 +27,24 @@ public class EmpAccessorClient {
 		Context ctx = new InitialContext();
 		EmpAccessorHome home = (EmpAccessorHome) PortableRemoteObject.narrow(ctx.lookup("EmpAccessor"), EmpAccessorHome.class);
 		
-		javax.transaction.UserTransaction tx = (javax.transaction.UserTransaction)ctx.lookup("javax.transaction.UserTransaction");
+		UserTransaction tx = (UserTransaction)ctx.lookup("javax.transaction.UserTransaction");
 		tx.begin();
 		EmpAccessor empAccessor = home.create();
-		empAccessor.updateSal("7934", 1300);
+		
+		/* test 001*/
+		//empAccessor.updateNerver("7934", 1300);
+		
+		/* test 002*/
+		//empAccessor.updateRequiresNew("7934", 5000);
+		//empAccessor.updateRequired("7934", 1305);
+		
+		/* test 003*/
+		//empAccessor.updateNotSupported("7934", 3000);
+		//empAccessor.updateSupports("7934", 3500);
+		
+		/* test 004*/
+		empAccessor.updateMandatory("7934", 8000);
+		
 		tx.rollback();
 		ctx.close();
 	}

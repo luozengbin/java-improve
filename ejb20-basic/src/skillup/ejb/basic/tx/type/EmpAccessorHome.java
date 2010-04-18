@@ -1,4 +1,4 @@
-package skillup.ejb.basic.scott;
+package skillup.ejb.basic.tx.type;
 
 import java.rmi.RemoteException;
 
