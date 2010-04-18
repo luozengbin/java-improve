@@ -1,4 +1,4 @@
-package skillup.ejb.basic.scott;
+package skillup.ejb.basic.tx.type;
 
 import java.rmi.RemoteException;
 import java.sql.Connection;
@@ -24,8 +24,41 @@ public class EmpAccessorBean implements SessionBean {
 		log.debug("ejbCreate...");
 
 	}
+	
+	public void updateRequired(String empNo, double newSal) throws NamingException, SQLException {
+		
+		log.debug("updateRequired... ClientでTx起動されていない場合、サーバー側新たにTxを起動する");
+		
+		updateSal(empNo, newSal);
+	}
+	
+	public void updateRequiresNew(String empNo, double newSal)  throws NamingException, SQLException {
+		
+		log.debug("updateRequiresNew... ClientでTx起動されていてもサーバー側新たにTxを起動する");
+		
+		updateSal(empNo, newSal);
+	}
+	
+	public void updateSupports(String empNo, double newSal)  throws NamingException, SQLException {
+		
+		//log.debug("updateRequired... ClientでTx起動されていてもサーバー側新たにTxを起動する");
+		
+		updateSal(empNo, newSal);
+	}
+	
+	public void updateNotSupported(String empNo, double newSal)  throws NamingException, SQLException {
+		updateSal(empNo, newSal);
+	}
+	
+	public void updateNerver(String empNo, double newSal) throws NamingException, SQLException {
+		updateSal(empNo, newSal);
+	}
+	
+	public void updateMandatory(String empNo, double newSal)  throws NamingException, SQLException {
+		updateSal(empNo, newSal);
+	}
 
-	public void updateSal(String empNo, double newSal) throws NamingException, SQLException {
+	private void updateSal(String empNo, double newSal) throws NamingException, SQLException {
 		log.debug("updateSal...");
 		
 		javax.naming.Context ctx = new javax.naming.InitialContext();
@@ -33,7 +66,6 @@ public class EmpAccessorBean implements SessionBean {
 		DataSource ds = (DataSource)ctx.lookup("db/denver/scott");
 		
 		Connection conn = ds.getConnection();
-		
 		PreparedStatement stmt = conn.prepareStatement("UPDATE EMP SET SAL = ? WHERE EMPNO = ?");
 		stmt.setDouble(1, newSal);
 		stmt.setString(2, empNo);
@@ -41,10 +73,6 @@ public class EmpAccessorBean implements SessionBean {
 		stmt.close();
 		conn.close();
 		
-	}
-
-	public void updateDept(String empNo, String newDeptNo) {
-		log.debug("updateDept...");
 	}
 
 	@Override
@@ -63,7 +91,7 @@ public class EmpAccessorBean implements SessionBean {
 	}
 
 	@Override
-	public void setSessionContext(SessionContext arg0) throws EJBException,
+	public void setSessionContext(SessionContext sessionContext) throws EJBException,
 			RemoteException {
 		log.debug("SessionContext...");
 	}

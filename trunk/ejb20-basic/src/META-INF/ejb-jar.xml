@@ -24,24 +24,59 @@
 			<session-type>Stateful</session-type>
 			<transaction-type>Container</transaction-type>
 		</session>
-		
+
 		<session>
 			<ejb-name>EmpAccessor</ejb-name>
-			<home>skillup.ejb.basic.scott.EmpAccessorHome</home>
-			<remote>skillup.ejb.basic.scott.EmpAccessor</remote>
-			<ejb-class>skillup.ejb.basic.scott.EmpAccessorBean</ejb-class>
+			<home>skillup.ejb.basic.tx.type.EmpAccessorHome</home>
+			<remote>skillup.ejb.basic.tx.type.EmpAccessor</remote>
+			<ejb-class>skillup.ejb.basic.tx.type.EmpAccessorBean</ejb-class>
 			<session-type>Stateless</session-type>
 			<transaction-type>Container</transaction-type>
 		</session>
 	</enterprise-beans>
-	
+
 	<assembly-descriptor>
 		<container-transaction>
 			<method>
 				<ejb-name>EmpAccessor</ejb-name>
-				<method-name>*</method-name>
+				<method-name>updateRequired</method-name>
 			</method>
 			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+		<container-transaction>
+			<method>
+				<ejb-name>EmpAccessor</ejb-name>
+				<method-name>updateRequiresNew</method-name>
+			</method>
+			<trans-attribute>RequiresNew</trans-attribute>
+		</container-transaction>
+		<container-transaction>
+			<method>
+				<ejb-name>EmpAccessor</ejb-name>
+				<method-name>updateSupports</method-name>
+			</method>
+			<trans-attribute>Supports</trans-attribute>
+		</container-transaction>
+		<container-transaction>
+			<method>
+				<ejb-name>EmpAccessor</ejb-name>
+				<method-name>updateNotSupported</method-name>
+			</method>
+			<trans-attribute>NotSupported</trans-attribute>
+		</container-transaction>
+		<container-transaction>
+			<method>
+				<ejb-name>EmpAccessor</ejb-name>
+				<method-name>updateNerver</method-name>
+			</method>
+			<trans-attribute>Never</trans-attribute>
+		</container-transaction>
+		<container-transaction>
+			<method>
+				<ejb-name>EmpAccessor</ejb-name>
+				<method-name>updateMandatory</method-name>
+			</method>
+			<trans-attribute>Mandatory</trans-attribute>
 		</container-transaction>
 	</assembly-descriptor>
 </ejb-jar>
