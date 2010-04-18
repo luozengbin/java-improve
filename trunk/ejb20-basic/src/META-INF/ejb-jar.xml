@@ -7,6 +7,8 @@
 			<ejb-name>HelloWorld</ejb-name>
 			<home>skillup.ejb.basic.helloworld.HelloWorldHome</home>
 			<remote>skillup.ejb.basic.helloworld.HelloWorld</remote>
+			<local-home>skillup.ejb.basic.helloworld.HelloWorldLocalHome</local-home>
+			<local>skillup.ejb.basic.helloworld.HelloWorldLocal</local>
 			<ejb-class>skillup.ejb.basic.helloworld.HelloWorldBean</ejb-class>
 			<session-type>Stateless</session-type>
 			<transaction-type>Container</transaction-type>
@@ -15,6 +17,14 @@
 				<env-entry-type>java.lang.Integer</env-entry-type>
 				<env-entry-value>15</env-entry-value>
 			</env-entry>
+		</session>
+		<session>
+			<ejb-name>HelloWorldInvoker</ejb-name>
+			<home>skillup.ejb.basic.local.HelloWorldInvokerHome</home>
+			<remote>skillup.ejb.basic.local.HelloWorldInvoker</remote>
+			<ejb-class>skillup.ejb.basic.local.HelloWorldInvokerBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
 		</session>
 		<session>
 			<ejb-name>AccessLog</ejb-name>
@@ -33,9 +43,69 @@
 			<session-type>Stateless</session-type>
 			<transaction-type>Container</transaction-type>
 		</session>
+
+		<!-- cmp sample 001 -->
+		<entity>
+			<ejb-name>EmployeeEitity</ejb-name>
+			<local-home>skillup.ejb.basic.cmp.LocalEmployeeHome</local-home>
+			<local>skillup.ejb.basic.cmp.LocalEmployee</local>
+			<ejb-class>skillup.ejb.basic.cmp.EmployeeEitity</ejb-class>
+			<persistence-type>Container</persistence-type>
+			<prim-key-class>java.lang.String</prim-key-class>
+			<reentrant>false</reentrant>
+			<cmp-field>
+				<field-name>empNo</field-name>
+			</cmp-field>
+			<cmp-field>
+				<field-name>name</field-name>
+			</cmp-field>
+			<cmp-field>
+				<field-name>job</field-name>
+			</cmp-field>
+			<cmp-field>
+				<field-name>mgr</field-name>
+			</cmp-field>
+			<cmp-field>
+				<field-name>hireDate</field-name>
+			</cmp-field>
+			<cmp-field>
+				<field-name>sal</field-name>
+			</cmp-field>
+			<cmp-field>
+				<field-name>comm</field-name>
+			</cmp-field>
+			<cmp-field>
+				<field-name>deptNo</field-name>
+			</cmp-field>
+			<primkey-field>empNo</primkey-field>
+		</entity>
+
+		<session>
+			<ejb-name>EmployeeBean</ejb-name>
+			<home>skillup.ejb.basic.cmp.EmployeeHome</home>
+			<remote>skillup.ejb.basic.cmp.Employee</remote>
+			<ejb-class>skillup.ejb.basic.cmp.EmployeeBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+		</session>
+
 	</enterprise-beans>
 
 	<assembly-descriptor>
+
+		<security-role>
+			<description>a test role</description>
+			<role-name>skillup</role-name>
+		</security-role>
+
+		<method-permission>
+			<role-name>skillup</role-name>
+			<method>
+				<ejb-name>HelloWorldInvoker</ejb-name>
+				<method-name>*</method-name>
+			</method>
+		</method-permission>
+
 		<container-transaction>
 			<method>
 				<ejb-name>EmpAccessor</ejb-name>
@@ -78,5 +148,22 @@
 			</method>
 			<trans-attribute>Mandatory</trans-attribute>
 		</container-transaction>
+
+		<container-transaction>
+			<method>
+				<ejb-name>EmployeeEitity</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+
+		<container-transaction>
+			<method>
+				<ejb-name>EmployeeBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+
 	</assembly-descriptor>
 </ejb-jar>
