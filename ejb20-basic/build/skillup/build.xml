@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="skillup_ejb_basic" default="all" basedir="..\..\" >
+	
+	<property environment="env" />
+	<property file="${basedir}/build/build.properties" />
+	<property name="app.name" value="${ant.project.name}" />
+	<property name="source" value="${basedir}/skillup" />
+	<property name="work" value="${basedir}/work/skillup" />
+	<property name="dist" value="${basedir}/dist/skillup" />
+
+	<!-- weblogic.jarの引用 -->
+	<path id="classpath">
+		<pathelement path="${wls.lib}" />
+		<fileset dir="${ext.lib.apache-common}" includes="**/*.jar" />
+	</path>
+
+	<!-- タスク定義 -->
+	<taskdef name="wlappc" classname="weblogic.ant.taskdefs.j2ee.Appc" classpathref="classpath" />
+	<taskdef name="wldeploy" classname="weblogic.ant.taskdefs.management.WLDeploy" classpathref="classpath" />
+
+	<target name="all" depends="clean, init, ear_app, redeploy" />
+
+	<target name="clean">
+		<delete dir="${work}" />
+		<delete dir="${dist}" />
+	</target>
+
+	<target name="init">
+		<tstamp />
+		<mkdir dir="${work}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<!-- javacでソースファイルをコンパイルする -->
+	<target name="compile_ejb">
+		<copy todir="${work}">
+			<fileset dir="${source}">
+				<include name="**/*" />
+				<exclude name="**/*.java" />
+				<exclude name="APP-INF/**/*" />
+				<exclude name="APP-INF" />
+			</fileset>
+		</copy>
+		
+		<javac srcdir="${source}" destdir="${work}" encoding="UTF-8" classpathref="classpath" />
+	</target>
+
+	<!-- ejb-jar.xml,weblogic-ejb-jar.xmlを含めて、jarファイルへアーカイブ -->
+	<target name="jar.ejb" depends="compile_ejb">
+		<jar jarfile="${dist}/${app.name}.jar" basedir="${work}" update="yes" />
+	</target>
+
+	<!-- wlappcタスクでjarファイルを更新する(skeletonとstubの生成) -->
+	<target name="appc" depends="jar.ejb">
+		<wlappc source="${dist}/${app.name}.jar" verbose="${verbose}" clientjaroutputdir="${dist}" classpathref="classpath" />
+	</target>
+
+	<!-- EARファイルへアーカイブ -->
+	<target name="ear_app" depends="appc">
+		<ear earfile="${dist}/${app.name}.ear" appxml="${source}/APP-INF/application.xml">
+			<fileset dir="${dist}" includes="${app.name}.jar" />
+		</ear>
+	</target>
+
+	<!-- 再デプロイ -->
+	<target name="redeploy">
+		<wldeploy action="redeploy" verbose="${verbose}" name="${app.name}" user="${wls.username}" password="${wls.password}" adminurl="${wls.url}" usenonexclusivelock="true" upload="true" targets="${wls.server.name}" source="${dist}/${app.name}.ear" />
+	</target>
+</project>

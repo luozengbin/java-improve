@@ -164,6 +164,6 @@
 			</method>
 			<trans-attribute>Required</trans-attribute>
 		</container-transaction>
-
 	</assembly-descriptor>
+	<ejb-client-jar>skillup_ejb_basic_client.jar</ejb-client-jar>
 </ejb-jar>

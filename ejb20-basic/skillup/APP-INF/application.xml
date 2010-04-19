@@ -4,6 +4,6 @@
   <description>EJB 2.0 Basic StatelessSession EJB</description>
   <display-name>EJB20 Basic StatelessSession EJB</display-name>
   <module>
-    <ejb>HelloWorld</ejb>
+    <ejb>skillup_ejb_basic.jar</ejb>
   </module>
 </application>
