@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="ejb20_basic_statelessSession" default="all" basedir="..\..\..\">
+<project name="ejb20_basic_containerManaged" default="all" basedir="..\..\..\">
 
 	<property environment="env" />
 	<property file="${basedir}/build/build.properties" />
 	<property name="app.name" value="${ant.project.name}" />
-	<property name="source" value="${basedir}/example/examples/ejb20/basic/statelessSession" />
-	<property name="work" value="${basedir}/work/example/statelessSession" />
-	<property name="dist" value="${basedir}/dist/example/statelessSession" />
+	<property name="source" value="${basedir}/example/examples/ejb20/basic/containerManaged" />
+	<property name="work" value="${basedir}/work/example/containerManaged" />
+	<property name="dist" value="${basedir}/dist/example/containerManaged" />
 
 	<!-- weblogic.jarの引用 -->
 	<path id="classpath">
@@ -48,7 +48,7 @@
 
 	<!-- wlappcタスクでjarファイルを更新する(skeletonとstubの生成) -->
 	<target name="appc" depends="jar.ejb">
-		<wlappc source="${dist}/${app.name}.jar" verbose="${verbose}" clientjaroutputdir="${dist}" classpathref="classpath" />
+		<wlappc source="${dist}/${app.name}.jar" verbose="${verbose}" clientjaroutputdir="${dist}" classpathref="classpath"/>
 	</target>
 
 	<!-- EARファイルへアーカイブ -->
