@@ -13,6 +13,8 @@ public class HelloWorldBeanClient {
 		
 		System.out.println(helloWorld.sayHello("akira"));
 		
+		System.out.println(helloWorld.getClass().getName());
+		
 		itx.close();
 	}
 }
