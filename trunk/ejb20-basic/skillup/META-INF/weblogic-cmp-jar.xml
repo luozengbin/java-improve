@@ -43,4 +43,5 @@
 			</field-map>
 		</table-map>
 	</weblogic-rdbms-bean>
+	<create-default-dbms-tables>DropAndCreateAlways</create-default-dbms-tables>
 </weblogic-rdbms-jar>

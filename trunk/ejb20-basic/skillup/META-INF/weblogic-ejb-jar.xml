@@ -40,12 +40,19 @@
 			<persistence>
 				<persistence-use>
 					<type-identifier>WebLogic_CMP_RDBMS</type-identifier>
-					<type-version>6.0</type-version>
+					<type-version>7.0</type-version>
 					<type-storage>META-INF/weblogic-cmp-jar.xml</type-storage>
 				</persistence-use>
 			</persistence>
 		</entity-descriptor>
 		<local-jndi-name>EmployeeEitityLocal</local-jndi-name>
+	</weblogic-enterprise-bean>
+	
+	<weblogic-enterprise-bean>
+		<ejb-name>SendMailMessageDriverBean</ejb-name>
+		<message-driven-descriptor>
+			<destination-jndi-name>SendMailTopic</destination-jndi-name>
+		</message-driven-descriptor>
 	</weblogic-enterprise-bean>
 
 	<security-role-assignment>

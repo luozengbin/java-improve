@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="skillup_ejb_basic" default="all" basedir="..\..\" >
-	
+<project name="ejb20_sequence_userDesignated" default="all" basedir="..\..\..\">
+
 	<property environment="env" />
 	<property file="${basedir}/build/build.properties" />
 	<property name="app.name" value="${ant.project.name}" />
-	<property name="source" value="${basedir}/skillup" />
-	<property name="work" value="${basedir}/work/skillup" />
-	<property name="dist" value="${basedir}/dist/skillup" />
+	<property name="source" value="${basedir}/example/examples/ejb20/sequence/userDesignated" />
+	<property name="work" value="${basedir}/work/example/userDesignated" />
+	<property name="dist" value="${basedir}/dist/example/userDesignated" />
 
 	<!-- weblogic.jarの引用 -->
 	<path id="classpath">
 		<pathelement path="${wls.lib}" />
-		<fileset dir="${ext.lib.apache-common}" includes="**/*.jar" />
 	</path>
 
 	<!-- タスク定義 -->
@@ -35,13 +34,9 @@
 	<target name="compile_ejb">
 		<copy todir="${work}">
 			<fileset dir="${source}">
-				<include name="**/*" />
-				<exclude name="**/*.java" />
-				<exclude name="APP-INF/**/*" />
-				<exclude name="APP-INF" />
+				<include name="META-INF/**/*" />
 			</fileset>
 		</copy>
-		
 		<javac srcdir="${source}" destdir="${work}" encoding="UTF-8" classpathref="classpath" />
 	</target>
 
@@ -67,4 +62,5 @@
 	<target name="redeploy">
 		<wldeploy action="redeploy" verbose="${verbose}" name="${app.name}" user="${wls.username}" password="${wls.password}" adminurl="${wls.url}" usenonexclusivelock="true" upload="true" targets="${wls.server.name}" source="${dist}/${app.name}.ear" />
 	</target>
+	
 </project>

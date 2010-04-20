@@ -58,15 +58,16 @@ public class Client {
 		String accountId = "10027";
 
 		try {
-			
-			UserTransaction tx = (UserTransaction)new InitialContext().lookup("javax.transaction.UserTransaction");
-			
+
+			UserTransaction tx = (UserTransaction) new InitialContext()
+					.lookup("javax.transaction.UserTransaction");
+
 			tx.begin();
 			client = new Client(url, accountId);
 			client.runExamplePartA();
-			// client.runExamplePartB();
+			client.runExamplePartB();
 			tx.commit();
-			
+
 		} catch (NamingException ne) {
 			log("Unable to look up the beans home: " + ne.getMessage());
 			throw ne;
@@ -112,24 +113,24 @@ public class Client {
 			throw e;
 		}
 
-		// try {
-		// log("Attempting to withdraw an amount greater than current balance. Expecting an exception...\n");
-		// balance = ac.withdraw(balance+1);
-		// log("Error: expected an exception.");
-		// } catch (ProcessingErrorException pe) {
-		// log("Received expected Processing Error:\n" + pe);
-		// } catch(Exception e) {
-		// log("Error during withdraw: "+e.getMessage());
-		// throw e;
-		// }
-
-		log("Removing account...\n");
 		try {
-			ac.remove();
+			log("Attempting to withdraw an amount greater than current balance. Expecting an exception...\n");
+			balance = ac.withdraw(balance + 1);
+			log("Error: expected an exception.");
+		} catch (ProcessingErrorException pe) {
+			log("Received expected Processing Error:\n" + pe);
 		} catch (Exception e) {
-			log("Error removing account: " + e.getMessage());
+			log("Error during withdraw: " + e.getMessage());
 			throw e;
 		}
+
+		// log("Removing account...\n");
+		// try {
+		// ac.remove();
+		// } catch (Exception e) {
+		// log("Error removing account: " + e.getMessage());
+		// throw e;
+		// }
 
 		log("End Part A of the example...\n");
 	}
@@ -175,11 +176,11 @@ public class Client {
 
 		// Remove our accounts
 
-		log("Removing beans...");
-		for (int i = 0; i < numBeans; i++) {
-			accounts[i].remove();
-		}
-		log("End Part B of the example...\n");
+//		log("Removing beans...");
+//		for (int i = 0; i < numBeans; i++) {
+//			accounts[i].remove();
+//		}
+//		log("End Part B of the example...\n");
 	}
 
 	/**
