@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<person name="太郎" age="77">
+    <Languages>
+        <languages>C</languages>
+        <languages>CPlusPlus</languages>
+    </Languages>
+</person>
