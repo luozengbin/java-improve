@@ -48,12 +48,12 @@ public class Client
     Client client = null;
 
     // Parse the argument list
-     if (args.length != 1) {
-      log("Usage: java examples.ejb20.basic.statelessSession.Client t3://hostname:port");
-      return;
-    } else {
-      url = args[0];
-    }
+//     if (args.length != 1) {
+//      log("Usage: java examples.ejb20.basic.statelessSession.Client t3://hostname:port");
+//      return;
+//    } else {
+//      url = args[0];
+//    }
 
     try {
       client = new Client(url);
