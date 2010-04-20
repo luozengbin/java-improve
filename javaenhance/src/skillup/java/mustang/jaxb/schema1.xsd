@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="person" type="person"/>
+
+  <xs:complexType name="person">
+    <xs:sequence>
+      <xs:element name="Languages" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="languages" type="language" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="age" type="xs:int" use="required"/>
+    <xs:attribute name="name" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:simpleType name="language">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="C"/>
+      <xs:enumeration value="CPlusPlus"/>
+      <xs:enumeration value="D"/>
+      <xs:enumeration value="CSharp"/>
+      <xs:enumeration value="Scheme"/>
+      <xs:enumeration value="StandardML"/>
+      <xs:enumeration value="Lisp"/>
+      <xs:enumeration value="Basic"/>
+      <xs:enumeration value="ObjectiveCaml"/>
+      <xs:enumeration value="Python"/>
+      <xs:enumeration value="Haskell"/>
+      <xs:enumeration value="Perl"/>
+      <xs:enumeration value="Delphi"/>
+      <xs:enumeration value="Prolog"/>
+      <xs:enumeration value="JavaScript"/>
+      <xs:enumeration value="VisualBasic"/>
+      <xs:enumeration value="ActionScript"/>
+      <xs:enumeration value="Icon"/>
+      <xs:enumeration value="Ruby"/>
+      <xs:enumeration value="PHP"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
