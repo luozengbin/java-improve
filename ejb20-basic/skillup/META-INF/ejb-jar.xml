@@ -2,6 +2,7 @@
 <ejb-jar xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/ejb-jar_2_1.xsd"
 	version="2.1">
+	
 	<enterprise-beans>
 		<session>
 			<ejb-name>HelloWorld</ejb-name>
@@ -88,9 +89,16 @@
 			<session-type>Stateless</session-type>
 			<transaction-type>Container</transaction-type>
 		</session>
+		
+		<message-driven>
+			<ejb-name>SendMailMessageDriverBean</ejb-name>
+			<ejb-class>skillup.ejb.basic.mdb.SendMailMessageDriverBean</ejb-class>
+			<transaction-type>Container</transaction-type>
+			<message-destination-type>javax.jms.Topic</message-destination-type>
+		</message-driven>
 
 	</enterprise-beans>
-
+	
 	<assembly-descriptor>
 
 		<security-role>

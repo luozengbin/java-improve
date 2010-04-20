@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE weblogic-ejb-jar PUBLIC 
+'-//BEA Systems, Inc.//DTD WebLogic 8.1.0 EJB//EN'
+'http://www.bea.com/servers/wls810/dtd/weblogic-ejb-jar.dtd'>
+
+<weblogic-ejb-jar>
+  <weblogic-enterprise-bean>
+    <ejb-name>MusicLibraryEJB</ejb-name>
+    <enable-call-by-reference>True</enable-call-by-reference>
+    <jndi-name>MusicLibraryEJB.MusicLibraryHome</jndi-name>
+  </weblogic-enterprise-bean>
+
+  <weblogic-enterprise-bean>
+    <ejb-name>BandEJB</ejb-name>
+    <entity-descriptor>
+      <persistence>
+	<persistence-use>
+	  <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+	  <type-version>7.0</type-version>
+	  <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+	</persistence-use>
+      </persistence>
+    </entity-descriptor>
+    <local-jndi-name>BandEJB.BandHome</local-jndi-name>
+  </weblogic-enterprise-bean>
+
+  <weblogic-enterprise-bean>
+    <ejb-name>RecordingEJB</ejb-name>
+    <entity-descriptor>
+      <persistence>
+	<persistence-use>
+	  <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+	  <type-version>7.0</type-version>
+	  <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+	</persistence-use>
+      </persistence>
+    </entity-descriptor>
+    <local-jndi-name>RecordingEJB.RecordingHome</local-jndi-name>
+  </weblogic-enterprise-bean>
+
+  <weblogic-enterprise-bean>
+    <ejb-name>FanClubEJB</ejb-name>
+    <entity-descriptor>
+      <persistence>
+	<persistence-use>
+	  <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+	  <type-version>7.0</type-version>
+	  <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+	</persistence-use>
+      </persistence>
+    </entity-descriptor>
+    <local-jndi-name>FanClubEJB.FanClubHome</local-jndi-name>
+  </weblogic-enterprise-bean>
+
+  <weblogic-enterprise-bean>
+    <ejb-name>ArtistEJB</ejb-name>
+    <entity-descriptor>
+      <persistence>
+	<persistence-use>
+	  <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+	  <type-version>7.0</type-version>
+	  <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+	</persistence-use>
+      </persistence>
+
+    </entity-descriptor>
+    <local-jndi-name>ArtistEJB.ArtistHome</local-jndi-name>
+  </weblogic-enterprise-bean>
+
+</weblogic-ejb-jar>

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE ejb-jar PUBLIC
+"-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN"
+"http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+
+<ejb-jar>
+  <enterprise-beans>
+    <entity>
+      <ejb-name>userDesignatedSequence</ejb-name>
+      <home>examples.ejb20.sequence.userDesignated.AccountHome</home>
+      <remote>examples.ejb20.sequence.userDesignated.Account</remote>
+      <ejb-class>examples.ejb20.sequence.userDesignated.AccountBean</ejb-class>
+      <persistence-type>Container</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>False</reentrant>
+      <cmp-version>2.x</cmp-version>
+      <abstract-schema-name>AccountBean</abstract-schema-name>
+      <cmp-field>
+        <field-name>accountId</field-name>
+      </cmp-field>
+      <cmp-field>
+        <field-name>balance</field-name>
+      </cmp-field>
+      <cmp-field>
+        <field-name>accountType</field-name>
+      </cmp-field>
+      <primkey-field>accountId</primkey-field>
+      <query>
+        <query-method>
+          <method-name>findBigAccounts</method-name>
+          <method-params>
+            <method-param>double</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql>
+          <![CDATA[SELECT OBJECT(a) FROM AccountBean AS a WHERE a.balance > ?1]]>
+        </ejb-ql>
+      </query>
+      <query>
+        <query-method>
+          <method-name>findAccount</method-name>
+          <method-params>
+            <method-param>double</method-param>
+          </method-params>
+        </query-method>
+        <ejb-ql>
+          <![CDATA[SELECT OBJECT(a) FROM AccountBean AS a WHERE a.balance = ?1]]>
+        </ejb-ql>
+      </query>
+      <query>
+        <query-method>
+          <method-name>findNullAccounts</method-name>
+          <method-params>
+          </method-params>
+        </query-method>
+        <ejb-ql>
+          <![CDATA[SELECT OBJECT(a) FROM AccountBean AS a WHERE a.accountType IS NULL]]>
+        </ejb-ql>
+      </query>
+    </entity>
+  </enterprise-beans>
+  <assembly-descriptor>
+    <container-transaction>
+      <method>
+        <ejb-name>userDesignatedSequence</ejb-name>
+	<method-name>*</method-name>
+      </method>
+      <trans-attribute>Required</trans-attribute>
+    </container-transaction>
+  </assembly-descriptor>
+  <ejb-client-jar>ejb20_sequence_userDesignated_client.jar</ejb-client-jar>
+</ejb-jar>
