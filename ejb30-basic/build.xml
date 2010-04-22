@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="skillup_ejb30_basic" default="all" basedir=".">
+
+	<property environment="env" />
+	<property file="${basedir}/build.properties" />
+	<property name="app.name" value="${ant.project.name}" />
+	<property name="source" value="${basedir}/src" />
+	<property name="build" value="${basedir}/build" />
+	<property name="dist" value="${basedir}/dist" />
+
+	<path id="classpath">
+		<fileset dir="${jboss.client.lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="all" depends="clean, init" />
+
+	<target name="clean">
+		<delete dir="${build}" />
+	</target>
+
+	<target name="init">
+		<mkdir dir="${build}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="compile">
+		<javac srcdir="${source}" destdir="${build}" encoding="UTF-8" classpathref="classpath" />
+	</target>
+
+	<target name="archive" depends="compile">
+		<copy todir="${build}">
+			<fileset dir="${source}">
+				<include name="**/*" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<jar jarfile="${dist}/${app.name}.jar" basedir="${build}" update="yes" />
+		<delete dir="${build}" />
+	</target>
+
+	<target name="deploy" depends="archive">
+		<copyfile dest="${jboss.home}/server/${jboss.server.cinfig.name}/deploy" src="${dist}/${app.name}.jar" />
+	</target>
+
+	<target name="undeploy" depends="archive">
+		<delete file="${jboss.home}/server/${jboss.server.cinfig.name}/deploy/${app.name}.jar" />
+	</target>
+
+</project>
