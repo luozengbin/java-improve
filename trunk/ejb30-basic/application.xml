@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE application PUBLIC '-//Sun Microsystems, Inc.//DTD J2EE Application 1.3//EN' 'http://java.sun.com/dtd/application_1_3.dtd'>
+
+<application>
+	<display-name>skillup_ejb30_basic</display-name>
+	<description>skillup_ejb30_basic</description>
+	<module>
+		<ejb>skillup_ejb30_basic.jar</ejb>
+	</module>
+	<module>
+		<web>
+			<web-uri>skillup_ejb30_basic.war</web-uri>
+			<context-root>skillup_ejb30_basic_web</context-root>
+		</web>
+	</module>
+</application>
+
