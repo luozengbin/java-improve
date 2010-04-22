@@ -22,7 +22,7 @@
 	</path>
 
 	<target name="all" depends="clean, init, deploy" />
-	
+
 	<target name="clean">
 		<delete dir="${ejb.build}" />
 		<delete dir="${web.build}" />
@@ -35,7 +35,7 @@
 		<mkdir dir="${dist}" />
 	</target>
 
-	
+
 	<target name="compile-ejb" depends="init">
 		<javac srcdir="${ejb.source}" destdir="${ejb.build}" encoding="UTF-8" classpathref="jboss-client-lib" />
 	</target>
@@ -71,6 +71,18 @@
 			<fileset dir="${dist}" includes="${app.name}.jar" />
 			<fileset dir="${dist}" includes="${app.name}.war" />
 		</ear>
+		
+		<antcall target="display-archive">
+			<param name="archive.file.name" value="${dist}/${app.name}.jar" />
+		</antcall>
+		
+		<antcall target="display-archive">
+			<param name="archive.file.name" value="${dist}/${app.name}.war" />
+		</antcall>
+
+		<antcall target="display-archive">
+			<param name="archive.file.name" value="${dist}/${app.name}.ear" />
+		</antcall>
 	</target>
 
 	<target name="deploy" depends="make-ear">
@@ -81,4 +93,11 @@
 		<delete file="${jboss.home}/server/${jboss.server.cinfig.name}/deploy/${app.name}.ear" />
 	</target>
 
+
+	<target name="display-archive">
+		<echo>${archive.file.name} archive Info----------------------------</echo>
+		<exec executable="jar">
+			<arg line="tf ${archive.file.name}" />
+		</exec>
+	</target>
 </project>

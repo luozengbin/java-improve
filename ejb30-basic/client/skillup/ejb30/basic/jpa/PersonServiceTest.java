@@ -15,7 +15,7 @@ public class PersonServiceTest {
 	public static void setUpBeforeClass() throws Exception {
 		try {
 			InitialContext itx = new InitialContext();
-			personService = (PersonService) itx.lookup("PersonServiceBean/remote");
+			personService = (PersonService) itx.lookup("skillup_ejb30_basic/PersonServiceBean/remote");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
