@@ -4,46 +4,81 @@
 	<property environment="env" />
 	<property file="${basedir}/build.properties" />
 	<property name="app.name" value="${ant.project.name}" />
-	<property name="source" value="${basedir}/src" />
-	<property name="build" value="${basedir}/build" />
+	<property name="ejb.source" value="${basedir}/src" />
+	<property name="web.source" value="${basedir}/web" />
+	<property name="web.content" value="${basedir}/WebContent" />
+	<property name="ejb.build" value="${basedir}/build/ejb" />
+	<property name="web.build" value="${basedir}/build/web" />
 	<property name="dist" value="${basedir}/dist" />
 
-	<path id="classpath">
+	<path id="jboss-client-lib">
 		<fileset dir="${jboss.client.lib.dir}" includes="**/*.jar" />
 	</path>
 
-	<target name="all" depends="clean, init" />
+	<path id="web-lib">
+		<fileset dir="${web.content}/WEB-INF/lib" includes="**/*.jar" />
+		<!-- EJBコンパイル後のライブラリを参照する -->
+		<fileset dir="${dist}" includes="**/*.jar" />
+	</path>
 
+	<target name="all" depends="clean, init, deploy" />
+	
 	<target name="clean">
-		<delete dir="${build}" />
+		<delete dir="${ejb.build}" />
+		<delete dir="${web.build}" />
+		<delete dir="${dist}" />
 	</target>
 
-	<target name="init">
-		<mkdir dir="${build}" />
+	<target name="init" depends="clean">
+		<mkdir dir="${ejb.build}" />
+		<mkdir dir="${web.build}" />
 		<mkdir dir="${dist}" />
 	</target>
 
-	<target name="compile">
-		<javac srcdir="${source}" destdir="${build}" encoding="UTF-8" classpathref="classpath" />
+	
+	<target name="compile-ejb" depends="init">
+		<javac srcdir="${ejb.source}" destdir="${ejb.build}" encoding="UTF-8" classpathref="jboss-client-lib" />
 	</target>
 
-	<target name="archive" depends="compile">
-		<copy todir="${build}">
-			<fileset dir="${source}">
+	<target name="archive-ejb" depends="compile-ejb">
+		<copy todir="${ejb.build}">
+			<fileset dir="${ejb.source}">
 				<include name="**/*" />
 				<exclude name="**/*.java" />
 			</fileset>
 		</copy>
-		<jar jarfile="${dist}/${app.name}.jar" basedir="${build}" update="yes" />
-		<delete dir="${build}" />
+		<jar jarfile="${dist}/${app.name}.jar" basedir="${ejb.build}" update="yes" />
 	</target>
 
-	<target name="deploy" depends="archive">
-		<copyfile dest="${jboss.home}/server/${jboss.server.cinfig.name}/deploy" src="${dist}/${app.name}.jar" />
+	<target name="compile-web">
+		<copy todir="${web.build}">
+			<fileset dir="${web.content}">
+				<include name="**/*" />
+				<exclude name="WEB-INF/lib/**/*" />
+			</fileset>
+		</copy>
+		<javac srcdir="${web.source}" destdir="${web.build}/WEb-INF/classes" encoding="UTF-8" classpathref="web-lib" />
 	</target>
 
-	<target name="undeploy" depends="archive">
-		<delete file="${jboss.home}/server/${jboss.server.cinfig.name}/deploy/${app.name}.jar" />
+	<target name="archive-web" depends="compile-web">
+		<war destfile="${dist}/${app.name}.war" basedir="${web.build}" update="true">
+			<lib dir="${web.content}/WEB-INF/lib" includes="**" />
+		</war>
+	</target>
+
+	<target name="make-ear" depends="archive-ejb, archive-web">
+		<ear earfile="${dist}/${app.name}.ear" appxml="${basedir}/application.xml">
+			<fileset dir="${dist}" includes="${app.name}.jar" />
+			<fileset dir="${dist}" includes="${app.name}.war" />
+		</ear>
+	</target>
+
+	<target name="deploy" depends="make-ear">
+		<copy todir="${jboss.home}/server/${jboss.server.cinfig.name}/deploy" file="${dist}/${app.name}.ear" />
+	</target>
+
+	<target name="undeploy">
+		<delete file="${jboss.home}/server/${jboss.server.cinfig.name}/deploy/${app.name}.ear" />
 	</target>
 
 </project>
