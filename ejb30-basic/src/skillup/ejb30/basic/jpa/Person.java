@@ -23,6 +23,10 @@ public class Person implements Serializable {
 	@Column(name = "name", nullable=false, length=20)
 	private String name;
 
+	public Person() {
+		super();
+	}
+
 	public Person(String name) {
 		this.name = name;
 	}
@@ -74,4 +78,11 @@ public class Person implements Serializable {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Person [id=").append(id).append(", name=").append(name)
+				.append("]");
+		return builder.toString();
+	}
 }

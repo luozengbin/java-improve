@@ -8,9 +8,9 @@ import javax.ejb.Stateless;
 import skillup.ejb30.basic.other.Other;
 
 @Stateless
-@Remote(HelloWorld.class)
+@Remote({HelloWorld.class, HelloWorldRemote.class})
 @Local(HelloWorldLocal.class)
-public class HelloWorldBean implements HelloWorld, HelloWorldLocal {
+public class HelloWorldBean implements HelloWorld, HelloWorldRemote ,HelloWorldLocal {
 	
 	@EJB
 	Other other;
