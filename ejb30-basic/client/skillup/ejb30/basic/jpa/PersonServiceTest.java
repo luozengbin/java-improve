@@ -24,7 +24,7 @@ public class PersonServiceTest {
 	@Test
 	public void testSave() {
 		for (int i = 0; i < 100; i++) {
-			personService.save("akira" + i);
+			personService.save("彬" + i);
 		}
 	}
 

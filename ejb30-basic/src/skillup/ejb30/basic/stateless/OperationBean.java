@@ -6,7 +6,6 @@ import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.ws.extensions.security.operation.Operation;
 
 @Stateless
 @Remote(Operation.class)
