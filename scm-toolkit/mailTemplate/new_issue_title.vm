@@ -1,0 +1,1 @@
+[$mailContent.project.name - $mailContent.tracker.name #$mailContent.id] $mailContent.subject
