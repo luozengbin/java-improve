@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+	<persistence-unit name="redmine">
+		<provider>oracle.toplink.essentials.ejb.cmp3.EntityManagerFactoryProvider</provider>
+		<class>scm.toolkit.redmine.entity.Watcher</class>
+		<class>scm.toolkit.redmine.entity.Version</class>
+		<class>scm.toolkit.redmine.entity.User</class>
+		<class>scm.toolkit.redmine.entity.Tracker</class>
+		<class>scm.toolkit.redmine.entity.Project</class>
+		<class>scm.toolkit.redmine.entity.IssueStatus</class>
+		<class>scm.toolkit.redmine.entity.IssueCategory</class>
+		<class>scm.toolkit.redmine.entity.Issue</class>
+		<class>scm.toolkit.redmine.entity.Enumeration</class>
+		<class>scm.toolkit.redmine.entity.CustomValue</class>
+		<class>scm.toolkit.redmine.entity.CustomField</class>
+		<class>scm.toolkit.redmine.entity.Journal</class>
+		<class>scm.toolkit.redmine.entity.JournalDetail</class>
+		<properties>
+			<property name="toplink.jdbc.user" value="root"/>
+			<property name="toplink.jdbc.password" value="freeadmin"/>
+			<!--<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/redmine_test?characterEncoding=utf8"/>-->
+			<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/bitnami_redmine?characterEncoding=utf8"/>
+		</properties>
+	</persistence-unit>
+</persistence>
