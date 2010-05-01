@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="scm-toolkit" basedir="." default="main">
+
+	<path id="project.lib">
+		<fileset dir="${basedir}/lib" includes="**/*.jar" />
+		<fileset dir="${basedir}/dist" includes="**/*.jar" />
+	</path>
+
+	<target name="main" depends="init, archive, syncDataFromNotesToRedmine" />
+
+	<target name="clean">
+		<delete dir="work" />
+		<delete dir="dist" />
+		<delete>
+			<fileset dir="${basedir}">
+				<include name="*.log" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="work" />
+		<mkdir dir="work/classes" />
+		<mkdir dir="dist" />
+	</target>
+
+	<target name="compile">
+		<javac srcdir="${basedir}/src" destdir="${basedir}/work/classes" classpathref="project.lib" debug="on" encoding="UTF-8" />
+	</target>
+
+	<target name="archive" depends="compile">
+		<copy todir="${basedir}/work/classes">
+			<fileset dir="${basedir}/src">
+				<include name="**/*" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<jar destfile="${basedir}/dist/${ant.project.name}.jar" basedir="${basedir}/work/classes" />
+		<delete dir="work/classes" />
+	</target>
+
+	<target name="syncDataFromNotesToRedmine">
+
+		<java classname="scm.toolkit.redmine.Main" classpathref="project.lib">
+			<sysproperty key="config.file.path" value="${basedir}/config.properties" />
+			<sysproperty key="local.work.dir" value="${basedir}/work" />
+			<sysproperty key="notes.auth.password" value="freeadmin" />
+		</java>
+	</target>
+
+</project>
