@@ -9,9 +9,9 @@ public class ClassLoaderTest {
 		
 		RootDirClassLoader rl = new RootDirClassLoader();
 		
-		Class BusinessBeanClzss = rl.loadClass("BusinessBean");
+		Class<?> businessBeanClzss = rl.loadClass("BusinessBean");
 		
-		BusinessAware businessAware = (BusinessAware) BusinessBeanClzss.newInstance();
+		BusinessAware businessAware = (BusinessAware) businessBeanClzss.newInstance();
 		
 		System.out.println(businessAware.getClass().getClassLoader());
 		
