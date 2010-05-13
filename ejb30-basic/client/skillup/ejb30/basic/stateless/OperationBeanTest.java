@@ -1,10 +1,7 @@
 package skillup.ejb30.basic.stateless;
 
-import static org.junit.Assert.*;
-
 import javax.naming.InitialContext;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class OperationBeanTest {
@@ -14,8 +11,10 @@ public class OperationBeanTest {
 	private static Operation getNewSessionBean() {
 		try {
 			InitialContext itx = new InitialContext();
-			return (Operation) itx.lookup("skillup_ejb30_basic/OperationBean/remote");
+			//return (Operation) itx.lookup("skillup_ejb30_basic/OperationBean/remote");
 			
+			return (Operation) itx.lookup("skillup/ejb3/Operation/remote");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

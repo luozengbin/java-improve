@@ -6,9 +6,11 @@ import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.ejb3.annotation.RemoteBinding;
 
 @Stateless
 @Remote(Operation.class)
+@RemoteBinding(jndiBinding="skillup/ejb3/Operation/remote")
 @Local(LocalOperation.class)
 public class OperationBean implements Operation, LocalOperation {
 	
