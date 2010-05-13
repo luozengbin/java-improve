@@ -226,9 +226,11 @@ public class Main {
 						JournalDetail journalDetail = null;
 						IssueStatus newIssueStatus = null;
 						
-						StringBuffer bf = new StringBuffer();
+						StringBuffer bf = null;new StringBuffer();
 						
 						for(Issue issue : issueList){
+							
+							bf = new StringBuffer();
 							
 							if(updateStatusMap.containsKey(issue.getIssueStatus().getName())){
 								
