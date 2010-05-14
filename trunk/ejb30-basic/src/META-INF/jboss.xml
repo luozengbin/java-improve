@@ -11,4 +11,5 @@
 			<local-jndi-name>skillup/ejb3/local/Bean004</local-jndi-name>
 		</session>
 	</enterprise-beans>
+
 </jboss>
