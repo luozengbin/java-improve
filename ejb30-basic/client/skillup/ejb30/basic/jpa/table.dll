@@ -1,0 +1,7 @@
+--create table person(
+--	id SERIAL,
+--	name varchar(255),
+--	primary key (id)
+--)
+
+select * from person;

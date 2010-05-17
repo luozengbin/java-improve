@@ -1,9 +1,9 @@
 package skillup.ejb30.basic.callback;
 
-import javax.naming.InitialContext;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import skillup.ejb30.basic.client.util.ContextUtils;
 
 public class LifeCycleBeanTest {
 	
@@ -11,12 +11,9 @@ public class LifeCycleBeanTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		try {
-			
-			lifeCycle = (LifeCycle)new InitialContext().lookup("skillup_ejb30_basic/LifeCycleImpl/remote");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		lifeCycle = ContextUtils.lookup("skillup_ejb30_basic/LifeCycleImpl/remote");
+
 	}
 
 	@Test

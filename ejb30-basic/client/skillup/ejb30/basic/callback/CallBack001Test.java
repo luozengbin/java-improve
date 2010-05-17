@@ -1,9 +1,9 @@
 package skillup.ejb30.basic.callback;
 
-import javax.naming.InitialContext;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import skillup.ejb30.basic.client.util.ContextUtils;
 
 public class CallBack001Test {
 
@@ -12,8 +12,7 @@ public class CallBack001Test {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		try {
-			
-			callBack001 = (CallBack001)new InitialContext().lookup("skillup_ejb30_basic/CallBack001Impl/remote");
+			callBack001 = ContextUtils.lookup("skillup_ejb30_basic/CallBack001Impl/remote");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
