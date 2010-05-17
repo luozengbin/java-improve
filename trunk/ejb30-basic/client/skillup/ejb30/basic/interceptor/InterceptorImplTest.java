@@ -20,5 +20,11 @@ public class InterceptorImplTest {
 		bean.method001("hello", "akira");
 		bean.method002("how are you", "milan");
 	}
+	
+	@Test
+	public void testEventIntercepto001Impl() throws NamingException {
+		InterceptorAware bean = (InterceptorAware)new InitialContext().lookup("skillup_ejb30_basic/EventInterceptor001Impl/remote");
+		bean.method001("hello", "akira");
+	}
 
 }

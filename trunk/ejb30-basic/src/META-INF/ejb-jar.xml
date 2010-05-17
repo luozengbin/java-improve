@@ -4,7 +4,19 @@
     http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd"
 	version="3.0">
 	<display-name>ejb3 skillup series</display-name>
-
+	
+	<enterprise-beans>
+		<session>
+			<ejb-name>InjectionFacade</ejb-name>
+			<ejb-local-ref>
+				<ejb-ref-name>ejb/InjectionBean002</ejb-ref-name>
+				<ejb-ref-type>Session</ejb-ref-type>
+				<local>skillup.ejb30.basic.injection.InjectionLocal</local>
+				<ejb-link>InjectionBean002</ejb-link>
+			</ejb-local-ref>
+		</session>
+	</enterprise-beans>
+	
 	<assembly-descriptor>
 		<interceptor-binding>
 			<ejb-name>*</ejb-name><!-- すべてのEJBにこのinterceptorを適用する -->
