@@ -10,9 +10,11 @@ import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.ejb3.annotation.SecurityDomain;
 
 @Stateless
 @Remote
+@SecurityDomain(unauthenticatedPrincipal="anonymous",value="ejb3-skillup")
 public class ApplicationManagerImpl implements ApplicationManager {
 	
 	static final Log log = LogFactory.getLog(ApplicationManagerImpl.class);
