@@ -1,0 +1,21 @@
+下記の内容を%jboss_home%\server\default\conf\login-config.xmlに反映する必要がある。
+
+1.otherセキュリティードメインの定義
+  <application-policy name="other">
+    <authentication>
+      <login-module code="org.jboss.security.auth.spi.UsersRolesLoginModule" flag="required">
+        <module-option name="unauthenticatedIdentity">anonymous</module-option>
+      </login-module>
+    </authentication>
+  </application-policy>
+  
+2.ejb3-skillupセキュリティードメインの定義
+  <application-policy name="ejb3-skillup">
+    <authentication>
+      <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
+      	<module-option name="dsJndiName">java:/MySqlDS</module-option>
+      	<module-option name="principalsQuery">select password from users where username=?</module-option>
+      	<module-option name="rolesQuery">select rolename, 'Roles' from roles where username=?</module-option>
+        <module-option name="unauthenticatedIdentity">anonymous</module-option>
+      </login-module>
+    </authentication>
