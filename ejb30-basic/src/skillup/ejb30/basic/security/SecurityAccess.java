@@ -2,15 +2,11 @@ package skillup.ejb30.basic.security;
 
 public interface SecurityAccess {
 	
-	void updateApplication(String applicationName, String version);
+	String adminMethods();
 	
-	void runApplication(String applicationName);
+	String developerMethods();
 	
-	void feedback(String applicationName, String comment);
+	String cunsumerMethods();
 	
-	void deleteApplication(String applicationName);
-	
-	void createApplication(String applicationName);
-	
-	String checkApplicationInfo(String applicationName);
+	String anonymousMethods();
 }

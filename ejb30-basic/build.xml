@@ -19,6 +19,7 @@
 		<fileset dir="${web.content}/WEB-INF/lib" includes="**/*.jar" />
 		<!-- EJBコンパイル後のライブラリを参照する -->
 		<fileset dir="${dist}" includes="**/*.jar" />
+		<fileset dir="${jboss.client.lib.dir}" includes="**/*.jar" />
 	</path>
 
 	<target name="all" depends="clean, init, deploy" />
@@ -57,7 +58,7 @@
 				<exclude name="WEB-INF/lib/**/*" />
 			</fileset>
 		</copy>
-		<javac srcdir="${web.source}" destdir="${web.build}/WEb-INF/classes" encoding="UTF-8" classpathref="web-lib" />
+		<javac srcdir="${web.source}" destdir="${web.build}/Web-INF/classes" encoding="UTF-8" classpathref="web-lib" />
 	</target>
 
 	<target name="archive-web" depends="compile-web">
