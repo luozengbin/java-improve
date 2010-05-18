@@ -4,11 +4,80 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 	<display-name>skillup_ejb30_basic_web</display-name>
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+	
+	<error-page>
+		<error-code>403</error-code>
+		<location>/noAuthenticated.jsp</location>
+	</error-page>
+	
+	<!-- 管理者権限 -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>admin manager console</web-resource-name>
+			<url-pattern>/admin/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	
+	<!-- 開発者権限 -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>developer console</web-resource-name>
+			<url-pattern>/developer/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>developer</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<!-- 利用者権限 -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>cunsumer console</web-resource-name>
+			<url-pattern>/cunsumer/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>cunsumer</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	
+	<security-role>
+		<role-name>admin</role-name>
+	</security-role>
+	
+	<security-role>
+		<role-name>developer</role-name>
+	</security-role>
+	
+	<security-role>
+		<role-name>cunsumer</role-name>
+	</security-role>
+	
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/login.jsp</form-login-page>
+			<form-error-page>/login.jsp?failed=true</form-error-page>
+		</form-login-config>
+	</login-config>
+	
 </web-app>
