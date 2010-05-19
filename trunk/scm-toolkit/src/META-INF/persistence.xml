@@ -17,7 +17,7 @@
 		<class>scm.toolkit.redmine.entity.JournalDetail</class>
 		<properties>
 			<property name="toplink.jdbc.user" value="root"/>
-			<property name="toplink.jdbc.password" value="freeadmin"/>
+			<property name="toplink.jdbc.password" value="xxxxxx"/>
 			<!--<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/redmine_test?characterEncoding=utf8"/>-->
 			<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/bitnami_redmine?characterEncoding=utf8"/>
 		</properties>
