@@ -44,7 +44,7 @@
 		<java classname="scm.toolkit.redmine.Main" classpathref="project.lib">
 			<sysproperty key="config.file.path" value="${basedir}/config.properties" />
 			<sysproperty key="local.work.dir" value="${basedir}/work" />
-			<sysproperty key="notes.auth.password" value="freeadmin" />
+			<sysproperty key="notes.auth.password" value="xxxxxx" />
 		</java>
 	</target>
 
