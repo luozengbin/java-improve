@@ -10,12 +10,9 @@ import javax.ejb.Remote;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TimerService;
-import javax.ejb.TransactionManagement;
-import javax.ejb.TransactionManagementType;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import javax.transaction.UserTransaction;
 
 
 @Stateless
@@ -27,7 +24,7 @@ public class InjectionFacade implements Injection {
 	@EJB(name="ejb/InjectionBean003", beanName="InjectionBean003", beanInterface=InjectionLocal.class)
 	private Injection injectionBean;
 	
-	@Resource(name="ds/mysql", mappedName="java:/MySqlDS")
+	@Resource(name="ds/mysql", mappedName="java:/XADerbyDS")
 	private DataSource ds;
 	
 	//@Resource private UserTransaction utx;

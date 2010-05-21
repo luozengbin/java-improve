@@ -31,10 +31,9 @@ public class PersonServiceBean implements PersonService {
 	}
 
 	@Override
-	public void save(String name) {
-		
-		Person person = new Person(name);
+	public Person save(Person person) {
 		em.persist(person);
+		return person;
 	}
 
 	@Override
