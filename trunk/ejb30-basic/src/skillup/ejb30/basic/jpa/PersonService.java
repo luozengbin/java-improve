@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PersonService {
 	
-	public void save(String name);
+	public Person save(Person person);
 	
 	public void update(Person person);
 	
