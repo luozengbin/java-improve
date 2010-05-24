@@ -58,7 +58,7 @@
 				<exclude name="WEB-INF/lib/**/*" />
 			</fileset>
 		</copy>
-		<javac srcdir="${web.source}" destdir="${web.build}/Web-INF/classes" encoding="UTF-8" classpathref="web-lib" />
+		<javac srcdir="${web.source}" destdir="${web.build}/WEB-INF/classes/" encoding="UTF-8" classpathref="web-lib" />
 	</target>
 
 	<target name="archive-web" depends="compile-web">
