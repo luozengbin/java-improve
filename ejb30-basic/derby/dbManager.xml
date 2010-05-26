@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="derby manager" default="start" basedir=".">
+
+	<target name="start" description="description">
+		<exec executable="ControlDerbyServer.cmd" spawn="true" >
+			<arg line="start" />
+		</exec>
+	</target>
+
+	<target name="stop" description="description">
+		<exec executable="ControlDerbyServer.cmd" spawn="true" />
+	</target>
+
+</project>
