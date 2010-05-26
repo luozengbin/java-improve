@@ -12,6 +12,16 @@
 		<location>/noAuthenticated.jsp</location>
 	</error-page>
 	
+	<servlet>
+		<servlet-name>HelloWorldService</servlet-name>
+		<servlet-class>skillup.ejb30.basic.jws.HelloWorldService</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>HelloWorldService</servlet-name>
+		<url-pattern>/HelloWorldService</url-pattern>
+	</servlet-mapping>
+	
 	<!-- 管理者権限 -->
 	<security-constraint>
 		<web-resource-collection>
