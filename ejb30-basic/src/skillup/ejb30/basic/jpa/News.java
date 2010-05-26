@@ -26,7 +26,7 @@ public class News implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private String id;
+	private int id;
 	
 	@Column(nullable=false)
 	private String title;
@@ -39,11 +39,13 @@ public class News implements Serializable {
 	@Embedded
 	private Publish publishInfo;
 
-	public String getId() {
+
+
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -77,50 +79,6 @@ public class News implements Serializable {
 
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result
-				+ ((publishInfo == null) ? 0 : publishInfo.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof News))
-			return false;
-		News other = (News) obj;
-		if (content == null) {
-			if (other.content != null)
-				return false;
-		} else if (!content.equals(other.content))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (publishInfo == null) {
-			if (other.publishInfo != null)
-				return false;
-		} else if (!publishInfo.equals(other.publishInfo))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		return true;
 	}
 
 	@Override

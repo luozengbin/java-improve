@@ -1,6 +1,9 @@
 package skillup.ejb30.basic.jpa;
 
 import java.util.Calendar;
+import java.util.List;
+
+import javax.transaction.UserTransaction;
 
 import org.junit.Test;
 
@@ -9,6 +12,7 @@ import skillup.ejb30.basic.client.util.ContextUtils;
 public class EntityServiceImplTest {
 	
 	static EntityService service = ContextUtils.lookup("skillup_ejb30_basic/EntityServiceImpl/remote");
+	
 
 	@Test
 	public void testPersistEntity() {
@@ -28,5 +32,65 @@ public class EntityServiceImplTest {
 		news.setContent(sb.toString());
 		news.setPublishInfo(publishInfo);
 		service.persistEntity(news);
+	}
+	
+	@Test
+	public void testname() throws Exception {
+		List<News> newsList = service.getEntityList(News.class);
+		
+		for (News news : newsList) {
+			System.out.println(news);
+		}
+	}
+	
+	@Test
+	public void testEntity001() throws Exception {
+		
+		UserTransaction tx = ContextUtils.lookup("UserTransaction");
+		
+		tx.begin();
+		
+		Entity001 e001 = new Entity001();
+		
+		e001.setName("nihao!!!");
+		
+		e001 = service.persistEntity(e001);
+		
+		tx.commit();
+		
+		//tx.rollback();
+		
+		//service.remove(e001, e001);
+		
+		System.out.println(e001);
+	}
+	
+	@Test
+	public void testGetEntity001List() throws Exception {
+		List<Entity001> entity001List =  service.getEntityList(Entity001.class);
+		for (Entity001 entity001 : entity001List) {
+			System.out.println(entity001);
+			//service.remove(entity001);
+		}
+	}
+	
+	@Test
+	public void testGetEntity001List001() throws Exception {
+		System.out.println(service.getEntity(Entity001.class, 1));
+	}
+	
+	@Test
+	public void testFlushMode() throws Exception {
+		
+		Entity001 e001 = new Entity001();
+		
+		e001.setName("nihao!!!");
+		
+		Entity001 e002 = new Entity001();
+		
+		e002.setName("akira!!!");
+		
+		service.persistEntity(e001, e002);
+		
 	}
 }
