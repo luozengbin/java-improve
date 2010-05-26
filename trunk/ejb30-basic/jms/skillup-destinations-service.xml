@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+
+	<mbean code="org.jboss.jms.server.connectionfactory.ConnectionFactory"
+		name="jboss.messaging.connectionfactory:service=QueueConnectionFactory"
+		xmbean-dd="xmdesc/ConnectionFactory-xmbean.xml">
+		<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+		<depends optional-attribute-name="Connector">jboss.messaging:service=Connector,transport=bisocket</depends>
+		<depends>jboss.messaging:service=PostOffice</depends>
+		<attribute name="JNDIBindings">
+			<bindings>
+				<binding>/QueueConnectionFactory</binding>
+				<binding>/XAQueueConnectionFactory</binding>
+				<binding>java:/QueueConnectionFactory</binding>
+				<binding>java:/XAQueueConnectionFactory</binding>
+			</bindings>
+		</attribute>
+	</mbean>
+
+	<mbean code="org.jboss.jms.server.connectionfactory.ConnectionFactory"
+		name="jboss.messaging.connectionfactory:service=TopicConnectionFactory"
+		xmbean-dd="xmdesc/ConnectionFactory-xmbean.xml">
+		<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+		<depends optional-attribute-name="Connector">jboss.messaging:service=Connector,transport=bisocket</depends>
+		<depends>jboss.messaging:service=PostOffice</depends>
+
+		<attribute name="JNDIBindings">
+			<bindings>
+				<binding>/TopicConnectionFactory</binding>
+				<binding>/XATopicConnectionFactory</binding>
+				<binding>java:/TopicConnectionFactory</binding>
+				<binding>java:/XATopicConnectionFactory</binding>
+			</bindings>
+		</attribute>
+	</mbean>
+	
+	<mbean code="org.jboss.jms.server.destination.QueueService"
+		name="jboss.messaging.destination:service=Queue,name=skillup"
+		xmbean-dd="xmdesc/Queue-xmbean.xml">
+		<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+		<depends>jboss.messaging:service=PostOffice</depends>
+	</mbean>
+
+	<mbean code="org.jboss.jms.server.destination.TopicService"
+		name="jboss.messaging.destination:service=Topic,name=skillup"
+		xmbean-dd="xmdesc/Topic-xmbean.xml">
+		<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+		<depends>jboss.messaging:service=PostOffice</depends>
+	</mbean>
+
+</server>

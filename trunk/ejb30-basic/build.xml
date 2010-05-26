@@ -88,6 +88,7 @@
 
 	<target name="deploy" depends="make-ear">
 		<copy todir="${jboss.home}/server/${jboss.server.cinfig.name}/deploy" file="jca/derby-ds.xml" />
+		<copy todir="${jboss.home}/server/${jboss.server.cinfig.name}/deploy" file="jms/skillup-destinations-service.xml" />
 		<copy todir="${jboss.home}/server/${jboss.server.cinfig.name}/deploy" file="${dist}/${app.name}.ear" />
 	</target>
 
