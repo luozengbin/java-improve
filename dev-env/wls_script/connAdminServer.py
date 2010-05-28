@@ -1,0 +1,1 @@
+connect('weblogic', 'Manager123', 't3://localhost:7001')

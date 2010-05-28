@@ -1,0 +1,2 @@
+startNodeManager()
+exit()
