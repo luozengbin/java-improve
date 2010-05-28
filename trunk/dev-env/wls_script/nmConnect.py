@@ -1,0 +1,1 @@
+ nmConnect('weblogic', 'Manager123', 'localhost', '5556', 'base_domain', 'C:/oracle/Middleware/user_projects/domains/base_domain')
