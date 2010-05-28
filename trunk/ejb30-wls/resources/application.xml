@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================= -->
+<!-- The deployed sample application consists of two modules                 --> 
+<!--    1. web module packaged as reviewService.war                          -->
+<!--    2. ejb module packaged as reviewService.ear                          -->
+<!-- ======================================================================= -->
+
+<application xmlns="http://java.sun.com/xml/ns/j2ee" version="1.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/application_1_4.xsd">
+	<display-name>EJB3 Sample Application</display-name>
+	<module>
+		<web>
+			<web-uri>reviewService.war</web-uri>
+			<context-root>reviewService</context-root>
+		</web>
+	</module>
+	
+	<module>
+	    <ejb>domain.jar</ejb>
+	</module>
+	
+</application>

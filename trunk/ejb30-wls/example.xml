@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+This file contains meta-data about the associated example.
+This file and its contents are not required to build, deploy,
+or execute the example.  The meta-data is intend for BEA
+internal use only.
+
+Copyright (c) 2006 by BEA Systems, Inc. All rights reserved.
+-->
+<example
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="http://samples.beasys.com/example.xsd">
+  <name>EJB 3.0 with JPA, Session Bean and AJAX</name>
+  <description>Demonstrates EJB 3.0 usage in multi-tier Web applications</description>
+  <date>2006-05-05-08:00</date>
+  <author>BEA</author>
+  <version>1.0</version>
+  <package>examples.ejb.ejb30</package>
+  <zip>examples_ejb_ejb30</zip>
+  <wlsCompatibility>9.2</wlsCompatibility>
+  <parentCategory>API</parentCategory>
+  <childCategory>EJB</childCategory>
+  <subCategory>EJB 3.0</subCategory>
+  <wlsConfiguration/>
+  <coconutTests>
+    <buildTest><![CDATA[
+    	<test name="build-ejb/ejb30">
+        <ant-task>
+          <ant dir="${examples.src.dir}/examples/ejb/ejb30"/>
+          <sleep seconds="5"/>
+        </ant-task>
+      </test>]]>
+    </buildTest>
+    <executeTest><![CDATA[
+    	<test name="run-ejb/ejb30" requiresSuccess="build-ejb/ejb30">
+    	  <ant-task>
+          <ant dir="${examples.src.dir}/examples/ejb/ejb30" target="run"/>
+    	  </ant-task>
+    	</test>]]>
+    </executeTest>
+  </coconutTests>
+  <build>
+    <deployable>true</deployable>
+  </build>
+  <execution>
+    <target>run</target>
+  </execution>
+
+</example>

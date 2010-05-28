@@ -1,0 +1,176 @@
+<!-- ======================================================================= -->
+<!-- This Ant build script prepares the sample applications.                 -->
+<!-- The task includes                                                       -->
+<!-- 1. Compiling the code base                                              -->
+<!-- 2. Enhancing the domain classes                                         -->
+<!-- 3. Defining a database schema for the domain objects                    -->
+<!-- 4. Packaging a J2EE application with the sample application as a        -->
+<!--    contained Web application                                            -->
+<!-- 5. Populating a database with initial set of data                       -->
+<!-- 6. Deploying the application to a Weblogic application server           -->
+<!-- 7. undeploying the application           -->
+<!--                                                                         -->
+<!-- Assumption/Perequisite                                                  -->
+<!--   Set up environment varaibles through the scripts                      -->
+<!--     BEA_HOME/common/bin/commEnv.cmd (or .sh)                            -->
+<!--     BEA_HOME/samples/domains/wl_server/bin/setDomainEnv.cmd (or .sh)    -->
+<!--                                                                         -->
+<!-- Configuration                                                           -->
+<!--   The persistence deployment descriptor 'persistence.xml' is configured -->
+<!--   with an embedded Pointbase database prepackaged with Weblogic server  -->
+<!--   The database URL:                                                     -->
+<!--      jdbc:pointbase:server://localhost:9092/demo                        -->
+<!--   with com.pointbase.jdbc.jdbcUniversalDriver as JDBC driver.           -->
+<!--                                                                         -->
+<!--   This can be changed to suit specific database.                        -->
+<!--                                                                         -->
+<!-- The application is deployed to the following URL                        -->
+<!--      http://<host>:<port>/reviewService                                 -->
+<!-- e.g. http://localhost:7001/reviewService/                               -->
+<!--                                                                         -->
+<!--                                                                         -->
+<!-- Dependencies (Runtime)                                                  -->
+<!--    Kodo 4.1 is used as Persistence Provider Runtime.                    -->
+<!--    DWR (Direct Web Remoting): The AJAX sample uses DWR for              -->
+<!--    interoperability of server side Java objects and browser side        -->
+<!--    JavaScript.                                                          -->
+<!--                                                                         -->
+<!-- ======================================================================= -->
+
+<project name="EJB30Sample" default="build" basedir=".">
+	<!-- ======================================================================= -->
+	<!-- Environment is inherited from environmental properties and              -->
+	<!-- examples.properties file.                                               -->
+	<!-- ======================================================================= -->
+	<property environment="env" />
+	<property file="examples.properties" />
+
+	<property name="sample.name" value="ejb30" />
+	<property name="app.name" value="reviewService" />
+
+	<!-- ======================================================================= -->
+	<!--    Input directories                                                    -->
+	<!-- ======================================================================= -->
+	<property name="jsp.dir" value="WebContent" />
+	<property name="ejb.src.dir" value="src" />
+	<property name="web.src.dir" value="web" />
+	<property name="classes.dir" value="build" />
+	<property name="lib.dir" value="lib" />
+	<property name="rsrc.dir" value="resources" />
+
+	<!-- ======================================================================= -->
+	<!--    Output targets and directories                                       -->
+	<!-- ======================================================================= -->
+	<property name="tmp.dir" value="tmp" />
+	<property name="dist.dir" value="dist/${sample.name}" />
+	<property name="war.file" value="${tmp.dir}/${app.name}.war" />
+	<property name="ear.file" value="${dist.dir}/${app.name}.ear" />
+
+	<!-- ======================================================================= -->
+	<!-- Building and running the sample requires kodo libraries and JDBC driver -->
+	<!-- The configuration directory must also be in the classpath               -->
+	<!-- ======================================================================= -->
+	<path id="class.path">
+		<pathelement path="${classes.dir}" />
+		<pathelement path="${lib.dir}/dwr.jar" />
+	</path>
+
+	<!-- ======================================================================  -->
+	<target name="all" depends="init,enhance,ear,deploy" description="Packages the application, sets up database and deploy">
+	</target>
+
+	<!-- ======================================================================  -->
+	<!--  This target gets invoked by samples build framework                    -->
+	<!-- ======================================================================  -->
+	<target name="build" depends="clean,init,enhance,ear" description="compile and package the application.">
+	</target>
+
+	<!-- ======================================================================= -->
+	<target name="clean" description="cleans generated classes, jars, wars">
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${tmp.dir}" includes="**/*" />
+		</delete>
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="${classes.dir}" includes="**/*" />
+		</delete>
+	</target>
+
+	<!-- ======================================================================= -->
+	<target name="init" description="Creates temporary build directory">
+		<mkdir dir="${tmp.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${classes.dir}/META-INF" />
+		<copy file="${rsrc.dir}/persistence.xml" todir="${classes.dir}/META-INF" />
+		<copy file="${rsrc.dir}/data.properties" todir="${classes.dir}/META-INF" />
+		<echo message="======================================================" />
+		<echo message="    Building EJB 3.0 Samples                          " />
+		<echo message="======================================================" />
+		<echo message="Base directory  : ${basedir}" />
+		<echo message="Deployed Target : ${ear.file}" />
+	</target>
+
+	<!-- ======================================================================  -->
+	<target name="compile" depends="init" description="Compile all Java files in ${ejb.src.dir} and ${web.src.dir}">
+		<javac srcdir="${ejb.src.dir}" destdir="${classes.dir}" debug="on" failonerror="true" encoding="UTF8" >
+			<classpath refid="class.path" />
+		</javac>
+		<javac srcdir="${web.src.dir}" destdir="${classes.dir}" debug="on" failonerror="true" encoding="UTF8">
+			<classpath refid="class.path" />
+		</javac>
+	</target>
+
+	<!-- ======================================================================  -->
+	<target name="enhance" depends="compile" description="Enhance all *.java files in **/domain/** packages.">
+		<java classname="org.apache.openjpa.enhance.PCEnhancer" fork="true" failonerror="true">
+			<arg value="-p" />
+			<arg value="persistence.xml" />
+			<classpath>
+				<pathelement path="${java.class.path}" />
+				<pathelement path="${classes.dir}" />
+			</classpath>
+		</java>
+	</target>
+	<!-- ======================================================================  -->
+	<target name="war" description="prepares the Web Application Archieve">
+		<jar destfile="${tmp.dir}/domain.jar" basedir="${classes.dir}" filesonly="true" includes="**/*.class" excludes="**/Test*.class **/web/*.class">
+			<metainf dir="${rsrc.dir}">
+				<include name="persistence.xml" />
+				<include name="data.properties" />
+			</metainf>
+		</jar>
+		<war destfile="${war.file}" webxml="${rsrc.dir}/web.xml" basedir="${jsp.dir}" filesonly="true" includes="**/*">
+			<webinf file="${rsrc.dir}/dwr.xml" />
+			<lib file="lib/dwr.jar" />
+			<classes dir="${classes.dir}">
+				<include name="**/web/*.class" />
+			</classes>
+		</war>
+	</target>
+
+	<!-- ======================================================================  -->
+	<target name="ear" depends="war" description="prepares the Enterprise Application Archieve">
+		<echo message="creating ${ear.file}" />
+		<ear destfile="${ear.file}" appxml="${rsrc.dir}/application.xml" filesonly="true" basedir="${tmp.dir}">
+			<include name="**/*.jar" />
+			<include name="**/*.war" />
+		</ear>
+	</target>
+
+	<!-- ======================================================================  -->
+	<target name="deploy" description="Deploy ear to WebLogic on ${wls.hostname}:${wls.port}.">
+		<wldeploy user="${wls.username}" password="${wls.password}" adminurl="t3://${wls.hostname}:${wls.port}" debug="true" action="deploy" name="${sample.name}" source="${ear.file}" failonerror="${failondeploy}" />
+	</target>
+
+	<!-- ======================================================================  -->
+	<target name="undeploy" description="Deploy ear to WebLogic on ${wls.hostname}:${wls.port}.">
+		<wldeploy user="${wls.username}" password="${wls.password}" adminurl="t3://${wls.hostname}:${wls.port}" debug="true" action="undeploy" name="${sample.name}" failonerror="false" />
+	</target>
+
+	<!-- run the example -->
+	<target name="run" description="Run example.">
+		<openbrowser url="http://${wls.hostname}:${wls.port}/reviewService/" />
+	</target>
+
+</project>
+

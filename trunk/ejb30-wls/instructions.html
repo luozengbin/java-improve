@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><!-- InstanceBegin template="/Templates/instructions_template.dwt" codeOutsideHTMLIsLocked="false" -->
+  <head>
+  <!-- InstanceBeginEditable name="doctitle" -->
+  <title>EJB 3.0 Persistence Service  </title>
+  <!-- InstanceEndEditable -->
+
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+
+  <link href="../../../../../docs/css/samples.css" rel="stylesheet" title="Style" type="text/css" />
+
+  <script language="JavaScript" src="../../../../../docs/core/topicInfo.js" type="text/JavaScript"></script>
+  <script language="JavaScript" src="../../../../../docs/core/CookieClass.js" type="text/JavaScript"></script>
+  <script language="JavaScript" src="../../../../../docs/core/displayContent.js" type="text/JavaScript"></script>
+
+  <!-- InstanceBeginEditable name="head" -->
+
+  <!-- InstanceEndEditable -->
+
+<a href="../../../../../docs/core/index.html"></a>
+
+</head>
+
+<body>
+
+	<script language="JavaScript" type="text/JavaScript">
+		try {
+			displayInFrames();
+		}
+		catch (e) {
+		document.write("<table width='100%'><tr><td bgcolor='#19355E' align='left' height='42'; valign='top'><p style='color:white;font-size:130%;font-weight:bold;margin-top:4px;margin-bottom:0;'>WebLogic Server<sup>&reg;</sup> 10.0</p><p style='color:white;font-size:110%;margin-top:2px;margin-bottom:4px;'>Code Examples</p></td></tr></table>");
+			}
+	</script>
+
+  <h1> <script language="JavaScript" type="text/JavaScript">document.write(document.title);</script></h1>
+  <p>
+  	<a class="navbutton" href="#files">&nbsp;Files&nbsp;</a>
+	<a class="navbutton" href="#prepare">&nbsp;Prepare&nbsp;</a>
+	<a class="navbutton" href="/reviewService/index.jsp">&nbsp;Run&nbsp;</a>
+	<a class="navbutton" href="#troubleshooting" >&nbsp;Troubleshooting&nbsp;</a>
+	<a class="navbutton" href="#related_topics">&nbsp;Related Topics&nbsp;</a>
+  </p>
+
+<h2>About the Example </h2>
+<!-- InstanceBeginEditable name="about" -->
+<p>This example demonstrates the following features of EJB 3.0:
+<ul>
+<LI> &nbsp;&nbsp;&nbsp;&nbsp;<A HREF="/reviewService/guideJPA.html">Java Persistence API </A>
+<LI> &nbsp;&nbsp;&nbsp;&nbsp;<A HREF="/reviewService/guideSession.html">Stateless Session Bean</A>
+<LI> &nbsp;&nbsp;&nbsp;&nbsp;<a href="/reviewService/guideMDB.html">Message Driven Bean</a>
+<LI> &nbsp;&nbsp;&nbsp;&nbsp;<A HREF="/reviewService/guideAJAX.html">Asynchronous JavaScript</A>-based browser application.
+</ul>
+<p>
+ The example uses a persistent domain model of entity EJBs</p>
+
+
+<p>&nbsp;</p>
+<!-- InstanceEndEditable -->
+<hr />
+<a name="files" id="files"></a>
+<h2>Files Used in the Example</h2>
+<p class="smaller" >Directory Location:</p>
+<p class="smaller" style="font-family:'Courier New',monospace;" ><em>BEA_HOME</em>/wlserver_10.3/samples/server/examples/<!-- InstanceBeginEditable name="PATHTOEXAMPLE" -->src/examples/ejb/ejb30/<!-- InstanceEndEditable --></p>
+<p class="smaller" >(where <span style="font-style:italic;font-family:'Courier New',monospace;COLOR: #000000;">BEA_HOME</span> is the directory containing your WebLogic Server installation)</p>
+<!-- InstanceBeginEditable name="files" -->
+<TABLE CELLSPACING=2>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>JSPs that invoke JPA directly</H3></TD>
+<TR><TD><A HREF="./WebContent/common_service.html" target="_blank">common_service.jsp</A>
+<TD>Obtains a EntityManagerFactory reference by direct construction</TD>
+<TR><TD><A HREF="./WebContent/transaction.html" target="_blank">transaction.jsp</A>
+<TD>Starting a explicit transaction with direct JPA</TD>
+<TR><TD><A HREF="./WebContent/createArtist_service.html" target="_blank">createArtist_service.jsp</A>
+<TD>Create a new Artist via direct JPA</TD>
+<TR><TD><A HREF="./WebContent/addReview_service.html" target="_blank">addReview_service.jsp</A>
+<TD>Adds a new Review via direct JPA</TD>
+<TR><TD><A HREF="./WebContent/showBooks_service.html" target="_blank">showBooks_service.jsp</A>
+<TD>JPQL queries via direct JPA</TD>
+<TR><TD><A HREF="./WebContent/showSpecificMusic_service.html" target="_blank">showSpecificMusic_service.jsp</A>
+<TD>JPQL queries with predicate via direct JPA</TD>
+<TR><TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>JSPs that invoke Session Bean</H3></TD>
+<TR><TD><A HREF="./WebContent/common_session.html" target="_blank">common_session.jsp</A>
+<TD>Obtains a Session Bean injected with a EntityManagerFactory from JNDI</TD>
+<TR><TD><A HREF="./WebContent/createArtist_session.html" target="_blank">createArtist_session.jsp</A>
+<TD>Create a new Artist via Session Bean</TD>
+<TR><TD><A HREF="./WebContent/addReview_session.html" target="_blank">addReview_session.jsp</A>
+<TD>Adds a new Review via Session Bean</TD>
+<TR><TD><A HREF="./WebContent/showBooks_session.html" target="_blank">showBooks_session.jsp</A>
+<TD>JPQL queries via Session Bean</TD>
+<TR><TD><A HREF="./WebContent/showSpecificMusic_session.html" target="_blank">showSpecificMusic_session.jsp</A>
+<TD>JPQL queries with predicate via Session Bean</TD>
+<TR><TD><A HREF="./WebContent/addBooks_session_ejb21.html" target="_blank">addBooks_session_ejb21.jsp</A>
+<TD>Add a new book via Session Bean with a ejb21 client view. </TD>
+<TR><TD><A HREF="./WebContent/mdb.html" target="_blank">mdb.jsp</A>
+  <TD>Triggers the Message Driven Bean to be invoked. </TD>
+<TR><TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>Persistent EJBs</H3></TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/domain/Item.html" target="_blank">Item.java</A><TD>Defines persistent and abstract Item EJB. A root of inheritance hierarchy with SINGLE_TABLE mapping</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/domain/Book.html" target="_blank">Book.java</A><TD>Defines persistent Book EJB</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/domain/Music.html" target="_blank">Music.java</A><TD>Defines persistent Music EJB</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/domain/Movie.html" target="_blank">Movie.java</A><TD>Defines persistent Movie EJB</TD>
+<TR><TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/domain/Person.html" target="_blank">Person.java</A><TD>Defines persistent Person EJB. Another root of inheritance hierarchy with different mapping strategy</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/domain/Artist.html" target="_blank">Artist.java</A><TD>Defines persistent Artist EJB</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/domain/Reviewer.html" target="_blank">Reviewer.java</A><TD>Defines persistent Reviewer EJB</TD>
+<TR><TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/domain/Review.html" target="_blank">Review.java</A><TD>Defines persistent Review EJB. Shows examples of relationship mapping</TD>
+<TR><TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>Functions on Persistent EJBs using direct JPA</H3></TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/service/PersistenceService.html" target="_blank">PersistenceService.java</A><TD>wraps EntityManagerFactory to provide EntityManager per-thread</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/service/ReviewService.html" target="_blank">ReviewService.java</A>
+<TD>Defines business functions on EJB domain model</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/service/ReviewServiceImpl.html" target="_blank">ReviewServiceImpl.java</A>
+<TD>Implements business functions on EJB domain model</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/service/SeedDatabase.html" target="_blank">SeedDatabase.java</A>
+<TD>Populates a database with EJB domain model via direct JPA</TD>
+<TR><TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>Session Bean on Persistent EJBs injected with EntityManager</H3></TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/session/ReviewManagerBean.html" target="_blank">ReviewManagerBean.java</A>
+<TD>A stateless Session Bean that implements a business interface functions on EJB domain model</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/session/ReviewStatManager.html" target="_blank">ReviewStatManager.java</A>
+<TD>Interface defines function calulating the items and reviews added during one session.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/session/ReviewStatManagerBean.html" target="_blank">ReviewStatManagerBean.java</A>
+<TD>A stateful Session Bean that implements ReviewStatManager interface </TD>
+<TR><TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>Session Bean with the usage of EJB Reference </H3></TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/ejbref/Process.html" target="_blank">Process.java</A>
+<TD>Defines a business interface adding reviews on a randomly selected Book.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/ejbref/ProcessBean.html" target="_blank">ProcessBean.java</A>
+<TD>A stateless Session Bean which references EJB <a href="./src/examples/ejb/ejb30/mdb/ReviewListenerBean.html">ReviewListenerBean</a> to broadcast that a new review is added. </TD>
+<TR><TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>Message Driven Bean</H3></TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/mdb/WatchProcessMDB.html" target="_blank">WatchProcessMDB.java</A>
+<TD>A Message Driven Bean invoked when a new review is added.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/mdb/SubscriptionService.html" target="_blank">SubscriptionService.java</A>
+<TD>A POJO is used by the WatchProcessMDB to feed reviews into subscriber.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/mdb/ReviewListener.html" target="_blank">ReviewListener.java</A>
+<TD>Listener interface for new added reviews.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/mdb/ReviewListenerBean.html" target="_blank">ReviewListenerBean.java</A>
+<TD>A stateless session bean which send a jms message carring new review's id into exmaple jms queue.</TD>
+<TR><TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>Application Execeptions</H3></TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/exceptions/ObjectExistedException.html" target="_blank">ObjectExistedException.java</A>
+<TD>unchecked RuntimeException annoatated as application execption.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/exceptions/ObjectNotFoundException.html" target="_blank">ObjectNotFoundException.java</A>
+<TD>unchecked RuntimeException annoatated as application execption.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/exceptions/NotLoggedInException.html" target="_blank">NotLoggedInException.java</A>
+<TD>Checked Exception.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/exceptions/BadCommentsException.html" target="_blank">BadCommentsException.java</A><TD>unchecked RuntimeException annoatated as application execption.</TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>EJB Interceptors</H3></TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/interceptors/AuditInterceptor.html" target="_blank">AuditInterceptor.java</A><TD>Interceptor class including a business method interceptor methoda and lifecycle callback interceptor method annotated with @PreDestroy.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/interceptors/InterceptedProcess.html" target="_blank">InterceptedProcess.java</A><TD>Business interface for the EJB interceptor sample.</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/interceptors/InterceptedProcessBean.html" target="_blank">InterceptedProcessBean.java</A><TD>A stateless Session Bean annotated with a interceptor to valid comments being added.</TD>
+<TR><TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>Session Bean with EJB21 client view.</H3></TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/ejb21client/ItemManager.html" target="_blank">ItemManager.java</A>
+<TD>Business Interface</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/ejb21client/ItemManagerHome.html" target="_blank">ItemManagerHome.java</A>
+<TD>Home Interface</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/ejb21client/ItemManagerLocal.html" target="_blank">ItemManagerLocal.java</A>
+<TD>Component Interface</TD>
+<TR><TD><A HREF="./src/examples/ejb/ejb30/ejb21client/ItemManagerBean.html" target="_blank">ItemManagerBean.java</A>
+<TD>A stateless session bean annotated with Home and Business interface.</TD>
+<TR><TD COLSPAN=2 ALIGN="CENTER" BGCOLOR="#CCCCCC"><H3>Deployment Descriptors</H3></TD>
+<TR><TD><A HREF="./resources/application.xml">application.xml</A>
+<TD>Deployment Descriptor for the application</TD>
+<TR><TD><A HREF="./resources/web.xml">web.xml</A>
+<TD>Deployment Descriptor for the web module</TD>
+<TR><TD><A HREF="./resources/persistence.xml">persistence.xml</A>
+<TD>Descriptor for the Persistence Provider Runtime</TD>
+<TR><TD><A HREF="./resources/dwr.xml">dwr.xml</A>
+<TD>Descriptor for Direct Web Remoting</TD>
+<TR><TD><A HREF="./resources/data.properties">data.properties</A>
+<TD>Sample data to populate the database</TD>
+</TABLE>
+<!-- InstanceEndEditable -->
+<hr />
+<a name="prepare" id="prepare"></a>
+<h2>Prepare the Example</h2>
+<!-- InstanceBeginEditable name="build" -->
+
+
+<h3>Prerequisites</h3>
+<p>Before working with this example: </p>
+<ol>
+  <li><a href="http://edocs.bea.com/wls/docs103/../../common/docs92/install/index.html" target="_blank">Install WebLogic Server</a>, including the examples.</li>
+  <li><a href="javascript:reloadTOC('../../../../examples.html#startServer')">Start the Examples server.</a></li>
+  <li><a href="javascript:reloadTOC('../../../../examples.html#environment')">Set up your environment</a>.</li>
+</ol>
+<h3>Configure WebLogic Server</h3>
+<p>&nbsp;&nbsp;No special configuration is required for this example</p>
+<a name="build" id="build"></a>
+<h3>Build and Deploy the Example</h3>
+<ol>
+  <li>Change to the <code><i>SAMPLES_HOME</i>\server\examples\src\examples\ejb\ejb30</code> directory, where <i>SAMPLES_HOME</i> refers to the main WebLogic Server examples directory, such as <code>d:\beahome\wlserver_10.3\samples</code>.</li>
+  <li>Execute the following command:<br />
+      <br />
+      <code>ant build</code><br />
+      <br />
+  This command compiles and stages the example. </li>
+  <li>Execute the following command:<br />
+      <br />
+      <code>ant deploy</code> <br />
+      <br />
+  This command deploys the example on the <code>wl_server</code> domain of your WebLogic Server installation.<br />
+  <b>    </b><br />
+  </li>
+</ol>
+<p> Additional information on using the build scripts is found in <a href="javascript:reloadTOC('../../../../examples.html#buildScripts')">More
+    About Building Examples</a>. </p>
+<!-- InstanceEndEditable -->
+<hr />
+<a name="run" id="run"></a>
+<h2>Run the Example</h2>
+<!-- InstanceBeginEditable name="run" -->
+<ol>
+<p>
+<li>Complete the steps in the &quot;<a href="#prepare">Prepare the Example</a>&quot; section.</li>
+<li>Execute the following command (from the shell where you <a href="javascript:reloadTOC('../../../../examples.html#environment')">set your environment</a>):<br />
+    <br />
+    <code>ant run </code><br />
+    <br />which opens your default browser to the following URL:
+    <p class="style4"><code>http://<i>localhost</i>:<i>port</i>/reviewService</code>/</p>
+    <p>where </p>
+</li>
+</ol>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <p><i>localhost</i> refers to the machine on which WebLogic Server is running </p>
+      <p><i>port</i> refers to port on which
+        WebLogic Server is listening </p>
+    </blockquote>
+  </blockquote>
+</blockquote>
+<!-- InstanceEndEditable -->
+<hr />
+<h2>Troubleshooting</h2>
+<a name="troubleshooting" id="troubleshooting"></a>
+<!-- InstanceBeginEditable name="troubleshooting" -->
+<ul>
+  <li>The application is configured to define the schema and populate the embedded database at startup. If you see a database error such as 'Table X not found', try reloading the database schema and set of sample records by clicking <A HREF="/reviewService/populateDB.jsp" target="_blank">Reset the database</A>.
+  </li>
+  <li><a href="javascript:reloadTOC('../../../../examples.html#troubleshooting')">General Troubleshooting Tips for Examples </a></li>
+</ul>
+<!-- InstanceEndEditable -->
+<hr />
+<h2>Related Topics</h2>
+<p class="smaller">(Internet connection required.)</p>
+<a name="related_topics" id="related_topics"></a>
+<!-- InstanceBeginEditable name="related_topics" -->
+<ul>
+  <li><a href="http://edocs.bea.com/wls/docs103/ejb/index.html" target="_blank">WebLogic Server Enterprise Java Beans</a></li>
+<li><a href="http://edocs.bea.com/wls/docs103/api.html" target="_blank">Developing Applications on WebLogic Server</a></li>
+</ul>
+<!-- InstanceEndEditable -->
+
+<hr />
+<p><a href="../../../../copyright.html">Copyright</a>  @1996, 2008, Oracle and/or its affiliates. All  Rights Reserved. </p>
+
+</body>
+<!-- InstanceEnd --></html>

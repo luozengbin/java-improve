@@ -1,0 +1,175 @@
+body {
+  font: normal 11px auto "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+  color: #4f6b72;
+}
+
+th {
+  color: #4f6b72;
+  text-align: center;
+  background: #CAE8EA;
+}
+
+td.item_alt {
+  background: #C1DAD7;
+  padding: 1px 1px 1px 2px;
+}
+
+td.item_alt_align_right {
+  background: #C1DAD7;
+  text-align: right;
+  padding: 1px 1px 1px 2px;
+
+}
+
+td.item {
+  background: #F5FAFA;
+  padding: 1px 1px 1px 2px;
+}
+
+td.item_align_right {
+  background: #F5FAFA;
+  text-align: right;
+  padding: 1px 1px 1px 2px;
+}
+
+tr.spec {
+  border-left: 1px solid #C1DAD7;
+  border-top: 0;
+  background: #F5FAFA;
+}
+
+tr.specalt {
+  border-left: 1px solid #C1DAD7;
+  border-top: 0;
+  background: #C1DAD7;
+}
+
+tr.highlighted {
+  border-left: 1px solid #C1DAD7;
+  border-top: 0;
+  background: #ccffff;
+}
+
+#tab {
+  height: 20px;
+  margin: 0;
+  padding-left: 10px;
+  background: url( 'images/bottom.gif' ) repeat-x bottom;
+}
+
+#tab li {
+  margin: 0;
+  padding: 0;
+  display: inline;
+  list-style-type: none;
+}
+
+#tab a:link, #tab a:visited {
+  float: left;
+  background: #f3f3f3;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: bold;
+  padding: 2px 10px 2px 10px;
+  margin-right: 4px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  color: #666;
+}
+
+#tab a:link.selectedtab, #tab a:visited.selectedtab {
+  border-bottom: 1px solid #fff;
+  background: #fff;
+  color: #000;
+}
+
+#tab a:hover {
+  background: #fff;
+}
+
+/**
+* The automcomplete box styling
+*/
+div.auto_complete {
+  width: 350px;
+  background: #fff;
+}
+
+div.auto_complete ul {
+  border: 1px solid #31430f;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style-type: none;
+}
+
+div.auto_complete ul li {
+  margin: 0;
+  padding: 3px;
+  text-align: left;
+}
+
+div.auto_complete ul li.selected {
+  background-color: #dcedad;
+}
+
+div.auto_complete ul strong.highlight {
+  color: #800;
+  margin: 0;
+  padding: 0;
+}
+
+#infocenter_itemsadded {
+  display: inline;
+  color: chocolate;
+}
+
+#infocenter_reviewsadded {
+  display: inline;
+  color: chocolate;
+}
+
+#infocenter_reviewswatched {
+  display: inline;
+  color: chocolate;
+}
+
+#infocenter {
+  display: block;
+}
+
+img.star {
+  border-spacing: 0cm
+}
+
+#loginForm {
+  display: inline;
+  float: left;
+  width: 50%;
+}
+
+#itemBrowser {
+  width: 100%;
+  height: 40%;
+  border: 1px solid #ccc;
+  background: #fff;
+  overflow: auto;
+}
+
+#container {
+  width: 100%;
+  height: 40%;
+  border: 1px solid #ccc;
+  background: #fff;
+  overflow: auto;
+}
+
+#reviewscontainer {
+  background: #fff;
+  display: block;
+}
+
+#watchescontainer {
+  background: #fff;
+  display: none;
+}
