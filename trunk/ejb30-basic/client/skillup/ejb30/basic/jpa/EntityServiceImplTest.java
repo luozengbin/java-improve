@@ -67,6 +67,9 @@ public class EntityServiceImplTest {
 	
 	@Test
 	public void testGetEntity001List() throws Exception {
+		
+		service = ContextUtils.lookup("skillup_ejb30_basic/TempEntityServiceImpl/remote");
+		
 		List<Entity001> entity001List =  service.getEntityList(Entity001.class);
 		for (Entity001 entity001 : entity001List) {
 			System.out.println(entity001);
@@ -76,11 +79,17 @@ public class EntityServiceImplTest {
 	
 	@Test
 	public void testGetEntity001List001() throws Exception {
+		service = ContextUtils.lookup("skillup_ejb30_basic/TempEntityServiceImpl/remote");
 		System.out.println(service.getEntity(Entity001.class, 1));
 	}
 	
 	@Test
 	public void testFlushMode() throws Exception {
+		
+		
+		UserTransaction tx = ContextUtils.lookup("UserTransaction");
+		
+		tx.begin();
 		
 		Entity001 e001 = new Entity001();
 		
@@ -92,5 +101,17 @@ public class EntityServiceImplTest {
 		
 		service.persistEntity(e001, e002);
 		
+		service = ContextUtils.lookup("skillup_ejb30_basic/TempEntityServiceImpl/remote");
+		System.out.println(service.getEntity(Entity001.class, 1));
+		
+		System.out.println("sleeping...");
+		
+		Thread.sleep(20 * 1000);
+		
+		service.persistEntity(e001, e002);
+		
+		tx.commit();
+		
+		System.out.println("OK!!!!!");
 	}
 }
