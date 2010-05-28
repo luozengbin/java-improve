@@ -1,0 +1,69 @@
+<!DOCTYPE dwr PUBLIC
+    "-//GetAhead Limited//DTD Direct Web Remoting 1.0//EN"
+    "http://www.getahead.ltd.uk/dwr/dwr10.dtd">
+<!-- ======================================================================= -->
+<!-- Configures Direct Web Remoting for AJAX based EJB3 Sample               -->
+<!-- All classes that require to interoperate between server side Java and   -->
+<!-- browser side JavaScript must be specified here.                         -->
+<!--                                                                         -->
+<!-- For further details, see:   http://getahead.ltd.uk/dwr/                 -->
+<!-- ======================================================================= -->
+
+<dwr>
+  <init>
+    <creator id="sessionBean" class="examples.ejb.ejb30.web.SessionBeanCreator"/>
+  </init>
+  <allow>
+    <create creator="new" javascript="JDate">
+      <param name="class" value="java.util.Date"/>
+    </create>
+    <create creator="new" javascript="Item">
+      <param name="class" value="examples.ejb.ejb30.domain.Item"/>
+    </create>
+    <create creator="new" javascript="Book">
+      <param name="class" value="examples.ejb.ejb30.domain.Book"/>
+    </create>
+    <create creator="new" javascript="Music">
+      <param name="class" value="examples.ejb.ejb30.domain.Music"/>
+    </create>
+    <create creator="new" javascript="Movie">
+      <param name="class" value="examples.ejb.ejb30.domain.Movie"/>
+    </create>
+    <create creator="new" javascript="Artist">
+      <param name="class" value="examples.ejb.ejb30.domain.Artist"/>
+    </create>
+    <create creator="new" javascript="Person">
+      <param name="class" value="examples.ejb.ejb30.domain.Person"/>
+    </create>
+    <create creator="new" javascript="Gender">
+      <param name="class" value="examples.ejb.ejb30.domain.Person$Gender"/>
+    </create>
+    <create creator="new" javascript="Reviewer">
+      <param name="class" value="examples.ejb.ejb30.domain.Reviewer"/>
+    </create>
+    <create creator="new" javascript="Review">
+      <param name="class" value="examples.ejb.ejb30.domain.Review"/>
+    </create>
+    <create creator="sessionBean" javascript="ReviewService">
+      <param name="class" value="examples.ejb.ejb30.service.ReviewService"/>
+      <param name="jndiName" value="java:comp/env/ejb/ReviewManager"/>
+    </create>
+
+    <create creator="sessionBean" javascript="ReviewStatService" scope="session">
+      <param name="class" value="examples.ejb.ejb30.session.ReviewStatManager"/>
+      <param name="jndiName" value="java:comp/env/ejb/ReviewStatManager"/>
+    </create>
+
+
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Item"/>
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Book"/>
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Music"/>
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Movie"/>
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Person"/>
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Person$Gender"/>
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Artist"/>
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Reviewer"/>
+    <convert converter="bean" match="examples.ejb.ejb30.domain.Review"/>
+    <convert converter="null" match="kodo.kernel.DetachedStateManager"/>
+  </allow>
+</dwr>  

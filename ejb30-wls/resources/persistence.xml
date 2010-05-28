@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+    http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+
+  <!-- =======================================================================
+-->
+  <!-- Configure Kodo Persistence Runtime by specifiying database URL, Driver  -->
+  <!-- All persistent domain classes are specified here                        -->
+  <!-- Configured to build database schema, if necessary, at runtime           -->
+  <!--                                                                         -->
+  <!-- Two different persistence units are specified                           -->
+  <!--  1. reviewService : used with RESOURCE_LOCAL transaction                -->
+  <!--  2. reviewSession : used with JTA transaction by Session Beans          -->
+  <!-- =======================================================================
+-->
+	<persistence-unit name="reviewService"
+		transaction-type="RESOURCE_LOCAL">
+		<non-jta-data-source>jdbc/oracle/ejb3/local</non-jta-data-source>
+		<class>examples.ejb.ejb30.domain.Item</class>
+		<class>examples.ejb.ejb30.domain.Book</class>
+		<class>examples.ejb.ejb30.domain.Music</class>
+		<class>examples.ejb.ejb30.domain.Movie</class>
+		<class>examples.ejb.ejb30.domain.Person</class>
+		<class>examples.ejb.ejb30.domain.Artist</class>
+		<class>examples.ejb.ejb30.domain.Reviewer</class>
+		<class>examples.ejb.ejb30.domain.Review</class>
+		<properties>
+			<property name="kodo.jdbc.SynchronizeMappings" value="refresh" />
+		</properties>
+	</persistence-unit>
+	<persistence-unit name="reviewSession"
+		transaction-type="JTA">
+		<jta-data-source>jdbc/oracle/ejb3</jta-data-source>
+		<class>examples.ejb.ejb30.domain.Item</class>
+		<class>examples.ejb.ejb30.domain.Book</class>
+		<class>examples.ejb.ejb30.domain.Music</class>
+		<class>examples.ejb.ejb30.domain.Movie</class>
+		<class>examples.ejb.ejb30.domain.Person</class>
+		<class>examples.ejb.ejb30.domain.Artist</class>
+		<class>examples.ejb.ejb30.domain.Reviewer</class>
+		<class>examples.ejb.ejb30.domain.Review</class>
+		<properties>
+			<property name="kodo.jdbc.SynchronizeMappings" value="refresh" />
+		</properties>
+	</persistence-unit>
+</persistence>

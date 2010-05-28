@@ -1,0 +1,95 @@
+<HTML>
+<HEAD>
+<link href="sample.css" rel="stylesheet"></link>
+</HEAD>
+<BODY>
+<TABLE WIDTH="100%">
+<TR>
+	<TD COLSPAN=6 ALIGN="left"><H1>EJB3 Sample Application</H1></TD>
+	<TD ALIGN="right"><IMG SRC="images/bea_logo.jpg"></TD>
+<TR>
+    <TD><A HREF="index.jsp">Home</A></TD>
+    <TD><A HREF="guideJPA.html">JPA </A><TD>
+    <TD><A HREF="guideSession.html">Session Bean</A></TD>
+    <TD><A HREF="guideMDB.html">Message Driven Bean</A></TD>
+    <TD><A HREF="guideAJAX.html">EJB3+AJAX</A></TD>
+    <TD><A HREF="viewCode.jsp">See code/resources</A></TD>
+</TABLE>
+<HR>
+
+You can see how EJB3 entity model works with Session Beans
+through a set of examples in this page.<p>
+<CENTER>
+  <FONT BGCOLOR="#EEEEEE">
+      <A HREF="#Run"><H3>Run the examples</H3></A>
+ </FONT>
+</CENTER>
+
+Each of these samples perform a basic operation that requires interaction of
+persistent entities with the underlying database, e.g.
+<LI> start a transaction
+<LI> query persistent instances
+<LI> persist new instance graphs
+<p>
+
+<IMG SRC="./images/architectureSession.png">
+
+<p>
+
+The samples are based on a Plain, Old Java Object (POJO) based
+<A HREF="DomainModel.html">Persistent EJB Domain Model</A>
+<BR>
+<BR>
+<A name="Run"/>
+<TABLE WIDTH="100%" CELLSPACING="4">
+  <TR><TH ALIGN="CENTER" COLSPAN=2 BGCOLOR="#EEEEEE">
+      <H3>Run the examples</H3></TH>
+  <TR>
+  	<TD>Perform a unqualified query to fetch all books from the database.</TD>
+  	<TD ALIGN="CENTER"><A HREF="showBooks_session.jsp">Run</A></TD>
+  </TR>
+
+  <TR>
+  	<TD>Perform a query to fetch selected music from the database.</TD>
+  	<TD ALIGN="CENTER"><A HREF="showSpecificMusic_session.jsp">Run</A></TD>
+  </TR>
+  <TR>
+    <TD>EJB refernce example - Perform a query to fetch a random book from the database and you can add comments.</TD>
+    <TD ALIGN="CENTER"><A HREF="ClientServlet">Run</A></TD>
+  </TR>
+  <TR>
+    <TD>EJB Interceptor example - comments are audited by interceptors.</TD>
+    <TD ALIGN="CENTER"><A HREF="InterceptorClientServlet">Run</A></TD>
+  </TR>
+  <TR>
+    <TD>Using EJB21 client to invoke EJB30 Session Bean.</TD>
+    <TD ALIGN="CENTER"><A HREF="addBooks_session_ejb21.jsp">Run</A></TD>
+  </TR>
+  <TR>
+  	<TD>Create a new instance of an Artist in the database.</TD>
+  	<TD ALIGN="CENTER">
+  		<FORM action="createArtist_session.jsp" method="post" target="_blank">
+   			Artist's name: <INPUT type="text" name="name"><BR>
+   			<INPUT type="submit" value="Create">
+ 		</FORM></TD>
+  </TR>
+  <TD>Create a new Review that is related to a Book and a Reviewer.
+  Demonstrates how instance graph is persisted maintaining relationship
+  integrity</TD>
+  <TD ALIGN="CENTER">
+  <FORM action="addReview_session.jsp" method="post" target="_blank">
+       Rating: <SELECT name="rating" SIZE=1>
+             <OPTION>5
+             <OPTION>4
+             <OPTION>3
+             <OPTION>2
+             <OPTION>1
+         </SELECT>
+         <INPUT type="TEXT" name="comment" SIZE="20"/><BR>
+       <INPUT type="submit" value="Add Review">
+     </FORM>
+  </TD>
+
+ </TABLE>
+  </BODY>
+  </HTML>

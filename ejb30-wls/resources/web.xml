@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  <display-name>EJB3 Sample Application</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <listener>
+    <listener-class>examples.ejb.ejb30.web.ContextInitializer</listener-class>
+  </listener>
+  <!-- ======================================================================= -->
+  <!-- Direct Web Remoting Servlet description                                 -->
+  <!-- ======================================================================= -->
+  <session-config>
+    <session-timeout>10</session-timeout>
+  </session-config>
+
+  <servlet>
+    <servlet-name>dwr-invoker</servlet-name>
+    <servlet-class>uk.ltd.getahead.dwr.DWRServlet</servlet-class>
+    <init-param>
+      <param-name>debug</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>logLevel</param-name>
+      <param-value>FATAL</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>dwr-invoker</servlet-name>
+    <url-pattern>/dwr/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <description>EJB reference Client Servlet</description>
+    <servlet-name>client-servlet</servlet-name>
+    <servlet-class>examples.ejb.ejb30.web.EJBRefSampleClientServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <description>Interceptor Client Servlet</description>
+    <servlet-name>Interceptor-client-servlet</servlet-name>
+    <servlet-class>examples.ejb.ejb30.web.InterceptorSampleServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>client-servlet</servlet-name>
+    <url-pattern>/ClientServlet</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Interceptor-client-servlet</servlet-name>
+    <url-pattern>/InterceptorClientServlet</url-pattern>
+  </servlet-mapping>
+
+  <ejb-ref>
+    <ejb-ref-name>ejb/ReviewManager</ejb-ref-name>
+    <ejb-ref-type>Session</ejb-ref-type>
+    <remote>examples.ejb.ejb30.service.ReviewService</remote>
+    <ejb-link>domain.jar#ReviewManagerBean</ejb-link>
+  </ejb-ref>
+
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/ReviewStatManager</ejb-ref-name>
+    <ejb-ref-type>Session</ejb-ref-type>
+    <local>examples.ejb.ejb30.session.ReviewStatManager</local>
+    <ejb-link>domain.jar#ReviewStatManagerBean</ejb-link>
+  </ejb-local-ref>
+
+  <ejb-local-ref>
+    <ejb-ref-name>ejb/ItemManagerHome</ejb-ref-name>
+    <ejb-ref-type>Session</ejb-ref-type>
+    <local-home>examples.ejb.ejb30.session.ItemManagerHome</local-home>
+    <local>examples.ejb.ejb30.session.ItemManagerLocal</local>
+    <ejb-link>domain.jar#ItemManagerBean</ejb-link>
+  </ejb-local-ref>
+
+</web-app>

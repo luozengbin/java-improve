@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+<title>ejb/ejb30/src/jsp/populateDB.jsp</title>
+  <style type="text/css">
+    <!--code { font-family: Courier New, Courier; font-size: 10pt; margin: 0px; }-->
+  </style>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+</head><body>
+
+
+<!-- ======================================================== -->
+<!-- = Java Sourcecode to HTML automatically converted code = -->
+<!-- =   Java2Html Converter 4.2 [2005-06-04] by Markus Gebhard  markus@jave.de   = -->
+<!-- =     Further information: http://www.java2html.de     = -->
+<div align="left" class="java">
+<table border="0" cellpadding="3" cellspacing="0" bgcolor="#ffffff">
+  <!-- start headline -->
+   <tr>
+    <td colspan="2">
+     <center><font size="+2">
+      <code><b>
+populateDB.jsp
+      </b></code>
+     </font></center>
+    </td>
+   </tr>
+  <!-- end headline -->
+   <tr>
+  <!-- start source code -->
+   <td nowrap="nowrap" valign="top" align="left">
+    <code>
+<a name="1"><font color="#808080">01</font>&nbsp;</a><font color="#000000">&lt;%</font><font color="#646464">@&nbsp;</font><font color="#000000">page&nbsp;</font><font color="#7f0055"><b>import</b></font><font color="#000000">=</font><font color="#2a00ff">&#34;examples.ejb.ejb30.service.SeedDatabase&#34;</font><font color="#000000">%&gt;</font><br />
+<a name="2"><font color="#808080">02</font>&nbsp;</a><font color="#000000">&lt;HTML&gt;</font><br />
+<a name="3"><font color="#808080">03</font>&nbsp;</a><font color="#000000">&lt;HEAD&gt;</font><br />
+<a name="4"><font color="#808080">04</font>&nbsp;</a><font color="#000000">&lt;%</font><font color="#646464">@&nbsp;</font><font color="#000000">page&nbsp;errorPage=</font><font color="#2a00ff">&#34;exception.jsp&#34;&nbsp;</font><font color="#000000">%&gt;</font><br />
+<a name="5"><font color="#808080">05</font>&nbsp;</a><font color="#000000">&lt;link&nbsp;href=</font><font color="#2a00ff">&#34;sample.css&#34;&nbsp;</font><font color="#000000">rel=</font><font color="#2a00ff">&#34;stylesheet&#34;</font><font color="#000000">&gt;&lt;/link&gt;</font><br />
+<a name="6"><font color="#808080">06</font>&nbsp;</a><font color="#000000">&lt;/HEAD&gt;</font><br />
+<a name="7"><font color="#808080">07</font>&nbsp;</a><font color="#000000">&lt;BODY&gt;</font><br />
+<a name="8"><font color="#808080">08</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;%</font><font color="#646464">@&nbsp;</font><font color="#000000">include&nbsp;file=</font><font color="#2a00ff">&#34;common_service.jsp&#34;&nbsp;</font><font color="#000000">%&gt;</font><br />
+<a name="9"><font color="#808080">09</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">&lt;%</font><br />
+<a name="10"><font color="#808080">10</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">SeedDatabase&nbsp;populator&nbsp;=&nbsp;</font><font color="#7f0055"><b>new&nbsp;</b></font><font color="#000000">SeedDatabase</font><font color="#000000">(</font><font color="#000000">emf</font><font color="#000000">)</font><font color="#000000">;</font><br />
+<a name="11"><font color="#808080">11</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">populator.ensureDatabaseInitialzed</font><font color="#000000">()</font><font color="#000000">;</font><br />
+<a name="12"><font color="#808080">12</font>&nbsp;</a><font color="#ffffff">&nbsp;&nbsp;&nbsp;&nbsp;</font><font color="#000000">%&gt;</font><br />
+<a name="13"><font color="#808080">13</font>&nbsp;</a><font color="#000000">&lt;/BODY&gt;</font><br />
+<a name="14"><font color="#808080">14</font>&nbsp;</a><font color="#000000">&lt;/HTML&gt;</font></code>
+    
+   </td>
+  <!-- end source code -->
+   </tr>
+</table>
+</div>
+<!-- =       END of automatically generated HTML code       = -->
+<!-- ======================================================== -->
+
+
+</body></html>

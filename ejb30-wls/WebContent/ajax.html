@@ -1,0 +1,593 @@
+<HTML>
+<HEAD>
+<link href="sample.css" rel="stylesheet"></link>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/Item.js'></script>
+<script type='text/javascript' src='dwr/interface/Book.js'></script>
+<script type='text/javascript' src='dwr/interface/Music.js'></script>
+<script type='text/javascript' src='dwr/interface/Movie.js'></script>
+<script type='text/javascript' src='dwr/interface/Person.js'></script>
+<script type='text/javascript' src='dwr/interface/Gender.js'></script>
+<script type='text/javascript' src='dwr/interface/Reviewer.js'></script>
+<script type='text/javascript' src='dwr/interface/Review.js'></script>
+<script type='text/javascript' src='dwr/interface/Artist.js'></script>
+<script type='text/javascript' src='dwr/interface/ReviewService.js'></script>
+<script type='text/javascript' src='dwr/interface/ReviewStatService.js'></script>
+<script type='text/javascript' src='dwr/interface/JDate.js'></script>
+<script type='text/javascript' src='dwr/util.js'></script>
+<script type='text/javascript' src='scripts/script.aculo.us/prototype.js'></script>
+<script type='text/javascript' src='scripts/script.aculo.us/effects.js'></script>
+<script type='text/javascript' src='scripts/script.aculo.us/controls.js'></script>
+<script type='text/javascript' language="JavaScript">
+var _timer;
+var _currentItemId = 0;
+var _first = 0;
+var _max = 10;
+var _currentItemTitle = "";
+var _currentQuery;
+
+String.prototype.trim = function() {
+  return this.replace(/(^\s*)|(\s*$)/g, "");
+}
+
+defaultFun = function() {
+}
+
+function getSelectedItemType() {
+  //sometimes no itemtype is selected when the page is reloaded in firefox.
+  return DWRUtil.getValue("selectItemType") || 'Book'
+}
+
+//fetching and displaying  items
+function getItemsForDisplay()
+{
+  var first = arguments.length > 0?arguments[0]:0;
+  _first = first;
+  ReviewService.getItemsByType(fillItemTable, getSelectedItemType(), first, _max + 1);
+  _currentQuery = "getItemsForDisplay";
+}
+
+function createButton(id,name,value){
+  var button = document.createElement("input");
+  button.type="button";
+  button.value=value;
+  button.id=id;
+  button.name=name;
+  return button;
+}
+function fillItemTable(items)
+{
+  DWRUtil.removeAllRows("items_tbody");
+  var pagingData = "";
+  if (_first > 0) {
+    pagingData += '<a href="#" onclick=\'eval("' + _currentQuery + '(' + (_first - 10) + ')")\'>Previous</a>&nbsp;&nbsp;&nbsp;';
+  }
+  if (items.length > _max) {
+    pagingData += '<a href="#" onclick=\'eval("' + _currentQuery + '(' + (items.length + _first - 1) + ')")\'>Next</a>&nbsp;&nbsp;';
+    items.pop();
+  }
+  DWRUtil.setValue("paging_div", pagingData);
+
+  if (items.length == 0)
+    return;
+  //set the first item as the current select item and display its reviews.
+  if (_currentItemId <= 0) {
+    _currentItemId = items[0].id;
+    _currentItemTitle = items[0].title;
+    ReviewService.getReviewsByItem(fillReviewsTable, _currentItemId);
+  }
+
+  var cellfunction = [
+      function(item) {
+        return item.id
+      },
+      function(item) {
+        return item.title
+      },
+      getArtist = function(item) {
+        return item.artist.name
+      },
+      getReviewCount = function(item) {
+        return item.reviews.length
+      },
+      getRating = function(item) {
+        return Math.round(item.rating * 100) / 100
+      },
+      getSelectedItem = function(item) {
+        var actions = document.createElement("span");
+        var view = createButton("items_" + item.id,  "items_" + escape(item.title), "View Reviews" );
+        Event.observe(view, 'click', function(){ListReviewsByItem(view);},false); 
+        var watch = createButton("watch_" + item.id,  "watch_" + escape(item.title), "Watch" );
+        Event.observe(watch, 'click', function(){watchItem( item.id);},false); 
+        actions.appendChild(view);
+        actions.appendChild(watch);
+        return actions;
+	  }
+      ]
+  DWRUtil.addRows("items_tbody", items, cellfunction, {
+    cellCreator:function(options) {
+      var cell = document.createElement("td");
+      if (options.rowIndex % 2 == 0)
+        cell.className = "item";
+      else
+        cell.className = "item_alt";
+      if (options.cellNum == 3 || options.cellNum == 4)
+        cell.align = "right";
+      else if (options.cellNum == 5)
+        cell.align = "center";
+      return cell;
+    }});
+}
+
+function newItem()
+{
+  var title = DWRUtil.getValue("newItemTitle");
+  if (title.trim() == "") {
+    alert('No title!');
+    return;
+  }
+  artist = DWRUtil.getValue("newArtistName");
+  if (artist.trim() == "") {
+    alert('No artist name');
+    return;
+  }
+  DWRUtil.setValue("newItemTitle", "");
+  DWRUtil.setValue("newArtistName", "");
+
+  DWREngine.beginBatch();
+  ReviewStatService.newItem(defaultFun, getSelectedItemType(), title, artist);
+  ReviewService.getItemsByType(fillItemTable, getSelectedItemType(), 0, _max + 1);
+  ReviewStatService.getAddedItemCount(function(value) {
+    $("infocenter_itemsadded").innerHTML = value;
+  });
+  DWREngine.endBatch();
+}
+
+function ListReviewsByItem(obj)
+{
+  _currentItemId = obj.id.substring('items_'.length);
+  _currentItemTitle = obj.name.substring('items_'.length);
+  toggelDiv("reviewscontainer");
+}
+
+//datastructure used by the review container and feeded reviews container.
+function ReviewDetail(title, reviewer, createdOn, rating, comment, id)
+{
+  this.title = title;
+  this.reviewer = reviewer;
+  this.createdOn = createdOn;
+  this.rating = rating;
+  this.comment = comment;
+  this.id = id;
+}
+
+function fillReviewsTable(reviews)
+{
+  DWRUtil.removeAllRows("reviews_tbody");
+  //update the reivews table header according to current selected item.
+  var average_rating = reviews.length > 0?average_rating = reviews[0].reviewed.rating:0;
+  DWRUtil.setValue("reviewTable_header_1", reviews.length + ' reviews of ' + unescape(_currentItemTitle));
+  DWRUtil.setValue("reviewTable_header_2", 'Average Rating ' + Math.round(average_rating * 100) / 100);
+
+  var reviewDetails = [];
+  for (var i = 0; i < reviews.length; i++) {
+    var ratings = "";
+    for (var k = 0; k < reviews[i].rating; k++)
+      ratings += ' <IMG SRC="images/star.gif" border="0" class="star" ALT="+">';
+    reviewDetails[i] = new ReviewDetail("", reviews[i].reviewer.name,
+        reviews[i].createdOn, ratings, reviews[i].comment, reviews[i].id);
+  }
+
+  var cellFuncs = [
+      function(data) {
+        return data.reviewer;
+      },
+      function(data) {
+        return data.rating;
+      },
+      function(data) {
+        return data.comment;
+      }
+      ];
+  DWRUtil.addRows("reviews_tbody", reviewDetails, cellFuncs, {
+    cellCreator:function(options) {
+      var cell = document.createElement("td");
+      if (options.rowIndex % 2 == 0)
+        cell.className = "item";
+      else
+        cell.className = "item_alt";
+      if (options.cellNum == 3)
+        cell.align = 'right';
+      if (options.cellNum == 1)
+        cell.align = 'left';
+      return cell;
+    }});
+}
+
+function fillFeededReviewsTable(reviews) {
+{
+  DWRUtil.removeAllRows("watches_tbody");
+  $("infocenter_reviewswatched").innerHTML = reviews.length;
+  var reviewDetails = [];
+  for (var i = 0; i < reviews.length; i++) {
+    var ratings = "";
+    for (var k = 0; k < reviews[i].rating; k++)
+      ratings += ' <IMG SRC="images/star.gif" border="0" class="star" ALT="">';
+    reviewDetails[i] = new ReviewDetail(reviews[i].reviewed.title,
+        reviews[i].reviewer.name, reviews[i].createdOn, ratings, reviews[i].comment,
+        reviews[i].id);
+  }
+  var cellFuncs = [
+      function(data) {
+        return data.reviewer;
+      },
+      function(data) {
+        return data.title
+      },
+      function(data) {
+        return data.rating
+      },
+      function(data) {
+        return data.comment;
+      },
+      function(data) {
+        var button = document.createElement("input");
+        button.type="button";
+        button.value= "Delete";
+        Event.observe(button, 'click', function(){deleteFeededReview(data.id);},false); 
+        return button; 
+      }
+      ];
+
+  DWRUtil.addRows("watches_tbody", reviewDetails, cellFuncs, {
+    cellCreator:function(options) {
+      var cell = document.createElement("td");
+      if (options.rowIndex % 2 == 0)
+        cell.className = "item";
+      else
+        cell.className = "item_alt";
+      if (options.cellNum == 1)
+        cell.align = 'left';
+      return cell;
+    }});
+}
+}
+
+function newReview()
+{
+  var rating = DWRUtil.getValue("rating");
+  var ratingIndex = 0;
+  var comment = DWRUtil.getValue("comment");
+  if (comment.trim() == "") {
+    alert("please add your comment first!");
+    return;
+  }
+  if (_currentItemId <= 0) {
+    alert('Select an item before adding reviewing comment');
+    return;
+  }
+  DWRUtil.setValue("comment", "");
+  DWREngine.beginBatch();
+  ReviewStatService.newReview(defaultFun, _currentItemId,
+      rating, comment);
+  ReviewService.getReviewsByItem(fillReviewsTable, _currentItemId);
+  ReviewStatService.getAddedReviewCount(function(value) {
+    $("infocenter_reviewsadded").innerHTML = value;
+  });
+  DWREngine.endBatch();
+}
+
+//toggle between reviews and feeds div.
+function toggelDiv(ele1)
+{
+  var el = $("reviewscontainer");
+  var e2 = $("watchescontainer");
+  var link1 = $("reviewtab");
+  var link2 = $("watchtab");
+  if ("reviewscontainer" == ele1) {
+    el.style.display = "block";
+    e2.style.display = "none";
+    link1.className = "selectedTab";
+    link2.className = "none";
+    ReviewService.getReviewsByItem(fillReviewsTable, _currentItemId);
+  } else {
+    link1.className = "none";
+    link2.className = "selectedTab";
+    e2.style.display = "block";
+    el.style.display = "none";
+    // get all feeded reviews for the current loggedin user.
+    ReviewStatService.getFeededReviews(fillFeededReviewsTable);
+  }
+}
+
+//beginning suscribition management.
+function watchItem(uid) {
+  ReviewStatService.subscribe(defaultFun, uid);
+}
+
+// remove feeded review.
+function deleteFeededReview(uid) {
+  DWREngine.beginBatch();
+  ReviewStatService.removeFeededReview(defaultFun, uid);
+  ReviewStatService.getFeededReviews(fillFeededReviewsTable);
+  DWREngine.endBatch();
+}
+//end of suscribition management.
+
+//beginning login and logout
+function login() {
+  var username = DWRUtil.getValue("login_username");
+  var password = DWRUtil.getValue("login_password");
+  DWREngine.beginBatch();
+  ReviewStatService.login(username, password, function(logged) {
+    if (logged) {
+      buildLoginForm();
+      $("loginForm").innerHTML = "<INPUT TYPE='button' value='log out' onclick='logOut()'>";
+      poll();
+    }
+    else
+      alert("incorrect user name or password");
+  });
+  updateStat();
+  DWREngine.endBatch();
+}
+
+function logOut() {
+  DWREngine.beginBatch();
+  ReviewStatService.logOut(buildLoginForm);
+  updateStat();
+  $("infocenter_reviewswatched").innerHTML = 0;
+  DWREngine.endBatch();
+  if (_timer) window.clearInterval(_timer);
+}
+
+function buildLoginForm(){
+  $("loginForm").innerHTML='UserName&nbsp;&nbsp;'+
+    '<select id="login_username" name="username" width="8" onChange="DWRUtil.setValue(\'login_password\',this.value)">'+
+      '<option value=\'guest\'>guest</option>'+
+      '<option value=\'John Doe\'>John Doe</option>'+
+      '<option value=\'Sarah Lee\'>Sarah Lee</option>'+
+      '<option value=\'Marc Anthony\'>Marc Anthony</option>'+
+      '<option value=\'Giri Bajaj\'>Giri Bajaj</option>'+
+    '</select>&nbsp;&nbsp;'+
+    'Password&nbsp;&nbsp;&nbsp;<input id="login_password" type="password" size="8" name="password" value="guest"/>'+
+    '&nbsp;&nbsp;&nbsp;<input type="button" value="login" onclick="login()"/>'
+}
+
+//beginning autocompleter
+Autocompleter.DWR = Class.create();
+Autocompleter.DWR.prototype = Object.extend(new Autocompleter.Base(), {
+  initialize: function(element, update, callback, options) {
+    this.baseInitialize(element, update, options);
+    this.callback = callback;
+  },
+// called by the autocompleter on an event.
+  getUpdatedChoices: function() {
+    this.callback(this);
+    // this is the populator specified in the constructor.
+  },
+  transform: function(records) {
+    var choices = this.options.choices || 10;
+    var fullMatches = [];
+    var partialMatches = [];
+    entry = this.getToken().toLowerCase();
+
+    for (var i = 0; i < records.length && fullMatches.length < choices; i++) {
+      var record = records[i];
+      var foundPos = record.toLowerCase().indexOf(entry);
+      if (foundPos == 0) {
+        fullMatches.push("<li><strong>" + record.substr(0, entry.length) + "</strong>" +
+                         record.substr(entry.length) + "</li>");
+      } else {
+        partialMatches.push("<li>" + record.substr(0, foundPos) + "<strong>" +
+                            record.substr(foundPos, entry.length) + "</strong>" +
+                            record.substr(foundPos + entry.length) + "</li>");
+      }
+    }
+    if (partialMatches.length) {
+      fullMatches = fullMatches.concat(partialMatches.slice(0, choices - fullMatches.length))
+    }
+    return "<ul>" + fullMatches.join('') + "</ul>";
+  }
+})
+
+function createAutoCompleter() {
+  new Autocompleter.DWR("author_suggest_box", "author_suggestions", populateAuthorAutocomplete, {});
+  new Autocompleter.DWR("title_suggest_box", "title_suggestions", populateTitleAutocomplete, {});
+}
+// the callback for the auto completer
+function populateTitleAutocomplete(autocompleter, token) {
+  ReviewService.findItemTitles("%" + autocompleter.getToken() + "%", getSelectedItemType(), function(suggestions) {
+    autocompleter.updateChoices(autocompleter.transform(suggestions));
+  });
+}
+// the callback for the auto completer
+function populateAuthorAutocomplete(autocompleter, token) {
+  ReviewService.findAuthorNames("%" + autocompleter.getToken() + "%", getSelectedItemType(), function(suggestions) {
+    autocompleter.updateChoices(autocompleter.transform(suggestions));
+  });
+}
+
+//end of  autocompleter.
+
+//beginning search functions
+function queryByTile(first) {
+  var value = DWRUtil.getValue("title_suggest_box") + "%";
+  _first = first;
+  ReviewService.queryItemsByTitle(fillItemTable, value, getSelectedItemType(), first, _max + 1);
+  _currentQuery = "queryByTile";
+}
+
+function queryByAuthor(first) {
+  var value = DWRUtil.getValue("author_suggest_box") + "%";
+  _first = first;
+  ReviewService.queryItemsByAuthor(fillItemTable, value, getSelectedItemType(), first, _max + 1);
+  _currentQuery = "queryByAuthor";
+}
+//--end of search functions
+
+function loadAll() {
+  buildLoginForm();
+  //DWRUtil.useLoadingMessage();
+  DWREngine.beginBatch();
+  updateStat();
+  ReviewStatService.isLogged(function(value) {
+    if (value) {
+      $("loginForm").innerHTML = "<INPUT TYPE='button' value='log out' onclick='logOut()'>";
+      poll();
+    }
+  });
+  getItemsForDisplay();
+  DWREngine.endBatch();
+  createAutoCompleter();
+}
+//update the statistic data
+function updateStat() {
+  ReviewStatService.getAddedItemCount(function(value) {
+    $("infocenter_itemsadded").innerHTML = value;
+  });
+  ReviewStatService.getAddedReviewCount(function(value) {
+    $("infocenter_reviewsadded").innerHTML = value;
+  });
+
+}
+//a timer for updating the number of feeded reviews for the loggedin user.
+//the timer is cleared if any error is got during the polling.
+function poll() {
+  if (_timer) window.clearTimeout(_timer);
+  ReviewStatService.getFeededReviews(
+  {callback:function(data) {
+    $("infocenter_reviewswatched").innerHTML = data.length;
+    if (data.length > 0)
+      _timer = window.setTimeout("poll()", 1000 * 30);
+  },errorHandler:function(errorString, exception) {
+    if (_timer) window.clearTimeout(_timer);
+  }}
+      );
+
+
+}
+
+</script>
+</HEAD>
+
+
+<BODY onload="loadAll()">
+
+
+<TABLE WIDTH="100%">
+  <TR>
+    <TD COLSPAN=6 ALIGN="left"><H1>EJB3 Sample Application</H1></TD>
+    <TD ALIGN="right"><IMG SRC="images/bea_logo.jpg"></TD>
+  <TR>
+    <TD><A HREF="index.jsp">Home</A></TD>
+    <TD><A HREF="guideJPA.html">JPA </A><TD>
+    <TD><A HREF="guideSession.html">Session Bean</A></TD>
+    <TD><A HREF="guideMDB.html">Message Driven Bean</A></TD>
+    <TD><A HREF="guideAJAX.html">JPA+AJAX</A></TD>
+    <TD><A HREF="viewCode.jsp">See code/resources</A></TD>
+</TABLE>
+
+<BR/>
+
+<DIV id="loginForm">
+</DIV>
+
+<DIV id="infocenter" align="center">
+  You have added &nbsp;<DIV id="infocenter_itemsadded">0</DIV> &nbsp;item(s) and &nbsp;<DIV id="infocenter_reviewsadded">
+  0</DIV> &nbsp;review(s)
+  during this session.&nbsp;you have &nbsp;<span id="infocenter_reviewswatched">0</span> &nbsp;review(s) feeded.
+</DIV>
+<BR>
+
+<DIV id="itemTypeSelector" align="left">
+  <INPUT type="radio" name="selectItemType" onclick="getItemsForDisplay()" value="Book" checked>Book
+  <INPUT type="radio" name="selectItemType" onclick="getItemsForDisplay()" value="Music">Music
+  <INPUT type="radio" name="selectItemType" onclick="getItemsForDisplay()" value="Movie">Movie
+</DIV>
+
+<DIV id="paging_div" align="right"></DIV>
+
+<DIV id="itemBrowser" align="left">
+  <TABLE WIDTH="100%" CELLSPACING="2">
+    <TR>
+      <TH ALIGN="LEFT" WIDTH="10%">UID</TH>
+      <TH ALIGN="LEFT" WIDTH="25%">TITLE</TH>
+      <TH ALIGN="LEFT" WIDTH="25%">CREATOR</TH>
+      <TH ALIGN="LEFT" WIDTH="10%">REVIEWS</TH>
+      <TH ALIGN="LEFT" WIDTH="10%">RATING</TH>
+      <TH ALIGN="LEFT" WIDTH="20%">Actions</TH>
+    </TR>
+    <TBODY id="items_tbody">
+    <TBODY id="new_item_tbody">
+      <TR>
+        <TD>New item:</TD>
+        <TD><INPUT id="newItemTitle" type="text" size="32"/></TD>
+        <TD colspan='3'><INPUT id="newArtistName" type="text" size="32"></TD>
+        <TD align="center"><INPUT id="addItem" type="button" value="Apply" onclick="newItem()"></TD>
+      </TR>
+    </TBODY>
+
+  </TABLE>
+</DIV>
+
+&nbsp;Query by title<input type="text" id="title_suggest_box" name="title" value=""/>
+
+<DIV id="title_suggestions" class="auto_complete"></DIV>
+<input type="button" value="query" onclick="queryByTile(0)"/>
+&nbsp;Query by author<input type="text" id="author_suggest_box" name="author" value=""/>
+
+<DIV id="author_suggestions" class="auto_complete"></DIV>
+<input type="button" value="query" onclick="queryByAuthor(0)"/>
+
+<BR>
+
+<DIV id="container">
+  <ul id="tab">
+    <li><a href="#" class="selectedtab" id="reviewtab"
+           onclick="toggelDiv('reviewscontainer');return false">reviews</a></li>
+    <li><a href="#" id="watchtab" onclick="toggelDiv('watchescontainer');return false">feeds</a></li>
+  </ul>
+
+  <DIV id="reviewscontainer">
+    <TABLE WIDTH="100%" CELLSPACING="4" id="reviewTable">
+      <TR>
+        <TH ALIGN="LEFT" WIDTH="15%" id="reviewTable_header_1">Reviwer</TH>
+        <TH ALIGN="LEFT" WIDTH="15%" id="reviewTable_header_2">Rating</TH>
+        <TH ALIGN="LEFT" WIDTH="35%" id="reviewTable_header_3">Comments</TH>
+      </TR>
+      <TBODY id="reviews_tbody"/>
+      <TBODY id="new_review_tbody">
+        <TR>
+          <TD>New comment:</TD>
+          <TD>Rating <SELECT id='rating' SIZE='1'>
+            <OPTION value='5'>5</OPTION>
+            <OPTION value='4'>4</OPTION>
+            <OPTION value='3'>3</OPTION>
+            <OPTION value='2'>2</OPTION>
+            <OPTION value='1'>1</OPTION>
+          </SELECT></TD>
+          <TD><TEXTAREA id='comment' COLS='80' ROWS='3'></TEXTAREA>
+            <INPUT type='button' id='newReview' value='Apply' onclick='newReview()'/>
+          </TD>
+        </TR>
+      </TBODY>
+    </TABLE>
+  </DIV>
+
+  <DIV id="watchescontainer">
+    <TABLE WIDTH="100%" CELLSPACING="4" id="watcheTable">
+      <TR>
+        <TH ALIGN="LEFT" WIDTH="15%">Reviwer</TH>
+        <TH ALIGN="LEFT" WIDTH="25%">Title</TH>
+        <TH ALIGN="LEFT" WIDTH="15%">Score</TH>
+        <TH ALIGN="LEFT" WIDTH="35%">Comments</TH>
+        <TH ALIGN="LEFT" WIDTH="10%">Action</TH>
+      </TR>
+      <TBODY id="watches_tbody">
+    </TABLE>
+  </DIV>
+</DIV>
+
+</BODY>
+</HTML>
