@@ -28,30 +28,41 @@ public class EntityServiceImpl extends EmptyEntityServiceImpl {
 	
 	public void persistEntity(Object ... entitys) {
 		
-		em.setFlushMode(FlushModeType.COMMIT);
-		//em.setFlushMode(FlushModeType.AUTO);
+//		em.setFlushMode(FlushModeType.AUTO);
+		
+		//em.setFlushMode(FlushModeType.COMMIT);
+		
+		log.info("hashcode:" + this.hashCode());
 		
 		for (Object object : entitys) {
 			em.persist(object);
 		}
+		
+		em.flush();
+		
 		List list= getEntityList(entitys[0].getClass());
 		log.info("before commit:" + list.size());
 		
-		try {
-			Thread.sleep(20*1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(20*1000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 		
 	}
 	
 	public <T> T getEntity(Class<T> clzss, Object key) {
+		log.info("hashcode:" + this.hashCode());
 		return em.find(clzss, key);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getEntityList(Class<T> clzss) {
-		return em.createQuery("SELECT o FROM " + clzss.getSimpleName() + " o").getResultList();
+		log.info("hashcode:" + this.hashCode());
+		
+		return em.createQuery("SELECT o FROM Entity001 o where o.id = 3").getResultList();
+		
+		//return em.createQuery("SELECT o FROM " + clzss.getSimpleName() + " o").getResultList();
 	}
 	
 	@Override
