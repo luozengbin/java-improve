@@ -19,3 +19,4 @@
         <module-option name="unauthenticatedIdentity">anonymous</module-option>
       </login-module>
     </authentication>
+  </application-policy>
