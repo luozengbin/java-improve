@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="derby manager" default="start" basedir=".">
+<project name="derby manager" default="default" basedir=".">
 
-	<target name="start" description="description">
-		<exec executable="ControlDerbyServer.cmd" spawn="true" >
+	<target name="default">
+		<echo>empty task</echo>
+	</target>
+
+	<target name="win-start">
+		<exec executable="ControlDerbyServer.cmd" spawn="true">
 			<arg line="start" />
 		</exec>
 	</target>
-
-	<target name="stop" description="description">
+	
+	<target name="win-stop">
 		<exec executable="ControlDerbyServer.cmd" spawn="true" />
 	</target>
 
+	<target name="linux-start">
+		<exec executable="${basedir}/ControlDerbyServer.sh" spawn="true">
+			<arg line="start" />
+		</exec>
+	</target>
+	
+	<target name="linux-stop">
+		<exec executable="${basedir}/ControlDerbyServer.sh" spawn="true" />
+	</target>
+	
 </project>
