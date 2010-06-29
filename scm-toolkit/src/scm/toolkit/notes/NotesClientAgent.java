@@ -7,7 +7,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import scm.toolkit.Constants;
-
 import de.bea.domingo.DDatabase;
 import de.bea.domingo.DDocument;
 import de.bea.domingo.DEmbeddedObject;

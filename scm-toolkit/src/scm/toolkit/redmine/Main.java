@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,8 +64,10 @@ public class Main {
 			reader.close();
 			reader = null;
 			
-			//ノーツからテスト管理票を取得
-			NotesClientAgent.run(prop);
+			if(args.length == 0 ){
+				//ノーツからテスト管理票を取得
+				NotesClientAgent.run(prop);
+			}
 			
 			//エクセルからデータを取出
 			Map<String, Map<String, String>> data = ExcelReader.extractData(prop);
@@ -118,6 +121,11 @@ public class Main {
 					addrTo.add(watcherUser.getMail());
 				}
 			}
+			
+			if(prop.containsKey(Constants.REDMINE_ISSUE_DEFAULT_WATCHER_ONCE)){
+				addrTo.addAll(Arrays.asList(prop.getProperty(Constants.REDMINE_ISSUE_DEFAULT_WATCHER_ONCE).split(",")));
+			}
+			
 			mailAgent.setTo(addrTo.toArray(new String[0]));
 			mailAgent.setTitleTemplateName((String)prop.get(Constants.REDMINE_MAIL_NEW_ISSUE_TITLE_TEMPLATE_NAME));
 			mailAgent.setBodyTemplateName((String)prop.get(Constants.REDMINE_MAIL_NEW_ISSUE_BODY_TEMPLATE_NAME));
@@ -137,11 +145,11 @@ public class Main {
 				if(redmineAgent.getEntitys(CustomValue.class, "getCustomValueByManageNo", new DefaultKeyValue("manageNo", entry.getKey()), new DefaultKeyValue("customFieldName" ,prop.getProperty(Constants.REDMINE_SPREADSHEET_ISSUE_KEY))).size() <= 0){
 					
 					for (Entry<String, String> filterEntry : filterMap.entrySet()) {
-						if(entry.getValue().containsKey(filterEntry.getKey())){
-							if(entry.getValue().get(filterEntry.getKey()).indexOf(filterEntry.getValue()) < 0){
-								skip = true;
-								break;
-							}
+						if(!entry.getValue().containsKey(filterEntry.getKey()) ||
+								(entry.getValue().containsKey(filterEntry.getKey()) && 
+										entry.getValue().get(filterEntry.getKey()).indexOf(filterEntry.getValue()) < 0)){
+							skip = true;
+							break;
 						}
 					}
 					
@@ -151,7 +159,7 @@ public class Main {
 					
 					Issue newIssue = new Issue();
 					newIssue.setSubject("#" + entry.getKey() + "が起票されました");
-					newIssue.setDescription("テスト管理用から引用\n<pre>\n"
+					newIssue.setDescription("テスト管理表より引用\n<pre>\n"
 							+ "■" + prop.get(Constants.REDMINE_SPREADSHEET_ISSUE_DESCRIPTION) + ":\n" 
 							+ entry.getValue().get(prop.get(Constants.REDMINE_SPREADSHEET_ISSUE_DESCRIPTION)) + "\n\n"
 							+ "■" + prop.get(Constants.REDMINE_SPREADSHEET_ISSUE_COMMENT) + ":\n"
@@ -196,6 +204,15 @@ public class Main {
 							}
 							newIssue.getCustomValues().add(customValue);
 						}
+					}
+					
+					if(prop.containsKey(Constants.REDMINE_ISSUE_DEFAULT_PHASE)){
+						customValue = new CustomValue();
+						customValue.setCustomField(customFieldMap.get("フェーズ"));
+						customValue.setIssue(newIssue);
+						customValue.setCustomizedType(Constants.REDMINE_ISSUE);
+						customValue.setValue(prop.getProperty(Constants.REDMINE_ISSUE_DEFAULT_PHASE));
+						newIssue.getCustomValues().add(customValue);
 					}
 					
 					newIssue.setWatchers(new ArrayList<Watcher>());
