@@ -1,0 +1,40 @@
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+        targetNamespace="http://xmlns.oracle.com/AfterTunning"
+        xmlns="http://www.w3.org/2001/XMLSchema">
+ <element name="AfterTunningProcessRequest">
+  <complexType>
+   <sequence>
+    <element name="item" minOccurs="0" maxOccurs="unbounded">
+     <complexType>
+      <sequence>
+       <element name="key" type="string"/>
+      </sequence>
+     </complexType>
+    </element>
+   </sequence>
+  </complexType>
+ </element>
+ <element name="AfterTunningProcessResponse">
+  <complexType>
+   <sequence>
+    <element name="item" minOccurs="0" maxOccurs="unbounded">
+     <complexType>
+      <sequence>
+       <element name="key" type="string"/>
+       <element name="value" type="string"/>
+      </sequence>
+     </complexType>
+    </element>
+   </sequence>
+  </complexType>
+ </element>
+ <element name="ObjectTypeMap">
+  <complexType>
+   <sequence>
+    <element name="item"/>
+   </sequence>
+  </complexType>
+ </element>
+</schema>
+
+

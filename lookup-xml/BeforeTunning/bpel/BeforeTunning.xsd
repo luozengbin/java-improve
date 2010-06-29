@@ -1,0 +1,33 @@
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+        targetNamespace="http://xmlns.oracle.com/BeforeTunning"
+        xmlns="http://www.w3.org/2001/XMLSchema">
+ <element name="BeforeTunningProcessRequest">
+  <complexType>
+   <sequence>
+    <element name="item" minOccurs="0" maxOccurs="unbounded" >
+     <complexType>
+      <sequence>
+       <element name="key" type="string"/>
+      </sequence>
+     </complexType>
+    </element>
+   </sequence>
+  </complexType>
+ </element>
+ <element name="BeforeTunningProcessResponse">
+  <complexType>
+   <sequence>
+     <element name="item" minOccurs="0" maxOccurs="unbounded" >
+     <complexType>
+      <sequence>
+       <element name="key" type="string"/>
+       <element name="value" type="string"/>
+      </sequence>
+     </complexType>
+    </element>
+   </sequence>
+  </complexType>
+ </element>
+</schema>
+
+
