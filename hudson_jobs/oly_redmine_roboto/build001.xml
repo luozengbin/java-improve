@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="scm-toolkit" basedir="." default="main">
+	
+	<property environment="env"/>
+	
+	<path id="project.lib">
+		<fileset dir="${basedir}/lib" includes="**/*.jar" />
+		<fileset dir="${basedir}/dist" includes="**/*.jar" />
+	</path>
+
+	<target name="main" depends="init,syncDataFromNotesToRedmine" />
+
+	<target name="clean">
+		<delete dir="work" />
+		<delete>
+			<fileset dir="${basedir}">
+				<include name="*.log" />
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="work" />
+	</target>
+	
+	<target name="syncDataFromNotesToRedmine">
+
+		<java classname="scm.toolkit.redmine.Main" classpathref="project.lib">
+			<sysproperty key="config.file.path" value="${basedir}/config001.properties" />
+			<sysproperty key="local.work.dir" value="${basedir}/work" />
+			<sysproperty key="notes.auth.password" value="freeadmin" />
+		</java>
+	</target>
+
+</project>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<project name="ESBMetadataDeploymentProject" default="deploy">
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - PROPERTIES
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+    <property file="${basedir}/build.properties" />
+    <basename property="esb.name" file="${esb.project.dir}"/>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Import, to enable the custom ESB Metadata Deployment ant tasks ...
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <import file="${basedir}/lib/ESBMetadataMigrationTaskdefs.xml"/>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Deployment Automation
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <target name="deploy">
+        <echo>${esb.name}</echo>
+	<deployESBProjects esbMetadataServerHostname="${esb.server.host}"
+		           esbMetadataServerPort="${esb.server.port}"
+                           userName="${esb.admin.username}"
+                           password="${esb.admin.password}">
+	    <esbProject directory="${esb.project.dir}"/>
+	</deployESBProjects>
+    </target>
+
+    <target name="undeploy">
+        <echo>${esb.name}</echo>
+        <echo>guid = ${esb.guid.service}</echo>
+	<undeployESBEntities esbMetadataServerHostname="${esb.server.host}"
+		             esbMetadataServerPort="${esb.server.port}"
+                             userName="${esb.admin.username}"
+                             password="${esb.admin.password}">
+	    <service guid="${esb.guid.service}"/>
+<!--
+	    <serviceGroup guid="0EB5F380896111DBBFBC9530C01627AC"/>
+	    <service guid="0547F370841611DBBFCF2D9BF80323FA"/>
+	    <system guid="8D61C3F0871111DB8F2675C60E6C31C6"/>
+-->
+	</undeployESBEntities>
+    </target>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Metadata Promotion to different ESB Metadata Servers (environments).
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <target name="extract-deployment-plan">
+        <extractESBDeploymentPlan sourceDir="${esbProjectToDeploy}" deploymentPlanFile="${deploymentPlanFilename}"/>
+    </target>
+
+    <target name="deploy-suitcase">
+	<deployESBSuitcase esbMetadataServerHostname="${esb.server.host}"
+                           esbMetadataServerPort="${esb.server.port}"
+                           sourceDirectory="${esbProjectToDeploy}"
+                           deploymentPlanFilename="${deploymentPlanFilename}"
+                           forcedDeployment="false"/>
+    </target>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - USAGE
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <target name="usage">
+	<exec executable="ant" dir="${basedir}" vmlauncher="false">
+	    <arg value="-projecthelp"/>
+	</exec>
+    </target>
+
+</project>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+
+<project name="Json Java Application Deployment" basedir="." default="package">
+
+  <property file="${basedir}/build.properties" />
+  <property name="name" value="${name.jsonif}"/>
+
+  <target name="wlinit" description="initialize WebLogic server anttask">
+    <path id="weblogic-classpath">
+      <fileset dir="${basedir}/lib">
+        <include name="wlfullclient.jar" />
+        <include name="com.bea.core.descriptor.wl_1.2.0.0.jar" />
+      </fileset>
+    </path>
+    <taskdef name="wldeploy" classname="weblogic.ant.taskdefs.management.WLDeploy" classpathref="weblogic-classpath" />
+  </target>
+
+  <!-- ========== Undeployment J2EE Application to WebLogic Server ========== -->
+  <target name="undeploy" depends="wlinit" description="undeploy j2ee application">
+    <wldeploy action="undeploy" name="${name}" verbose="true" debug="${wls.debug.enable}" failonerror="false"
+      user="${wls.admin.username}" password="${wls.admin.password}" adminurl="${wls.admin.url}" />
+  </target>
+
+  <!-- ========== Deployment J2EE Application to WebLogic Server ========== -->
+  <target name="deploy" depends="package,wlinit" description="deploy j2ee application to WebLogic server">
+    <wldeploy action="deploy" name="${name}" verbose="true" debug="${wls.debug.enable}"
+      source="${json.project.dir}/dist/${name}.war" targets="${wls.deploy.targets}" upload="true"
+      user="${wls.admin.username}" password="${wls.admin.password}" adminurl="${wls.admin.url}" />
+  </target>
+
+  <target name="package" description="Build the web application archive">
+    <ant dir="${json.project.dir}" antfile="build_devl.xml" target="warfile01Devl" inheritAll="true" inheritRefs="true" />
+  </target>
+
+  <target name="build" description="Compile the web application sources">
+    <ant dir="${json.project.dir}" antfile="build_devl.xml" target="build" inheritAll="true" inheritRefs="true" />
+  </target>
+
+  <target name="clean" description="Cleab up the output resources">
+    <ant dir="${json.project.dir}" antfile="build_devl.xml" target="clean" inheritAll="true" inheritRefs="true" />
+  </target>
+
+</project>

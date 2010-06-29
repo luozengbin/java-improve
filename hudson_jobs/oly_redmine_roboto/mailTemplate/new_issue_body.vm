@@ -1,0 +1,22 @@
+チケット #$mailContent.id が $mailContent.author.lastname $mailContent.author.firstname によって報告されました。
+
+http://D4200168/redmine/issues/$mailContent.id
+________________________________
+$mailContent.tracker.name #$mailContent.id: $mailContent.subject
+
+作成者: $mailContent.author.lastname $mailContent.author.firstname
+ステータス: $mailContent.issueStatus.name
+優先度: $mailContent.priority.name
+担当者: 
+カテゴリ: $mailContent.issueCategory.name
+対象バージョン: $mailContent.fixVersion.name
+
+#foreach( $customValue in $mailContent.customValues)
+$customValue.customField.name: $customValue.value
+#end
+
+説明
+$mailContent.description
+________________________________
+You have received this notification because you have either subscribed to it, or are involved in it.
+To change your notification preferences, please click here: http://D4200168/redmine/my/account

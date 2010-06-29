@@ -1,0 +1,5 @@
+#foreach($issueList in $mailContent.body)
+#foreach($issue in $issueList)
+チケット$issue.idが自動クローズされました。 http://D4200168/redmine/issues/$issue.id
+#end
+#end

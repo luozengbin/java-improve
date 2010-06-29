@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ReloadLog" basedir="." default="JSONLog">
+
+	<description>ログダウンロード</description>
+
+	<!-- 定義：プロパティファイルー-->
+	<property file="build.properties" />
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml" />
+
+	<!-- - - - - - - - - - - - - - - - - - 
+		タスク: json ログ取得、開く
+		- - - - - - - - - - - - - - - - - -->
+	<target name="JSONLog" description="get new log file from wls server">
+
+		<echo message="get ${json.log.dir}/${json.log.file}${file.extention} from ${wls.srv}" />
+
+		<ftp server="${wls.srv}" userid="${wls.ftp.uid}" password="${wls.ftp.pwd}" remotedir="${json.log.dir}" action="get" binary="yes">
+			<fileset dir="${workspace.dir}/log/json">
+				<include name="${json.log.file}${file.extention}" />
+			</fileset>
+		</ftp>
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+		タスク: cws ログ取得、開く
+		- - - - - - - - - - - - - - - - - -->
+	<target name="CwsLog" description="get new log file from wls server">
+		<echo message="get ${cws.log.dir}/${cws.log.file}${file.extention} from ${wls.srv}" />
+		<ftp server="${wls.srv}" userid="${wls.ftp.uid}" password="${wls.ftp.pwd}" remotedir="${cws.log.dir}" action="get" binary="yes">
+			<fileset dir="${workspace.dir}/log/cws">
+				<include name="${cws.log.file}${file.extention}" />
+			</fileset>
+		</ftp>
+
+	</target>
+
+	<target name="CwsErrorLog" description="get new log file from wls server">
+		<echo message="get ${cws.log.dir}/${cws.error.log.file}${file.extention} from ${wls.srv}" />
+		<ftp server="${wls.srv}" userid="${wls.ftp.uid}" password="${wls.ftp.pwd}" remotedir="${cws.log.dir}" action="get" binary="yes">
+			<fileset dir="${workspace.dir}/log/cws">
+				<include name="${cws.error.log.file}${file.extention}" />
+			</fileset>
+		</ftp>
+
+	</target>
+
+	<target name="BPELLog" description="get new log file from wls server">
+		<sshexec host="${soa.srv}" username="${soa.ssh.uid}" password="${soa.ssh.pwd}" trust="true" command="${tail.bpel.tmp.log}" />
+		<ftp server="${soa.srv}" userid="${soa.ssh.uid}" password="${soa.ssh.pwd}" remotedir="${bpel.log.dir}" action="get" binary="yes">
+			<fileset dir="${workspace.dir}/log/bpel">
+				<include name="${bpel.log.tmpfile}" />
+			</fileset>
+		</ftp>
+		<sshexec host="${soa.srv}" username="${soa.ssh.uid}" password="${soa.ssh.pwd}" trust="true" command="${rm.bpel.tmp.log}" />
+
+	</target>
+</project>

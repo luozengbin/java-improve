@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<project name="BPELDeploymentProject" default="deploy">
+  <property file="${basedir}/build.properties" />
+  <target name="deploy">
+    <ant dir="${bpel.project.dir}" inheritAll="true" inheritRefs="true" />
+  </target>
+  <target name="compile">
+    <ant dir="${bpel.project.dir}" target="compile" inheritAll="true" inheritRefs="true" />
+  </target>
+</project>
