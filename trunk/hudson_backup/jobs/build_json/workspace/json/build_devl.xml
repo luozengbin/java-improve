@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+
+<project name="dev_soaIms001_java_deploy" basedir="." default="warfile01Devl">
+
+	<property name="name" value="soaIms001"/>
+
+	<property name="war.dir" value="war"/>
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="classes"/>
+	<property name="weblib.dir" value="${war.dir}/WEB-INF/lib"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="target.srv" value="swld01.olympus.co.jp"/>
+	<property name="war.ftpput.dir" value="/users/data/wl/deploy"/>
+	<property name="war.ftpput.uid" value="UNEC0001"/>
+	<property name="war.ftpput.pwd" value="UNEC0001"/>
+	<property name="eclipselib.dir" value="C:\tools\eclipse\lib"/>
+
+	<!--
+	<property name="spring.root" value="C:\spring208"/>
+	<property name="local.dir" value="C:\ものづくりwar" />
+
+	<property name="weblogic.home" value="C:\bea\wlserver_10.3"/>
+	-->
+
+	<path id="master-classpath">
+			<!--
+		<fileset dir="${spring.root}/lib">
+			<include name="jaxrpc.jar"/>
+			<include name="jdbc2_0-stdext.jar"/>
+			<include name="servlet-api.jar"/>
+			<include name="servlet.jar"/>
+			<include name="commons-beanutils.jar"/>
+		</fileset>
+		
+		<fileset dir="${eclipselib.dir}">
+			<include name="classes12.jar"/>
+			<include name="log4j-1.2.13.jar"/>
+			<include name="spring.jar"/>
+			<include name="sap.logging.jar"/>
+			<include name="com.sap.security.api.jar"/>
+			<include name="com.sap.security.core.jar"/>
+			<include name="iaik_jce.jar"/>	
+			<include name="commons-logging.jar"/>
+			<include name="commons-dbcp.jar"/>
+			<include name="servlet-api.jar"/>
+			<include name="servlet.jar"/>
+			<include name="commons-net-1.4.1.jar"/>
+			<include name="jsonic-1.0.1.jar"/>
+			<include name="jsonic-1.0.1-PRODUCE.jar"/>
+			<include name="commons-codec-1.3.jar"/>
+			<include name="wsclient.jar"/>
+			<include name="weblogic.jar"/>
+			<include name="webservices-extra-api.jar"/>
+			<include name="poi-3.2-FINAL-20081019.jar"/>
+			<include name="struts.jar"/>
+		</fileset>
+			-->
+
+		<fileset dir="${war.dir}/WEB-INF/lib">
+<!--
+			<include name="oly-soa-fw-ims.jar"/>
+-->
+		</fileset>
+	</path>
+
+
+	<target name="usage">
+
+		<echo message=""/>
+		<echo message="Spring JPetStore build file"/>
+		<echo message="------------------------------------------------------"/>
+		<echo message=""/>
+		<echo message="Available targets are:"/>
+		<echo message=""/>
+		<echo message="clean    --> Clean output dirs"/>
+		<echo message="build    --> Compile main Java sources and copy libraries"/>
+		<echo message="warfile01Devl  --> Build the web application archive [for Devlop]"/>
+		<echo message="warfile02Test  --> Build the web application archive [for Test]"/>
+		<echo message="warfile03Prod  --> Build the web application archive [for Prod]"/>
+		<echo message="all      --> Clean, build, warfile01Devl"/>
+		<echo message=""/>
+
+	</target>
+
+
+	<target name="clean" description="Clean output dirs (build, weblib, dist)">
+
+		<delete dir="${build.dir}"/>
+<!--
+		<delete dir="${weblib.dir}"/>
+
+-->		<delete dir="${dist.dir}"/>
+		<delete file="client/${name}.jar"/>
+
+	</target>
+
+	<target name="copylib">
+		<!--
+		<copy todir="${weblib.dir}" preservelastmodified="true">
+			<fileset dir="${eclipselib.dir}">
+				<include name="*.jar"/>
+
+			</fileset>
+		</copy>
+		-->
+	</target>
+	
+	<target name="build" depends="copylib" description="Compile main source tree java files into class files, generate jar files">
+
+		<echo message="compile start"/>
+
+		<mkdir dir="${build.dir}"/>
+
+		<javac destdir="${build.dir}" source="1.6" target="1.6" debug="true" encoding="SHIFT-JIS"
+				deprecation="false" optimize="false" failonerror="true">
+			<src path="${src.dir}"/>
+			<classpath refid="master-classpath"/>
+		</javac>
+
+		<copy todir="${build.dir}" preservelastmodified="true">
+			<fileset dir="${src.dir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+			<!--
+			<fileset dir="war/WEB-INF">
+				<include name="ApplicationResources.properties"/>
+				<include name="ApplicationResources_ja.properties"/>
+				<include name="ApplicationResources_en.properties"/>
+				<include name="log4j.properties"/>
+			</fileset>
+			-->
+		</copy>
+
+	</target>
+
+
+	<target name="dist" depends="warfile01Devl">
+		<!-- 
+			Delegate to warfile target by depending on it. dist is just to offer
+			a generic target name across all Spring sample apps that may be used
+			for autobuilds testing.
+		-->
+	</target>
+
+<!-- 
+=============================================
+=  開発機用デプロイ定義
+=============================================
+-->
+	<target name="warfile01Devl" depends="build" description="Build the web application archive[Devl]">
+
+		<echo message="[開発環境向け] make-war start"/>
+		<echo message="target-war : ${name}.war"/>
+		
+		<!-- ========== log4j.xml copy ========== -->
+		<delete file="war/WEB-INF/classes/log4j.xml" failonerror="false"/>
+		<copy file="log4j-conf/log4j_devl.xml" tofile="${build.dir}/log4j.xml"/>
+
+		<!-- ========== error-message.properties copy ========== -->
+		<delete file="${build.dir}/error_message_ja.properties" failonerror="false"/>
+		<copy file="common-props/error_message_ja.properties" tofile="${build.dir}/error_message_ja.properties"/>
+
+		<!-- ========== wsdl-endPoint.properties copy ========== -->
+		<delete file="${build.dir}/wsdl_endpoint.properties" failonerror="false"/>
+		<copy file="common-props/wsdl_endpoint_devl.properties" tofile="${build.dir}/wsdl_endpoint.properties"/>
+
+		<!-- ========== dl-basic-logininfo.properties copy ========== -->
+		<delete file="${build.dir}/dl_logininfo.properties" failonerror="false"/>
+		<copy file="common-props/dl_logininfo_devl.properties" tofile="${build.dir}/dl_logininfo.properties"/>
+
+		<!-- ========== dl_ul_info.properties copy ========== -->
+		<delete file="${build.dir}/dl_ul_info.properties" failonerror="false"/>
+		<copy file="common-props/dl_ul_info_devl.properties" tofile="${build.dir}/dl_ul_info.properties"/>
+		
+		<!-- ========== app.properties copy ========== -->
+		<delete file="${build.dir}/appprop_*.properties" failonerror="false"/>
+		<copy todir="${build.dir}" preservelastmodified="true">
+			<fileset dir="app-props">
+				<include name="appprop_*.properties"/>
+			</fileset>
+		</copy>
+
+		<!-- ========== create war ========== -->
+                <delete dir="${dist.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+
+		<war destfile="${dist.dir}/${name}.war" basedir="${war.dir}" webxml="${war.dir}/WEB-INF/web.xml">
+			<exclude name="WEB-INF/ApplicationResources.properties"/>
+			<exclude name="WEB-INF/ApplicationResources_ja.properties"/>
+			<exclude name="WEB-INF/ApplicationResources_en.properties"/>
+			<exclude name="WEB-INF/log4j.properties"/>
+			<exclude name="WEB-INF/web.xml"/>
+			<exclude name="WEB-INF/classes/"/>
+			<exclude name="WEB-INF/lib/"/>
+			<exclude name="**/.*"/>
+                    <classes dir="${build.dir}" />
+                    <lib dir="${weblib.dir}" excludes="servlet.jar"/>
+
+		</war>
+
+		<!-- ========== war send to server ========== -->
+		<!--
+		<echo message="war-ftp-put start"/>
+		<echo message="target-server : ${target.srv} / dir : ${war.ftpput.dir}"/>
+		<echo message="ftp-uid : ${war.ftpput.uid}"/>
+		<ftp server="${target.srv}" userid="${war.ftpput.uid}" password="${war.ftpput.pwd}" remotedir="${war.ftpput.dir}">
+			<fileset dir="${dist.dir}">
+				<include name="${name}.war"/>
+			</fileset>
+		</ftp>
+		-->
+
+		<!-- ========== deployment execute ========== -->
+		<!--
+		<echo message="deployment start"/>
+		<taskdef name="wldeploy"
+			classname="weblogic.ant.taskdefs.management.WLDeploy"
+			classpath="${weblogic.home}/server/lib/weblogic.jar"/>
+		<wldeploy action="deploy" user="weblogic" password="Manager123"
+			source="${war.ftpput.dir}/${name}.war" adminurl="t3://swld01.olympus.co.jp:7001"
+			targets="testServer1" verbose="true" nowait="no"/>
+		-->
+
+		<!--
+		<delete dir="${dist.dir}" />
+		-->
+		
+		<delete dir="war/WEB-INF/classes" />
+		<delete dir="classes" />
+		<delete dir="bin" />
+		<delete dir="app-props" />
+		<delete dir="poi-props" />
+		<delete dir="common-props" />
+		<delete dir="src" />
+		<delete dir="war" />
+		
+		
+	</target>
+
+</project>
