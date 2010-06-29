@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="backup" basedir=".">
+	<property environment="env" />
+	<tstamp>
+		<format property="NOW" pattern="yyyyMMdd_HHmmss" />
+	</tstamp>
+	<target name="backup">
+		<zip basedir="${env.HUDSON_HOME}" destfile="dist/${NOW}_hudson.zip" excludes="war/**, jobs/*/workspace/**, *.log">
+		</zip>
+	</target>
+</project>

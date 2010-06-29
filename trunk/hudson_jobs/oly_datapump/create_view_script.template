@@ -1,0 +1,14 @@
+SET LINESIZE      160
+SET LONG          100000
+COLUMN TEXT       FORMAT A160
+set heading off
+set verify off
+set feed off
+set pause off
+set echo off
+set termout off
+set pagesize 0SPOOL $VIEW_NAME$.SQL
+SELECT 'CREATE OR REPLACE VIEW PRODUCE.$VIEW_NAME$ AS' FROM DUAL;
+SELECT TEXT FROM USER_VIEWS WHERE VIEW_NAME = UPPER('$VIEW_NAME$');
+SELECT '/' FROM DUAL;
+SPOOL OFF

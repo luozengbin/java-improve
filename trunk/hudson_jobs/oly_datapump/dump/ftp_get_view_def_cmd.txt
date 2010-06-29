@@ -1,0 +1,11 @@
+open swld01.olympus.co.jp
+soa
+soa
+cd /d01/soa/oracle/product/10.2.0/db/rdbms/log/
+bin
+get produce_view_def.dmp
+get produce_view_def.log
+delete produce_view_def.dmp
+delete produce_view_def.log
+disconnect
+bye

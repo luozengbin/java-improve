@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - The import of this ant build file, by another ant build file, enables the
+   - use of the custom ant tasks present in ESBMetadataMigration.jar
+   - Doug Gschwind
+   - 12 Dec 2006
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<project name="ESBMetadataMigrationTaskdefs">
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - PROPERTIES, Subject to the installation environment
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!--
+    <property name="commons.httpclient.home" value="C:/Program Files/ApacheGroup/commons-httpclient-3.0.1"/>
+    <property name="jaxb.v2.0.2.home" value="C:/Program Files/JavaSoft/JAXB/v2.0.2"/>
+    <property name="soa.suite.home" value="C:/Oracle/product/soasuite/v10.1.3.1"/>
+    <property name="m2.repo" value="d:/winxp/build/.m2/repository"/>
+-->
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   - Custom ant task definitions, to enable import.
+   - This section should be treated as immutable upon installation.
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+    <dirname property="imported.basedir" file="${ant.file.ESBMetadataMigrationTaskdefs}"/>
+
+    <taskdef resource="oracle/tip/esb/client/anttasks/antlib.xml">
+        <classpath>
+            <pathelement location="${imported.basedir}/ESBMetadataMigration.jar"/>
+            <pathelement location="${imported.basedir}/commons-httpclient-3.0.1.jar"/>
+            <pathelement location="${imported.basedir}/commons-logging-1.1.1.jar"/>
+            <pathelement location="${imported.basedir}/commons-codec-1.3.jar"/>
+            <pathelement location="${imported.basedir}/xmlparserv2.jar"/>
+            <pathelement location="${imported.basedir}/oraesb.jar"/>
+<!--
+            <pathelement location="${m2.repo}/javax/activation/activation/1.1/activation-1.1.jar"/>
+            <pathelement location="${m2.repo}/javax/xml/bind/jaxb-api/2.0/jaxb-api-2.0.jar"/>
+            <pathelement location="${m2.repo}/javax/xml/bind/jsr173_api/1.0/jsr173_api-1.0.jar"/>
+            <pathelement location="${m2.repo}/com/sun/xml/bind/jaxb-impl/2.0.2/jaxb-impl-2.0.2.jar"/>
+-->
+        </classpath>
+    </taskdef>
+
+</project>

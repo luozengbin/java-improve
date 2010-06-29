@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<project name="xpath Java Application Deployment" basedir="." default="package">
+
+  <property file="${basedir}/build.properties" />
+  <property name="name" value="xpath"/>
+
+  <!-- ========== Undeployment J2EE Application to WebLogic Server ========== -->
+<!--
+  <target name="wlinit" description="initialize WebLogic server anttask">
+    <path id="weblogic-classpath">
+      <fileset dir="${basedir}/lib">
+        <include name="wlfullclient.jar" />
+        <include name="com.bea.core.descriptor.wl_1.2.0.0.jar" />
+      </fileset>
+    </path>
+    <taskdef name="wldeploy" classname="weblogic.ant.taskdefs.management.WLDeploy" classpathref="weblogic-classpath" />
+  </target>
+
+  <target name="undeploy" depends="wlinit" description="undeploy j2ee application">
+    <wldeploy action="undeploy" name="${name}" verbose="true" debug="true" failonerror="false"
+      user="${wls.admin.username}" password="${wls.admin.password}" adminurl="${wls.admin.url}" />
+  </target>
+
+  <target name="deploy" depends="package,wlinit" description="deploy j2ee application to WebLogic server">
+    <wldeploy action="deploy" name="${name}" verbose="true" debug="true"
+      source="${xpath.project.dir}/dist/${name}.war" targets="${wls.deploy.targets}" upload="true"
+      user="${wls.admin.username}" password="${wls.admin.password}" adminurl="${wls.admin.url}" />
+  </target>
+-->
+
+  <target name="package" description="Build the web application archive">
+    <ant dir="${xpath.project.dir}" antfile="build.xml" target="jar" inheritAll="true" inheritRefs="true" />
+  </target>
+
+<!--
+  <target name="build" description="Compile java sources">
+    <ant dir="${xpath.project.dir}" antfile="build.xml" target="build" inheritAll="true" inheritRefs="true" />
+  </target>
+-->
+
+  <target name="clean" description="Clean up output resources">
+    <ant dir="${xpath.project.dir}" antfile="build.xml" target="clean" inheritAll="true" inheritRefs="true" />
+  </target>
+
+</project>
