@@ -49,6 +49,8 @@ public interface Constants {
 	
 	String REDMINE_SPREADSHEET_ISSUE_CONFIRM_FILEDS = "redmine.spreadsheet.issue.confirm.fileds";
 	
+	String REDMINE_ISSUE_DEFAULT_PHASE = "redmine.issue.default.phase";
+	
 	String REDMINE_ISSUE_DEFAULT_PROJECT = "redmine.issue.default.project";
 	
 	String REDMINE_ISSUE_DEFAULT_TRACKER = "redmine.issue.default.tracker";
@@ -64,6 +66,8 @@ public interface Constants {
 	String REDMINE_ISSUE_DEFAULT_AUTHOR = "redmine.issue.default.author";
 	
 	String REDMINE_ISSUE_DEFAULT_WATCHERS = "redmine.issue.default.watchers";
+	
+	String REDMINE_ISSUE_DEFAULT_WATCHER_ONCE = "redmine.issue.default.watcher.once";
 	
 	String REDMINE_ISSUE_UPDATE_STATUS = "redmine.issue.update.status";
 	
@@ -86,6 +90,5 @@ public interface Constants {
 	String FAIL_ALTER_MAIL_FROM = "fail.alter.mail.from";
 	
 	String FAIL_ALTER_MAIL_TO = "fail.alter.mail.to";
-	
 
 }
