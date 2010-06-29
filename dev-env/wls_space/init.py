@@ -1,0 +1,5 @@
+redirect('wlst.log', 'true')
+execfile('nmConnect.py')
+execfile('startAdminServer.py')
+execfile('connAdminServer.py')
+help()
