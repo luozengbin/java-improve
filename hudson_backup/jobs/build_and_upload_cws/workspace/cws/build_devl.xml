@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+
+<project name="dev_CustomWS_deploy" basedir="." default="warfile01Devl">
+
+	<property name="name" value="CustomWebService-Release"/>
+
+	<property name="war.dir" value="war"/>
+	<property name="src.dir" value="src"/>
+	<property name="build.dir" value="war/WEB-INF/classes"/>
+	<property name="weblib.dir" value="${war.dir}/WEB-INF/lib"/>
+	<property name="dist.dir" value="dist"/>
+	<property name="target.srv" value="swld01.olympus.co.jp"/>
+	<property name="war.ftpput.dir" value="/users/data/wl/deploy"/>
+	<property name="war.ftpput.uid" value="soa"/>
+	<property name="war.ftpput.pwd" value="soa"/>
+	<property name="src.modify.dir" value="C:\mywork\cws_modify"/>
+	<property name="eclipselib.dir" value="C:\eclipse\lib"/>
+
+
+	<path id="master-classpath">
+		<fileset dir="${weblib.dir}">
+			<include name="b1base.jar"/>
+			<include name="b1oracle.jar"/>
+			<include name="b1util.jar"/>
+			<include name="bcel.jar"/>
+			<include name="commons-codec-1.3.jar"/>
+			<include name="fuego.block.base.jar"/>
+			<include name="fuegopapi-client.jar"/>	
+			<include name="jms-api.jar"/>
+			<include name="jsonic-1.1.0.jar"/>
+			<include name="log4j-1.2.13.jar"/>
+			<include name="servlet.jar"/>
+			<include name="velocity-1.5.jar"/>
+			<!--
+			<include name="jp.co.olympus.soa.mono.common.jar"/>
+		</fileset>
+		<fileset dir="${eclipselib.dir}">
+			<include name="servlet.jar"/>
+			-->
+		</fileset>
+	</path>
+	<taskdef resource="net/sf/antcontrib/antlib.xml"/>
+
+	<target name="usage">
+
+		<echo message=""/>
+		<echo message="Spring JPetStore build file"/>
+		<echo message="------------------------------------------------------"/>
+		<echo message=""/>
+		<echo message="Available targets are:"/>
+		<echo message=""/>
+		<echo message="clean    --> Clean output dirs"/>
+		<echo message="build    --> Compile main Java sources and copy libraries"/>
+		<echo message="warfile01Devl  --> Build the web application archive [for Devlop]"/>
+		<echo message="warfile02Test  --> Build the web application archive [for Test]"/>
+		<echo message="warfile03Prod  --> Build the web application archive [for Prod]"/>
+		<echo message="all      --> Clean, build, warfile01Devl"/>
+		<echo message=""/>
+
+	</target>
+
+
+	<target name="clean" description="Clean output dirs (build, weblib, dist)">
+
+		<delete dir="${build.dir}"/>
+			<!--
+		<delete dir="${weblib.dir}"/>
+			-->
+		<delete dir="${dist.dir}"/>
+
+	</target>
+	
+	<target name="sync_modify_src" description="update modify code">
+		<foreach target="copyModifiedSource" param="dir">
+	      <path>
+	         <dirset dir="${src.modify.dir}" casesensitive="no" >
+	         	<exclude name="*/*/**"></exclude>
+	         </dirset>
+	      </path>
+	   </foreach>
+	</target>
+
+	<target name="copyModifiedSource" description="copy modified source from work dir">
+		<if>
+		 <equals arg1="${dir}" arg2="${src.modify.dir}" />
+		 <then>
+		   <echo message="skip!!!" />
+		 </then>
+		 <else>
+		   <echo message="copy modified source from ${dir}"/>
+		   <copy todir="${basedir}" preservelastmodified="true" overwrite="true">
+		      <fileset dir="${dir}" />
+		   </copy>
+		 </else>
+		</if>
+	</target>
+
+	<target name="build" depends="sync_modify_src" description="Compile main source tree java files into class files, generate jar files">
+
+		<!-- ========== LoginUtility-oririnal copy ========== -->
+		<!-- 2010/03/19
+		<delete file="src/jp/co/olympus/soa/mono/ws/custom/base/util/LoginUtility.java" failonerror="false"/>
+		<copy file="stub/prod/LoginUtility.java" tofile="src/jp/co/olympus/soa/mono/ws/custom/base/util/LoginUtility.java"/>
+		-->
+		
+		<mkdir dir="${build.dir}"/>
+
+		<javac destdir="${build.dir}" source="1.6" target="1.6" debug="true" encoding="MS932"
+				deprecation="false" optimize="false" failonerror="true">
+			<src path="${src.dir}"/>
+			<classpath refid="master-classpath"/>
+		</javac>
+
+		<copy todir="${build.dir}" preservelastmodified="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.*"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+
+	</target>
+
+
+	<target name="build_by_stub" depends="sync_modify_src" description="Compile main source tree java files into class files, generate jar files">
+
+		<!-- ========== LoginUtility-stub copy ========== -->
+		<!-- 2010/03/19
+		<delete file="src/jp/co/olympus/soa/mono/ws/custom/base/util/LoginUtility.java" failonerror="false"/>
+		<copy file="stub/dev/LoginUtility.java" tofile="src/jp/co/olympus/soa/mono/ws/custom/base/util/LoginUtility.java"/>
+		-->
+		<mkdir dir="${build.dir}"/>
+
+		<javac destdir="${build.dir}" source="1.6" target="1.6" debug="true" encoding="MS932"
+				deprecation="false" optimize="false" failonerror="true">
+			<src path="${src.dir}"/>
+			<classpath refid="master-classpath"/>
+		</javac>
+
+		<copy todir="${build.dir}" preservelastmodified="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.*"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+
+		<!-- ========== LoginUtility-oririnal copy ========== -->
+		<!-- 2010/03/19
+		<delete file="src/jp/co/olympus/soa/mono/ws/custom/base/util/LoginUtility.java" failonerror="false"/>
+		<copy file="stub/prod/LoginUtility.java" tofile="src/jp/co/olympus/soa/mono/ws/custom/base/util/LoginUtility.java"/>
+		-->
+	</target>
+
+
+	<target name="dist" depends="warfile01Devl">
+		<!-- 
+			Delegate to warfile target by depending on it. dist is just to offer
+			a generic target name across all Spring sample apps that may be used
+			for autobuilds testing.
+		-->
+	</target>
+
+<!-- 
+=============================================
+=  開発機用デプロイ定義（認証スタブ利用版）
+=============================================
+-->
+	<target name="warfile01DevlByStub" depends="build_by_stub" description="Build the web application archive[Devl]">
+
+		<echo message="[開発環境向け:認証スタブ利用] make-war start"/>
+		<echo message="target-war : ${name}.war"/>
+
+		<!-- ========== log4j.xml copy ========== -->
+		<delete file="war/WEB-INF/classes/log4j.xml" failonerror="false"/>
+		<copy file="log4j-conf/01_log4j_devl.xml" tofile="war/WEB-INF/classes/log4j.xml"/>
+
+		<!-- ========== properties copy ========== -->
+		<delete file="war/WEB-INF/classes/ws_props/customWsCommon.properties" failonerror="false"/>
+		<copy file="ws_props/customWsCommon_devl.properties" tofile="war/WEB-INF/classes/ws_props/customWsCommon.properties"/>
+		<delete file="war/WEB-INF/classes/decrypt_service.properties" failonerror="false"/>
+		<copy file="ws_props/decrypt_service_devl.properties" tofile="war/WEB-INF/classes/decrypt_service.properties"/>
+
+		<!-- ========== create war ========== -->
+		<mkdir dir="${dist.dir}"/>
+
+		<war warfile="${dist.dir}/${name}.war" basedir="${war.dir}" webxml="${war.dir}/WEB-INF/web.xml">
+			<include name="*"/>
+			<include name="WEB-INF/*.*"/>
+			<include name="WEB-INF/lib/**"/>
+			<include name="WEB-INF/classes/**"/>
+			<include name="WEB-INF/wsdl/**"/>
+			<exclude name="WEB-INF/web.xml"/>
+			<exclude name="**/.*"/>
+		</war>
+
+		<!-- ========== war send to server ========== -->
+		<echo message="war-ftp-put start"/>
+		<echo message="target-server : ${target.srv} / dir : ${war.ftpput.dir}"/>
+		<echo message="ftp-uid : ${war.ftpput.uid}"/>
+		<ftp server="${target.srv}" userid="${war.ftpput.uid}" password="${war.ftpput.pwd}" remotedir="${war.ftpput.dir}">
+			<fileset dir="${dist.dir}">
+				<include name="${name}.war"/>
+			</fileset>
+		</ftp>
+		<delete dir="${build.dir}" />
+		<!--
+		<delete dir="src" />
+		<delete dir="war" />
+		<delete dir="ws_props" />
+		<delete dir="mail-templates" />
+		<delete dir="log4j-conf" />
+		<delete dir="stub" />
+		<delete dir="test-prod-build" />-->
+		
+	</target>
+
+	<!-- 
+	=============================================
+	=  開発機用デプロイ定義（認証本物利用版）
+	=============================================
+	-->
+	<target name="warfile01Devl" depends="build" description="Build the web application archive[Devl]">
+
+		<echo message="[開発環境向け] make-war start"/>
+		<echo message="target-war : ${name}.war"/>
+
+		<!-- ========== log4j.xml copy ========== -->
+		<delete file="war/WEB-INF/classes/log4j.xml" failonerror="false"/>
+		<copy file="log4j-conf/01_log4j_devl.xml" tofile="war/WEB-INF/classes/log4j.xml"/>
+
+		<!-- ========== properties copy ========== -->
+		<delete file="war/WEB-INF/classes/ws_props/customWsCommon.properties" failonerror="false"/>
+		<copy file="ws_props/customWsCommon_devl.properties" tofile="war/WEB-INF/classes/ws_props/customWsCommon.properties"/>
+		<delete file="war/WEB-INF/classes/decrypt_service.properties" failonerror="false"/>
+		<copy file="ws_props/decrypt_service_devl.properties" tofile="war/WEB-INF/classes/decrypt_service.properties"/>
+
+		<!-- ========== create war ========== -->
+		<mkdir dir="${dist.dir}"/>
+
+		<war warfile="${dist.dir}/${name}.war" basedir="${war.dir}" webxml="${war.dir}/WEB-INF/web.xml">
+			<include name="*"/>
+			<include name="WEB-INF/*.*"/>
+			<include name="WEB-INF/lib/**"/>
+			<include name="WEB-INF/classes/**"/>
+			<include name="WEB-INF/wsdl/**"/>
+			<exclude name="WEB-INF/web.xml"/>
+			<exclude name="**/.*"/>
+		</war>
+
+		<!-- ========== war send to server ========== -->
+		<echo message="war-ftp-put start"/>
+		<echo message="target-server : ${target.srv} / dir : ${war.ftpput.dir}"/>
+		<echo message="ftp-uid : ${war.ftpput.uid}"/>
+		<ftp server="${target.srv}" userid="${war.ftpput.uid}" password="${war.ftpput.pwd}" remotedir="${war.ftpput.dir}">
+			<fileset dir="${dist.dir}">
+				<include name="${name}.war"/>
+			</fileset>
+		</ftp>
+		<delete dir="${build.dir}" />
+		<!--<delete dir="war" />
+		<delete dir="ws_props" />
+		<delete dir="mail-templates" />
+		<delete dir="log4j-conf" />
+		<delete dir="stub" />
+		<delete dir="test-prod-build" />-->
+
+	</target>
+
+</project>
