@@ -1,0 +1,21 @@
+<Context>
+
+	<Resource name="game/FootballFactory" auth="Container" type="match.Game001"
+		factory="org.apache.naming.factory.BeanFactory" gameName="world cup" />
+
+	<Resource name="jdbc/produce" auth="Container" type="javax.sql.DataSource"
+		factory="org.objectweb.jndi.DataSourceFactory" username="produsr"
+		password="pr0dusr" driverClassName="oracle.jdbc.driver.OracleDriver"
+		url="jdbc:oracle:thin:@swld01.olympus.co.jp:1521:swl" maxActive="30"
+		maxIdle="30" />
+		
+	<Resource name="jdbc/scott" auth="Container" type="javax.sql.DataSource"
+		factory="org.objectweb.jndi.DataSourceFactory" username="hr"
+		password="admin" driverClassName="oracle.jdbc.driver.OracleDriver"
+		url="jdbc:oracle:thin:@10.125.32.89:1521:xe" maxActive="30"
+		maxIdle="30" />
+
+	<Transaction factory="org.objectweb.jotm.UserTransactionFactory"
+		jotm.timeout="60" />
+
+</Context>
